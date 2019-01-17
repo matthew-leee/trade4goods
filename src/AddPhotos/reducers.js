@@ -1,4 +1,12 @@
-const photoReducer = (state, action) => {
+// import actions from "./actions"
+
+const initState = {
+    details: [],
+    uploadedPhotos: [],
+    previewPhotos: []
+  }
+
+const photoReducer = (state=initState, action) => {
     switch(action.type){
         case "ADDPHOTOS_DETAILS": 
             return {
@@ -8,13 +16,15 @@ const photoReducer = (state, action) => {
         case "UPLOADPHOTOS":
             return {
                 ...state,
-                uploadedPhotos: [...action.uploadedPhotos]
+                uploadedPhotos: [...action.uploadedPhotos],
+                previewPhotos: []
             }
         case "PREVIEWPHOTOS": 
             return {
                 ...state,
-                previewPhotos: [...action.previewPhotos]
+                previewPhotos: [...state.previewPhotos, action.previewPhotos]
             }
+        default: return state
     }
 } 
 
