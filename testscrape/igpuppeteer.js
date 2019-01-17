@@ -23,7 +23,7 @@ async function scrapeInfiniteScrollItems(page, extractItems, scrollDelay = 1000,
     let count = 1;
     let itemTargetCount = await page.evaluate('document.querySelector("#react-root > section > main > div > header > section > ul > li:nth-child(1) > a > span").innerText')
     itemTargetCount = itemTargetCount.replace(/\,/g,'')
-    console.log (itemTargetCount)
+    console.log (`itemCount: ${itemTargetCount}`)
     while (items.length < Number(itemTargetCount)) {
       temp = await page.evaluate(extractItems);
       for (let tem of temp) {
@@ -77,7 +77,7 @@ const startScraping = async (ac) => {
   await browser.close();
 }
 
-const grabPhotos = async (ac) => {
+const grab = async (ac) => {
   await startScraping(ac);
   let json = await readFile(`./ac/${ac}/${ac}.json`, "utf8");
   let srcs = JSON.parse(json).map((u) => {
@@ -91,4 +91,6 @@ const grabPhotos = async (ac) => {
   }
 }
 
-grabPhotos("renciysw")
+// grab("renciysw");
+
+module.exports = grab
