@@ -1,10 +1,10 @@
 'use strict';
 const path = require('path')
-module.exports = (express, passport, authService) => {
+module.exports = (express, authService) => {
     const router = express.Router();
-    
-    require('./authRouter')(router, passport, authService)
+    require('./authRouter')(router, authService)
 
-    router.use('*', (req, res) => res.sendFile(path.join(__dirname, '..' ,'public' , 'index.html')))
+    // index.html for dev test only
+    // router.use('*', (req, res) => res.sendFile(path.join(__dirname, '..' ,'public' , 'index.html')))
     return router;
 };

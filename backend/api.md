@@ -1,10 +1,10 @@
-# API
+# api
 
 ## GET
 
 - user profile
 
-    *GET: api/user/:id*
+    *GET: /api/user/:id*
 
 response format
 
@@ -29,7 +29,7 @@ response format
 
 - product profile
 
-    *GET: api/product/:id*
+    *GET: /api/product/:id*
 
 response format
 
@@ -59,7 +59,7 @@ response format
 
 - chat messages
 
-    *GET: api/chat/:chatid*
+    *GET: /api/chat/:chatid*
 
 response format
 ```
@@ -83,7 +83,7 @@ response format
 
 - Login
 
-    *POST: api/login*
+    *POST: /api/login*
 
 request params
 
@@ -100,7 +100,7 @@ request params
 
 - Facebook Login
 
-    *POST: api/facebook-login*
+    *POST: /api/facebook_login*
 
 request params
 
@@ -115,13 +115,14 @@ request params
 
 - Google Login
 
-    *POST: api/google-login*
+    *POST: /api/google_login*
 
 request params
 
 ```
 {
     access_token: string
+    id_token: string
 }
 ```
 
@@ -129,9 +130,17 @@ request params
 
 ## POST
 
+- Logout
+
+    *POST: /api/logout*
+
+----
+
+## POST
+
 - Sign Up
 
-    *POST: api/signup*
+    *POST: /api/signup*
 
 request params
 
@@ -148,9 +157,59 @@ request params
 
 ## POST
 
+- Verify Email
+
+    *POST: /api/verifyEmail*
+
+request params
+
+```
+{
+    key: string (from uri params)
+}
+```
+
+----
+
+## POST
+
+- Forget Password
+
+    *POST: /api/forgetPassword*
+
+request params
+
+```
+{
+    email: string
+}
+```
+
+----
+
+## POST
+
+- Reset Password
+
+    *POST: /api/resetPassword*
+
+request params
+
+```
+{
+    password: string
+    confirmed_password: string
+    key: string (from uri params)
+}
+```
+
+----
+
+## POST
+
 - Create Profile
 
-    *POST: api/profile*
+    *POST: /api/profile*
 
 request params
 ```
@@ -168,7 +227,7 @@ request params
 
 - Upload Product
 
-    *POST: api/product*
+    *POST: /api/product*
 
 request params
 ```
@@ -187,7 +246,7 @@ request params
 
 - like product
 
-    *POST: api/like/:product_id
+    *POST: /api/like/:product_id
 
     the product id stands for the targeted product to like
 
@@ -197,7 +256,7 @@ request params
 
 - offer product
 
-    *POST: api/offer/:product_id
+    *POST: /api/offer/:product_id
 
     the product id stands for the targeted product to offer
 
@@ -213,7 +272,7 @@ request params
 
 - start chat
 
-    *POST: api/startchat/:userid*
+    *POST: /api/startchat/:userid*
 
     the user id stands for the targeted user to start chat with
 
@@ -223,7 +282,7 @@ request params
 
 - chat
 
-    *POST: api/chat/:userid*
+    *POST: /api/chat/:userid*
 
     the user id stands for the targeted user to chat with
 
@@ -240,7 +299,7 @@ request params
 
 - Edit Profile
 
-    *PUT: api/profile*
+    *PUT: /api/profile*
 
 request params
 ```

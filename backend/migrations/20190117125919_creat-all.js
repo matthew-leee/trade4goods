@@ -6,9 +6,9 @@ exports.up = function (knex, Promise) {
             table.string('username').notNullable().unique();
             table.string('password').nullable();
             table.string('email').notNullable().unique();
-            table.boolean('email_isVerifying').notNullable().defaultTo(false);
-            table.decimal('google_id').nullable();
-            table.decimal('facebook_id').nullable();
+            table.boolean('email_isVerifying').notNullable().defaultTo(true);
+            table.integer('google_id', null).nullable();
+            table.integer('facebook_id', null).nullable();
             table.string('access_token').nullable();
         }),
 
