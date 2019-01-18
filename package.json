@@ -28,11 +28,8 @@
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.3",
-<<<<<<< HEAD
     "redis": "^2.8.0",
-=======
     "reactjs-popup": "^1.3.2",
->>>>>>> 433ebaa9fc52732de00dbf69c4675f2187e2f2f5
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "request": "^2.88.0",
