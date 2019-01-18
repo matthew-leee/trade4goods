@@ -64,7 +64,7 @@ class NormalLoginForm extends React.Component {
                             <br />
                             <Button type="primary" htmlType="submit" className="login-form-button" style={{ backgroundColor: "grey" }}>
                                 Log in
-                    </Button>
+                            </Button>
                             Or <a href="">register now!</a>
                         </Form.Item>
                     </Form>
