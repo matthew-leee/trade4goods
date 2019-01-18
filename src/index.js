@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import SampleApp from './SampleReduxApp'
+import App from './App'
 import * as serviceWorker from './serviceWorker';
 import { createStore, Action, applyMiddleware } from "redux";
 import { Provider } from "react-redux"
@@ -12,7 +13,7 @@ const store = createStore(photoReducers, applyMiddleware(logger))
 
 ReactDOM.render(
     <Provider store={store}>
-        <App />
+        <SampleApp />
     </Provider>,
     document.getElementById('root')
 );
