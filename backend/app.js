@@ -44,7 +44,7 @@ const
 Bcrypt = require('./auth/bcrypt'),
 redisClient = require('./init/init-redis')(redis),
 authService = require('./auth/authService'),
-router = require('./routers/router')(express, passport, new authService(axios, new Bcrypt(bcrypt), jwt, promisify, redisClient))
+router = require('./routers/router')(express, passport, new authService(axios, new Bcrypt(bcrypt), jwt, promisify, redisClient, knex))
 require('./init/init-session')(app, redisClient, expressSession, RedisStore)
 require('./init/init-app')(app, express, bodyParser, cors, router, passport)
 require('./auth/passport')(passport, PassportJWT, FacebookStrategy, GoogleStrategy, new Bcrypt(bcrypt), knex);
