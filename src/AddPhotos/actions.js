@@ -11,10 +11,10 @@ const actions = {
             uploadedPhotos: photos
         }
     },
-    PreviewPhotos: (photos)=>{
+    PreviewPhotos: (photo)=>{
         return {
             type: "PREVIEWPHOTOS",
-            previewPhotos: photos
+            previewPhotos: photo
         }
     }
 }
