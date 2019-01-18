@@ -4,10 +4,7 @@ import { Dispatch, Action } from "redux";
 import { connect } from "react-redux";
 import UploadPhotos from "./UploadPhotos"
 
-class AddPhotosComponent extends Component  {
-    constructor (props){
-        super(props)
-    }
+class AddPhotos extends Component  {
 
     render(){
         return (
@@ -49,10 +46,13 @@ class AddPhotosComponent extends Component  {
             </div>
         )
     }
-    
 }
 
 const mapStateToProps = (state) =>{
+    return {
+        uploadedPhotos: state.uploadedPhotos,
+        previewPhotos: state.previewPhotos
+    }
 }
 
 const mapDispatchToProps = (dispatch) =>{
@@ -66,7 +66,4 @@ const mapDispatchToProps = (dispatch) =>{
     }
 }
 
-
-const AddPhotos = connect(mapStateToProps, mapDispatchToProps)(AddPhotosComponent)
-
-export default AddPhotos
+export default connect(mapStateToProps, mapDispatchToProps)(AddPhotos)
