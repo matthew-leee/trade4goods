@@ -3,6 +3,7 @@ module.exports = (router, authService) => {
     router.post('/api/signup', async (req, res) => {
         try {
             await signUp(req.body)
+            res.sendStatus(200)
         } catch (err) {
             res.status(500).json(err)
         }
