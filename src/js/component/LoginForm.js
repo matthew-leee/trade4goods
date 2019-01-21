@@ -7,15 +7,15 @@ class NormalLoginForm extends React.Component {
     constructor(props) {
         super(props)
         this.state = { open: true }
-        this.openModal = this.openModal.bind(this)
+        //this.openModal = this.openModal.bind(this)
         this.closeModal = this.closeModal.bind(this)
     }
 
 
 
-    openModal = () => {
-        this.setState({ open: true })
-    }
+    // openModal = () => {
+    //     this.setState({ open: true })
+    // }
 
     closeModal = () => {
         this.setState({ open: false })
@@ -26,8 +26,8 @@ class NormalLoginForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 //some stuff is success
-                this.setState({ open: false })
                 console.log('Received values of form: ', values);
+                this.setState({ open: false }) // it will close the form immediately
             }
         });
     }
@@ -35,9 +35,9 @@ class NormalLoginForm extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
-            <Popup open={this.state.open} closeOnDocumentClick onClose={this.closeModal}>
+            <Popup open={this.state.open} closeOnDocumentClick onClose={this.props.handleLogin}>
                 <div style={content}>
-                    <a style={popUpCloseTag} onClick={this.closeModal}>&times;</a>
+                    <a style={popUpCloseTag} onClick={this.props.handleLogin}>&times;</a>
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <Form.Item>
                             {getFieldDecorator('userName', {
