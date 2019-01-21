@@ -1,7 +1,7 @@
 const
     axios = require('axios'),
     bcrypt = require('bcrypt'),
-    Bcrypt = require('../auth/bcrypt'),
+    Bcrypt = require('../services/auth/bcrypt'),
     jwt = require('jsonwebtoken'),
     { promisify } = require('util'),
     env = require('./config/env'),
@@ -20,7 +20,7 @@ const
         sendVerificationMail: jest.fn(),
         sendPasswordResetMail: jest.fn()
     },
-    AuthService = require('../auth/authService')
+    AuthService = require('../services/auth/authService')
 
 
 describe('AuthService', () => {
