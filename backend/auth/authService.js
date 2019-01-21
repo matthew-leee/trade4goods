@@ -58,7 +58,7 @@ module.exports = class {
                     let newId = await this.knex('users_credential').insert(incomingInfo).returning('login_id');
                     newId = newId[0]
                     await this.knex('users_credential').where('login_id', newId).update({ email_isVerifying: false })
-                    this.loginFacebook(incomingInfo.access_token)
+                    return this.loginFacebook(incomingInfo.access_token)
                 }
 
                 // ======================================== Google Signup Handle ========================================
@@ -90,7 +90,7 @@ module.exports = class {
                     let newId = await this.knex('users_credential').insert(incomingInfo).returning('login_id');
                     newId = newId[0]
                     await this.knex('users_credential').where('login_id', newId).update({ email_isVerifying: false })
-                    this.loginGoogle(incomingInfo.access_token)
+                    return this.loginGoogle(incomingInfo.access_token)
                 }
                 // ======================================== Local SignUp Handle ========================================
                 default: {

@@ -47,29 +47,29 @@ describe('AuthService', () => {
         done();
     })
 
-    test('should successfully sign up a user with correct information on facebook signup', async done => {
+    test('should successfully sign up a user with correct information on facebook signup then login the user and return a jwt token', async done => {
         const facebookInformation = {
             facebook_id: 123456789,
             access_token: 'a random string of access token',
             name: 'John',
             email: 'example@example.com'
         }
-        const id = await authService.signUp(facebookInformation)
-        expect(id).toBeGreaterThanOrEqual(0)
-        await knex('users_credential').where('login_id', id).del();
+        const jwt = await authService.signUp(facebookInformation)
+        expect(jwt).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
+        await knex('users_credential').where('username', facebookInformation.username).del();
         done();
     })
 
-    test('should successfully sign up a user with correct information on google signup', async done => {
+    test('should successfully sign up a user with correct information on google signup then login the user and return a jwt token', async done => {
         const googleInformation = {
             google_id: 123456789,
             access_token: 'a random string of access token',
             name: 'John',
             email: 'example@example.com'
         }
-        const id = await authService.signUp(googleInformation)
-        expect(id).toBeGreaterThanOrEqual(0)
-        await knex('users_credential').where('login_id', id).del();
+        const jwt = await authService.signUp(googleInformation)
+        expect(jwt).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
+        await knex('users_credential').where('username', googleInformation.username).del();
         done();
     })
 
@@ -239,9 +239,10 @@ describe('AuthService', () => {
             name: 'John',
             email: 'example@example.com'
         }
-        const id = await authService.signUp(facebookInformation)
-        expect(await authService.loginFacebook(facebookInformation.access_token)).toBeDefined();
-        await knex('users_credential').where('login_id', id).del();
+        await authService.signUp(facebookInformation)
+        const jwt = await authService.loginFacebook(facebookInformation.access_token)
+        expect(jwt).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
+        await knex('users_credential').where('facebook_id', facebookInformation.facebook_id).del();
         done();
     })
 
@@ -261,9 +262,10 @@ describe('AuthService', () => {
             name: 'John',
             email: 'example@example.com'
         }
-        const id = await authService.signUp(googleInformation)
-        expect(await authService.loginGoogle(googleInformation.access_token)).toBeDefined();
-        await knex('users_credential').where('login_id', id).del();
+        await authService.signUp(googleInformation)
+        const jwt = await authService.loginGoogle(googleInformation.access_token)
+        expect(jwt).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
+        await knex('users_credential').where('google_id', googleInformation.google_id).del();
         done();
     })
 
@@ -284,7 +286,7 @@ describe('AuthService', () => {
             email: 'example@example.com'
         }
         const id = await authService.signUp(information)
-        expect(await authService.loginLocal(information.username, information.password)).toBeDefined();
+        expect(await authService.loginLocal(information.username, information.password)).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
         await knex('users_credential').where('login_id', id).del();
         done();
     })
