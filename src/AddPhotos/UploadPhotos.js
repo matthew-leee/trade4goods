@@ -6,6 +6,7 @@ import uuidv1 from "uuid/v1";
 import { resolve } from 'path';
 import { reject } from 'q';
 
+
 class UploadPhotos extends Component {
     render() {
         const preview = this.props.previewPhotos.map((photo) => {
