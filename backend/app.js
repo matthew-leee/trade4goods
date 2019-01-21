@@ -1,21 +1,49 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const path = require("path");
-const cors = require("cors")
-const router = require("./router/generalRouter")
+'use strict';
+//config
+require('dotenv').config();
+const 
+fs = require('fs'),
+path = require('path'),
+options = {
+  cert: fs.readFileSync(path.join(__dirname, 'cert', 'localhost.crt')),
+  key: fs.readFileSync(path.join(__dirname, 'cert', 'localhost.key'))
+}
 
-const app = express();
+//library dependencies
+const 
+https = require('https'),
+express = require('express'),
+promisify = require('util').promisify,
+app = express(),
+axios = require('axios'),
+server = https.createServer(options, app),
+bodyParser = require('body-parser'),
+cors = require('cors'),
+jwt = require('jsonwebtoken'),
+bcrypt = require('bcrypt'),
+nodemailer = require('nodemailer'),
+randomstring = require('randomstring'),
+expressSession = require('express-session'),
+RedisStore = require('connect-redis')(expressSession),
+redis = require('redis'),
+knex = require('knex')({
+  client: 'postgresql',
+  connection: {
+      database: process.env.DB_NAME,
+      user: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+  }
+});
 
+//modules
+const
+Bcrypt = require('./services/auth/bcrypt'),
+Nodemailer = require('./services/auth/mailVerify')
+redisClient = require('./init/init-redis')(redis),
+authService = require('./services/auth/authService'),
+router = require('./routers/router')(express, new authService(axios, new Bcrypt(bcrypt), jwt, promisify, redisClient, knex, new Nodemailer(nodemailer), randomstring))
+require('./init/init-session')(app, redisClient, expressSession, RedisStore)
+require('./init/init-app')(app, express, bodyParser, cors, router)
 
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(cors());
-
-
-
-app.use("/", router)
-
-app.listen(8080, ()=>{console.log ("Server is on. Port@8080")})
-  
+//server starts
+server.listen(process.env.PORT, () => console.log(`server started at port ${process.env.PORT} at ${new Date()}`));
