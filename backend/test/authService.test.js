@@ -286,7 +286,8 @@ describe('AuthService', () => {
             email: 'example@example.com'
         }
         const id = await authService.signUp(information)
-        expect(await authService.loginLocal(information.username, information.password)).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
+        const jwt = await authService.loginLocal(information.username, information.password)
+        expect(jwt).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
         await knex('users_credential').where('login_id', id).del();
         done();
     })
@@ -299,7 +300,8 @@ describe('AuthService', () => {
             email: 'example@example.com'
         }
         const id = await authService.signUp(information)
-        expect(await authService.loginLocal(information.email, information.password)).toBeDefined();
+        const jwt = await authService.loginLocal(information.email, information.password)
+        expect(jwt).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
         await knex('users_credential').where('login_id', id).del();
         done();
     })
@@ -517,6 +519,33 @@ describe('AuthService', () => {
         }
         await knex('users_credential').where('login_id', id).del();
         redisClient.del('test_key')
+        done();
+    })
+
+    test('should return a login Id if a user has valid login and provide the valid jwt key token', async done => {
+        const information = {
+            username: 'test_username',
+            password: 'Abcd1234',
+            confirmed_password: 'Abcd1234',
+            email: 'example@example.com'
+        }
+        const id = await authService.signUp(information)
+        const jwt = await authService.loginLocal(information.email, information.password)
+        expect(await authService.isAuthenticated(jwt)).toEqual(id);
+        await knex('users_credential').where('login_id', id).del();
+        done();
+    })
+
+    test('should return false if a user has invalid login or provide an invalid jwt key token', async done => {
+        const information = {
+            username: 'test_username',
+            password: 'Abcd1234',
+            confirmed_password: 'Abcd1234',
+            email: 'example@example.com'
+        }
+        const id = await authService.signUp(information)
+        expect(await authService.isAuthenticated('invalid jwt')).toBeFalsy();
+        await knex('users_credential').where('login_id', id).del();
         done();
     })
 })

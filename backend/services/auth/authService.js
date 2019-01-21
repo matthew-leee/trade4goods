@@ -16,8 +16,8 @@ module.exports = class {
     async isAuthenticated(token) {
         try {
             const reply = await this.smembersAsync('jwt')
-            const jwt = reply.find(element => element === token)
-            return (jwt) ? this.jwt.decode(jwt) : null
+            const match = reply.find(element => element === token)
+            return (match) ? Number.parseInt(await this.jwt.decode(match)) : false
         } catch (err) {
             throw err
         }
