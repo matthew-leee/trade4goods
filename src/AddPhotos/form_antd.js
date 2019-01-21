@@ -9,6 +9,7 @@ import FormItem from "antd/lib/form/FormItem";
 import actions from "./actions"
 import { connect } from "react-redux"
 import GeneralTags from "./tags_antd"
+import uuidv1 from "uuid/v1"
 
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
@@ -74,9 +75,12 @@ class AddPhotoForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-       console.log(values)
-       values.tags = [...this.props.finishedTag]
-       console.log (values)
+        const photos = this.props.previewPhotos.filter((u)=>{
+          return u.src != "fail"
+        })
+        values.tags = [...this.props.finishedTag]
+        values.photos = [...photos]
+        console.log (values)
       }
     });
   }
@@ -86,36 +90,8 @@ class AddPhotoForm extends React.Component {
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   }
 
-  compareToFirstPassword = (rule, value, callback) => {
-    const form = this.props.form;
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
-    } else {
-      callback();
-    }
-  }
-
-  validateToNextPassword = (rule, value, callback) => {
-    const form = this.props.form;
-    if (value && this.state.confirmDirty) {
-      form.validateFields(['confirm'], { force: true });
-    }
-    callback();
-  }
-
-  handleWebsiteChange = (value) => {
-    let autoCompleteResult;
-    if (!value) {
-      autoCompleteResult = [];
-    } else {
-      autoCompleteResult = ['.com', '.org', '.net'].map(domain => `${value}${domain}`);
-    }
-    this.setState({ autoCompleteResult });
-  }
-
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { autoCompleteResult } = this.state;
 
     const formItemLayout = {
       labelCol: {
@@ -140,14 +116,37 @@ class AddPhotoForm extends React.Component {
       },
     };
 
-    const websiteOptions = autoCompleteResult.map(website => (
-      <AutoCompleteOption key={website}>{website}</AutoCompleteOption>
-    ));
+    const preview = this.props.previewPhotos.map((photo) => {
+      if (photo.src != "fail") {
+        return (
+          <div className="previewBox" key={photo.key} id={photo.key}>
+            <img src={photo.src} alt="" style={{ width: 100 }} />
+          </div>
+        )
+      } else {
+        return (
+          <div className="previewBox" key={photo.key} id={photo.key}>
+            <div className="pContainer" style={{
+              width: 100, height: 100, backgroundColor: "rgb(252, 255, 241)", overflowWrap: "break-word"
+            }}>
+              <p style={{ color: "red" }}>This file exceeds 5MB limit</p>
+            </div>
+          </div>
+        )
+      }
+    })
 
     return (
 
-      <div>
-        <Form onSubmit={this.handleSubmit}>
+      <div style={{display: "flex", justifyContent: "center", alignContent: "center"}}>
+        <Form onSubmit={this.handleSubmit} style={{width: 800, height: 800}}>
+
+          <Form.Item {...formItemLayout} label="upload Photos">
+            <input type="file" multiple onChange={this.props.handleFiles} />
+            <div className="imgContainer" style={{ display: "flex", flexDirection: "row" }}>
+              {preview}
+            </div>
+          </Form.Item>
 
           <Form.Item
             {...formItemLayout}
@@ -213,7 +212,7 @@ class AddPhotoForm extends React.Component {
           </Form.Item>
 
           <Form.Item {...formItemLayout} label="Tags">
-            <Input placeholder="Press Spacebar after finishing One Tag" onChange={this.props.handleChange} value={this.props.typingTag} />
+            <Input placeholder="Press Spacebar after finishing One Tag" onChange={this.props.handleTagChange} value={this.props.typingTag} />
             <GeneralTags tags={this.props.finishedTag} />
           </Form.Item>
 
@@ -222,10 +221,10 @@ class AddPhotoForm extends React.Component {
           </Form.Item>
 
 
-          
+
 
         </Form>
-        
+
       </div>
     );
   }
@@ -234,19 +233,46 @@ class AddPhotoForm extends React.Component {
 const mapStateToProps = (state) => {
   return {
     typingTag: state.typingTag,
-    finishedTag: state.finishedTag
+    finishedTag: state.finishedTag,
+    previewPhotos: state.previewPhotos,
+    previewPhotosFail: state.previewPhotosFail
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    handleChange: (e) => {
+    handleTagChange: (e) => {
       const input = e.target.value
       if (input.indexOf(" ") == input.length - 1) {
         dispatch(actions.AddPhotosForm_finishedTag(input.slice(0, input.length - 1)))
       } else {
         dispatch(actions.AddPhotosForm_typingTag(input))
       }
+    },
+    handleFiles: (e) => {
+      let files = [];
+      for (let i = 0; i < e.target.files.length; i++) {
+        files.push(e.target.files[i])
+      }
+      files.forEach((file) => {
+        console.log(file.size)
+        // if image is smaller than 5MB
+        if (file.size < 5242880) {
+          const reader = new FileReader();
+          reader.readAsDataURL(file)
+          reader.onloadend = () => {
+            dispatch(actions.PreviewPhotos({
+              src: reader.result,
+              key: String(uuidv1())
+            }))
+          }
+        } else {
+          dispatch(actions.PreviewPhotos({
+            src: "fail",
+            key: String(uuidv1())
+          }))
+        }
+      })
     }
   }
 }

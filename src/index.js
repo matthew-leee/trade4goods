@@ -1,20 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import SampleApp from './SampleReduxApp'
+// import SampleApp from './SampleReduxApp'
 import App from './App'
 import * as serviceWorker from './serviceWorker';
 import { createStore, Action, applyMiddleware } from "redux";
 import { Provider } from "react-redux"
 import photoReducers from "./AddPhotos/reducers"
 import logger from "redux-logger";
-import App from "./App"
 
 const store = createStore(photoReducers, applyMiddleware(logger))
 
 ReactDOM.render(
     <Provider store={store}>
-        <SampleApp />
+        {/* <SampleApp /> */}
+        <App />
     </Provider>,
     document.getElementById('root')
 );
