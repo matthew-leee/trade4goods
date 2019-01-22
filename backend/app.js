@@ -41,7 +41,8 @@ Bcrypt = require('./services/auth/bcrypt'),
 Nodemailer = require('./services/auth/mailVerify')
 redisClient = require('./init/init-redis')(redis),
 authService = require('./services/auth/authService'),
-router = require('./routers/router')(express, new authService(axios, new Bcrypt(bcrypt), jwt, promisify, redisClient, knex, new Nodemailer(nodemailer), randomstring))
+profileService = require('./services/profile/profileService'),
+router = require('./routers/router')(express, new authService(axios, new Bcrypt(bcrypt), jwt, promisify, redisClient, knex, new Nodemailer(nodemailer), randomstring), new profileService(knex))
 require('./init/init-session')(app, redisClient, expressSession, RedisStore)
 require('./init/init-app')(app, express, bodyParser, cors, router)
 

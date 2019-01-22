@@ -43,7 +43,7 @@ describe('AuthService', () => {
         }
         const id = await authService.signUp(information)
         expect(id).toBeGreaterThanOrEqual(0)
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         done();
     })
 
@@ -90,7 +90,7 @@ describe('AuthService', () => {
                 suggestSolution: 'Check your mailbox for verification email or request a new verification email'
             })
         }
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         done();
     })
 
@@ -117,7 +117,7 @@ describe('AuthService', () => {
                 suggestSolution: 'Merge Facebook account with test_username'
             })
         }
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         done();
     })
 
@@ -144,7 +144,7 @@ describe('AuthService', () => {
                 suggestSolution: 'Merge Google account with test_username'
             })
         }
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         done();
     })
 
@@ -171,7 +171,7 @@ describe('AuthService', () => {
                 suggestSolution: `Signup with another username`
             })
         }
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         done();
     })
 
@@ -288,7 +288,7 @@ describe('AuthService', () => {
         const id = await authService.signUp(information)
         const jwt = await authService.loginLocal(information.username, information.password)
         expect(jwt).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         done();
     })
 
@@ -302,7 +302,7 @@ describe('AuthService', () => {
         const id = await authService.signUp(information)
         const jwt = await authService.loginLocal(information.email, information.password)
         expect(jwt).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         done();
     })
 
@@ -322,7 +322,7 @@ describe('AuthService', () => {
                 message: `username or password is not found`,
             })
         }
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         done();
     })
 
@@ -342,7 +342,7 @@ describe('AuthService', () => {
                 message: `username or password is not found`,
             })
         }
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         done();
     })
 
@@ -356,7 +356,7 @@ describe('AuthService', () => {
         const id = await authService.signUp(information)
         const jwt = await authService.loginLocal(information.email, information.password)
         expect(await authService.logout(jwt)).toEqual(1);
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         done();
     })
 
@@ -381,7 +381,7 @@ describe('AuthService', () => {
         const id = await authService.signUp(information)
         await authService.requestPasswordRequest(information.email)
         expect(NodeMailer.sendPasswordResetMail).not.toHaveBeenCalled();
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         done();
     })
 
@@ -393,10 +393,10 @@ describe('AuthService', () => {
             email: 'example@example.com'
         }
         const id = await authService.signUp(information)
-        await knex('users_credential').where('login_id', id).update({ email_isVerifying: false })
+        await knex('users_credential').where('user_id', id).update({ email_isVerifying: false })
         await authService.requestPasswordRequest(information.email)
         expect(NodeMailer.sendPasswordResetMail).toHaveBeenCalled();
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         done();
     })
 
@@ -410,9 +410,9 @@ describe('AuthService', () => {
         const id = await authService.signUp(information)
         redisClient.set('test_key', 'example@example.com')
         await authService.verifyEmail('test_key')
-        let res = knex('users_credential').where('login_id', id)
+        let res = knex('users_credential').where('user_id', id)
         expect(res.email_isVerifying).toBeFalsy();
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         done();
     })
 
@@ -432,7 +432,7 @@ describe('AuthService', () => {
                 message: 'The key has been expired or invalid'
             })
         }
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         done();
     })
 
@@ -454,7 +454,7 @@ describe('AuthService', () => {
                 message: 'The key has been expired or invalid'
             })
         }
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         done();
     })
 
@@ -469,10 +469,10 @@ describe('AuthService', () => {
         const id = await authService.signUp(information)
         redisClient.set('test_key', 'example@example.com')
         await authService.resetPassword('qwer1234', 'qwer1234', 'test_key')
-        let updated = await knex('users_credential').where('login_id', id)
+        let updated = await knex('users_credential').where('user_id', id)
         updated = updated[0]
         expect(await testBcrypt.checkPassword('qwer1234', updated.password)).toBeTruthy;
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         done();
     })
 
@@ -494,7 +494,7 @@ describe('AuthService', () => {
                 suggestSolution: 'Request for another password reset email'
             })
         }
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         redisClient.del('test_key')
         done();
     })
@@ -517,7 +517,7 @@ describe('AuthService', () => {
                 suggestSolution: `Recheck both of the informations being submitted`
             })
         }
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         redisClient.del('test_key')
         done();
     })
@@ -532,7 +532,7 @@ describe('AuthService', () => {
         const id = await authService.signUp(information)
         const jwt = await authService.loginLocal(information.email, information.password)
         expect(await authService.isAuthenticated(jwt)).toEqual(id);
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         done();
     })
 
@@ -545,7 +545,7 @@ describe('AuthService', () => {
         }
         const id = await authService.signUp(information)
         expect(await authService.isAuthenticated('invalid jwt')).toBeFalsy();
-        await knex('users_credential').where('login_id', id).del();
+        await knex('users_credential').where('user_id', id).del();
         done();
     })
 })

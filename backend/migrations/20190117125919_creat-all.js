@@ -2,7 +2,7 @@
 exports.up = function (knex, Promise) {
     return Promise.all([
         knex.schema.createTable('users_credential', table => {
-            table.increments('login_id').unsigned().primary();
+            table.increments('user_id').unsigned().primary();
             table.string('username').notNullable().unique();
             table.string('password').nullable();
             table.string('email').notNullable().unique();
@@ -13,11 +13,10 @@ exports.up = function (knex, Promise) {
         }),
 
         knex.schema.createTable('users', table => {
-            table.increments('user_id').unsigned().primary();
-            table.integer('login_id').unsigned().notNullable();
-            table.foreign('login_id').references('login_id').inTable('users_credential');
+            table.integer('user_id').unsigned().notNullable().unique();
+            table.foreign('user_id').references('user_id').inTable('users_credential');
             table.string('displayed_name').notNullable();
-            table.string('ig_ac').nullable();
+            table.integer('phone_number').notNullable();
             table.binary('profile_picture').nullable();
             table.specificType('uploaded_products', 'INT[]').nullable();
             table.specificType('liked_products', 'INT[]').nullable();
