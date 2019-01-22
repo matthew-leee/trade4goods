@@ -152,7 +152,7 @@ response format
 
 *Succes*
 ```
-status: 200 OK
+status: 201 Created
 ```
 
 *Failure*
@@ -211,7 +211,7 @@ request params
 
 *Succes*
 ```
-status: 200 OK
+status: 202 Accepted
 ```
 
 ----
