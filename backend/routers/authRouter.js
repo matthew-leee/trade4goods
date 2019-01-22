@@ -3,7 +3,7 @@ module.exports = (router, authService) => {
     router.get('api/isLoggedIn', async (req,res) => {
         try {
             (await authService.isAuthenticated(req.session.jwt)) ?
-            res.sendStatus(200) : res.sendStatus(401)
+            res.status(200).send(true) : res.status(200).send(false)
         } catch(err) {
             res.status(500).json(err)
         }

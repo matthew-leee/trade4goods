@@ -10,13 +10,8 @@ response format
 
 *Success*
 ```
-status: 200 OK
+true / false
 ```
-*Failure*
-```
-status: 401 Unauthorized
-```
-
 ----
 
 ## POST
