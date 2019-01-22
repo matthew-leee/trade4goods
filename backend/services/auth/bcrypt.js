@@ -1,21 +1,25 @@
 'use strict';
 module.exports = class {
-    constructor(bcrypt) {
-        this.bcrypt = bcrypt
+    constructor(bcrypt, promisify) {
+        this.genSalteAsync = promisify(bcrypt.genSalt)
+        this.hashAsync = promisify(bcrypt.hash)
+        this.compareAsync = promisify(bcrypt.compare)
     }
 
-    hashPassword(plainTextPassword) {
-        return new Promise((resolve, reject) => {
-            this.bcrypt.genSalt((err, salt) => {
-                (err) ? reject(err) :
-                this.bcrypt.hash(plainTextPassword, salt, (err, hash) => (err) ? reject(err) : resolve(hash));
-            });
-        });
+    async hashPassword(plainTextPassword) {
+        try {
+            const salt = await this.genSalteAsync()
+            return await this.hashAsync(plainTextPassword, salt)
+        } catch(err) {
+            throw err
+        }
     };
 
-    checkPassword(plainTextPassword, hashedPassword) {
-        return new Promise((resolve, reject) => {
-            this.bcrypt.compare(plainTextPassword, hashedPassword, (err, match) => (err) ? reject(err) : resolve(match));
-        });
+    async checkPassword(plainTextPassword, hashedPassword) {
+        try {
+            return await this.compareAsync(plainTextPassword, hashedPassword)
+        } catch(err) {
+            throw err
+        }
     };
 }

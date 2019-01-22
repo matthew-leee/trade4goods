@@ -161,8 +161,7 @@ module.exports = class {
         try {
             let user = await this.knex('users_credential').where('username', username).orWhere('email', username)
             user = user[0]
-            if (user) {
-                await this.bcrypt.checkPassword(password, user.password)
+            if (user && await this.bcrypt.checkPassword(password, user.password)) {
                 const jwt = this.jwt.sign(user.user_id, process.env.JWT_SECRET)
                 this.redisClient.sadd('jwt', jwt)
                 return jwt
