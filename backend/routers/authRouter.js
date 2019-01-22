@@ -1,5 +1,13 @@
 'use strict';
 module.exports = (router, authService) => {
+    router.get('api/isLoggedIn', async (req,res) => {
+        try {
+            (await authService.isAuthenticated(req.session.jwt)) ?
+            res.sendStatus(200) : res.sendStatus(401)
+        } catch(err) {
+            res.status(500).json(err)
+        }
+    })
     router.post('/api/signup', async (req, res) => {
         try {
             await signUp(req.body)
