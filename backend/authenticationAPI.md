@@ -1,5 +1,24 @@
 # Authentication API
 
+## GET
+
+- Check if user is logged in
+
+    *GET: /api/isLoggedIn*
+
+response format
+
+*Success*
+```
+status: 200 OK
+```
+*Failure*
+```
+status: 401 Unauthorized
+```
+
+----
+
 ## POST
 
 - Local Login
