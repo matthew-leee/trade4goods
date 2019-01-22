@@ -1,14 +1,37 @@
 import React from 'react'
 import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete, } from 'antd';
+import Popup from 'reactjs-popup'   //npm Reactjs-Popup
+import { popUpCloseTag, content } from './compCSS/popupCss'
+import TermsAndConditions from './TermsAndCondition'
+
 
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
 
 class RegistrationFormgp extends React.Component {
-    state = {
-        confirmDirty: false,
-        autoCompleteResult: [],
-    };
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            confirmDirty: false,
+            autoCompleteResult: [],
+            open: true ,
+            terms: false,
+        };
+        this.closeModal = this.closeModal.bind(this)
+        this.openTerms = this.openTerms.bind(this)
+    }
+
+
+    closeModal = () => {
+        this.setState({ open: false })
+    }
+
+
+    openTerms = () =>{
+        this.setState({ terms: !this.state.terms })
+
+    }
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -16,6 +39,7 @@ class RegistrationFormgp extends React.Component {
             if (!err) {
                 console.log('Received values of form: ', values);
                 console.log(values.email)
+                this.setState({ open: false }) // it will close the form immediately
             }
         });
     }
@@ -84,87 +108,94 @@ class RegistrationFormgp extends React.Component {
         ));
 
         return (
-            <Form onSubmit={this.handleSubmit}>
-                <Form.Item
-                    {...formItemLayout}
-                    label="Username"
-                >
-                    {getFieldDecorator('userId', {
-                        rules: [{ required: true, message: 'Please input your Username!', whitespace: true }],
-                    })(
-                        <Input />
-                    )}
-                </Form.Item>
-                <Form.Item
-                    {...formItemLayout}
-                    label="E-mail"
-                >
-                    {getFieldDecorator('email', {
-                        rules: [{
-                            type: 'email', message: 'The input is not valid E-mail!',
-                        }, {
-                            required: true, message: 'Please input your E-mail!',
-                        }],
-                    })(
-                        <AutoComplete
-                            dataSource={websiteOptions}
-                            onChange={this.handleWebsiteChange}
-                            placeholder="E-mail"
-                        >
-                            <Input />
-                        </AutoComplete>
-                    )}
-                </Form.Item>
-                <Form.Item
-                    {...formItemLayout}
-                    label="Password"
-                >
-                    {getFieldDecorator('password', {
-                        rules: [{
-                            required: true, message: 'Please input your password!',
-                        }, {
-                            validator: this.validateToNextPassword,
-                        }],
-                    })(
-                        <Input type="password" />
-                    )}
-                </Form.Item>
-                <Form.Item
-                    {...formItemLayout}
-                    label="Confirm Password"
-                >
-                    {getFieldDecorator('confirm', {
-                        rules: [{
-                            required: true, message: 'Please confirm your password!',
-                        }, {
-                            validator: this.compareToFirstPassword,
-                        }],
-                    })(
-                        <Input type="password" onBlur={this.handleConfirmBlur} />
-                    )}
-                </Form.Item>
 
-                <Form.Item
-                    {...formItemLayout}
-                    label="Instagram ID"
-                >
-                    {getFieldDecorator('instagram', {
-                        rules: [{ required: false }],
-                    })(
-                        <Input />
-                    )}
-                </Form.Item>
-                <Form.Item {...tailFormItemLayout}>
-                    {getFieldDecorator('agreement', {
-                        valuePropName: 'checked',
-                    })(
-                        <Checkbox>I have read the <a href="">agreement</a></Checkbox>
-                    )}
-                </Form.Item>
-                <Form.Item {...tailFormItemLayout}>
-                    <Button type="primary" htmlType="submit">Register</Button>
-                </Form.Item>
-            </Form>
+            <Popup open={this.state.open} closeOnDocumentClick onClose={this.props.handleRegToggle}>
+                <div style={content}>
+                    <a style={popUpCloseTag} onClick={this.props.handleRegToggle}>&times;</a>
+                    <Form onSubmit={this.handleSubmit}>
+                        <Form.Item
+                            {...formItemLayout}
+                            label="Username"
+                        >
+                            {getFieldDecorator('userId', {
+                                rules: [{ required: true, message: 'Please input your Username!', whitespace: true }],
+                            })(
+                                <Input />
+                            )}
+                        </Form.Item>
+                        <Form.Item
+                            {...formItemLayout}
+                            label="E-mail"
+                        >
+                            {getFieldDecorator('email', {
+                                rules: [{
+                                    type: 'email', message: 'The input is not valid E-mail!',
+                                }, {
+                                    required: true, message: 'Please input your E-mail!',
+                                }],
+                            })(
+                                <AutoComplete
+                                    dataSource={websiteOptions}
+                                    onChange={this.handleWebsiteChange}
+                                    placeholder="E-mail"
+                                >
+                                    <Input />
+                                </AutoComplete>
+                            )}
+                        </Form.Item>
+                        <Form.Item
+                            {...formItemLayout}
+                            label="Password"
+                        >
+                            {getFieldDecorator('password', {
+                                rules: [{
+                                    required: true, message: 'Please input your password!',
+                                }, {
+                                    validator: this.validateToNextPassword,
+                                }],
+                            })(
+                                <Input type="password" />
+                            )}
+                        </Form.Item>
+                        <Form.Item
+                            {...formItemLayout}
+                            label="Confirm Password"
+                        >
+                            {getFieldDecorator('confirm', {
+                                rules: [{
+                                    required: true, message: 'Please confirm your password!',
+                                }, {
+                                    validator: this.compareToFirstPassword,
+                                }],
+                            })(
+                                <Input type="password" onBlur={this.handleConfirmBlur} />
+                            )}
+                        </Form.Item>
+
+                        <Form.Item
+                            {...formItemLayout}
+                            label="Instagram ID"
+                        >
+                            {getFieldDecorator('instagram', {
+                                rules: [{ required: false }],
+                            })(
+                                <Input />
+                            )}
+                        </Form.Item>
+                        <Form.Item {...tailFormItemLayout}>
+                            {getFieldDecorator('agreement', {
+                                valuePropName: 'checked',
+                            })(
+                                <Checkbox>I have read the <span onClick={this.openTerms} style={{color:"blue"}}>agreement</span></Checkbox>
+                            )}
+                        </Form.Item>
+                        <Form.Item {...tailFormItemLayout}>
+                            <Button type="primary" htmlType="submit">Register</Button>
+                        </Form.Item>
+                    </Form>
+                    {this.state.terms && <TermsAndConditions openTerms={this.openTerms} style={{color:"black"}}/>}
+                </div>
+            </Popup>
         );
     }
 }

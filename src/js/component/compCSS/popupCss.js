@@ -18,5 +18,7 @@ export const popUpCloseTag = {
 
 export const content = {
     width: '100%',
-    padding: '12px'
+    height:'100%',
+    padding: '12px',
+    
 }
