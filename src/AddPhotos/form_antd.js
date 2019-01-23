@@ -68,7 +68,7 @@ class AddPhotoForm extends React.Component {
       confirmDirty: false,
       autoCompleteResult: [],
     }
-    console.log(props.typingTag)
+    console.log(props)
   }
 
   handleSubmit = (e) => {
@@ -231,11 +231,11 @@ class AddPhotoForm extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  const s = state.photoReducers
   return {
-    typingTag: state.typingTag,
-    finishedTag: state.finishedTag,
-    previewPhotos: state.previewPhotos,
-    previewPhotosFail: state.previewPhotosFail
+    typingTag: s.typingTag,
+    finishedTag: s.finishedTag,
+    previewPhotos: s.previewPhotos
   }
 }
 

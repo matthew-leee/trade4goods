@@ -1,6 +1,18 @@
 // const actions = require ("./actions")
 
-const initState = {
+// const photoState = {
+//     details: [],
+//     uploadedPhotos: [],
+//     previewPhotos: [],
+//     tags: [],
+//     inputVisible: false,
+//     inputValue: "",
+//     inputConfirm: "",
+//     typingTag: "",
+//     finishedTag: []
+// }
+
+const photoReducer = (state = {
     details: [],
     uploadedPhotos: [],
     previewPhotos: [],
@@ -10,9 +22,7 @@ const initState = {
     inputConfirm: "",
     typingTag: "",
     finishedTag: []
-}
-
-const photoReducer = (state = initState, action) => {
+}, action) => {
     switch (action.type) {
         case "ADDPHOTOS_DETAILS":
             return {
@@ -77,8 +87,6 @@ const photoReducer = (state = initState, action) => {
     }
 }
 
-let sth = photoReducer(initState, { type: "ADDPHOTOSFORM_FINISHEDTAG", finishedTag: "happy" })
-console.log(sth)
 
 
 export default photoReducer

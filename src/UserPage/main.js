@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-
+import { Row, Col } from "antd"
 import { connect } from "react-redux"
 import MyGoods from "./MyGoods"
 import FollowedPost from "./FollowedPost"
@@ -11,24 +11,42 @@ class UserPage extends Component {
     render() {
         return (
             <div className="userPage">
-                <MyGoods />
-                <FollowedPost />
-                <SentReq />
-                <ReceivedReq />
-                <TradeHistory />
+                <Row>
+                    <Col span={12} >
+                        <MyGoods/>
+                    </Col>
+                    <Col span={12} >
+                        <FollowedPost />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={10}>
+                        <SentReq />
+                    </Col>
+                    <Col span={10}>
+                        <ReceivedReq/>
+                    </Col>
+                    <Col span={4}>
+                        <TradeHistory />
+                    </Col>
+                </Row>
+                
+                
+                
+                
             </div>
         )
     }
 
 }
 
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
     return {
 
     }
 }
 
-const mapDispatchToProps = (dispatch) =>{
+const mapDispatchToProps = (dispatch) => {
     return {
 
     }
