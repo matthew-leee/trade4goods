@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (router, authService, profileService) => {
-    router.post('/api/createProfile', async (req, res) => {
+    router.post('/api/profile/', async (req, res) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
             if (user_id) {
@@ -14,7 +14,7 @@ module.exports = (router, authService, profileService) => {
         }
     })
 
-    router.put('/api/updateProfile', async (req, res) => {
+    router.put('/api/profile/', async (req, res) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
             if (user_id) {
@@ -28,7 +28,7 @@ module.exports = (router, authService, profileService) => {
         }
     })
 
-    router.get('/api/profile', async (req,res) => {
+    router.get('/api/profile/', async (req,res) => {
         try{
             const user_id = await authService.isAuthenticated(req.session.jwt)
             if (user_id) {
