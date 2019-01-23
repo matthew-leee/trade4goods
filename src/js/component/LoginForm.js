@@ -35,10 +35,10 @@ class NormalLoginForm extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
-            <Popup open={this.state.open} closeOnDocumentClick onClose={this.props.handleLogin}>
-                <div style={content}>
+            <Popup open={this.state.open} closeOnDocumentClick onClose={this.props.handleLogin} className="bg-dark">
+                <div style={content} >
                     <a style={popUpCloseTag} onClick={this.props.handleLogin}>&times;</a>
-                    <Form onSubmit={this.handleSubmit} className="login-form">
+                    <Form onSubmit={this.handleSubmit} className="login-form ">
                         <Form.Item>
                             {getFieldDecorator('userName', {
                                 rules: [{ required: true, message: 'Please input your username or e-mail' }],
@@ -58,14 +58,14 @@ class NormalLoginForm extends React.Component {
                                 valuePropName: 'checked',
                                 initialValue: false,
                             })(
-                                <Checkbox style={{ color: 'grey' }}>Remember me</Checkbox>
+                                <Checkbox style={{ color: 'white' }}>Remember me</Checkbox>
                             )}
                             <a className="login-form-forgot" href="">Forgot password</a>
                             <br />
-                            <Button type="primary" htmlType="submit" className="login-form-button" style={{ backgroundColor: "grey" }}>
+                            <Button type="default" htmlType="submit" className="btn btn-success" style={{fontSize:"10px"}} >
                                 Log in
                             </Button>
-                            Or <a href="">register now!</a>
+                            <div className="d-inline">&nbsp; Or &nbsp;</div> <a href="">register now!</a>
                         </Form.Item>
                     </Form>
                 </div>
