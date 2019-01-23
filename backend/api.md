@@ -1,29 +1,5 @@
 # api (in developement)
 
-## GET
-
-- user profile
-
-    *GET: /api/user/:id*
-
-response format
-
-```
-{
-    user_id: int
-    instagram_username: string
-    profile_picture: bytea
-    uploaded_product: int[] (product_id[])
-    liked_product: int[] (product_id[])
-    offered_product: int[] (product_id[])
-    product_being_offered: int[] (product_id[])
-    trade_history: int[] (product_id[])
-    credibility: int
-    chat_id: int[] (chat_id[])
-}
-```
-
----
 
 ## GET
 
@@ -77,24 +53,6 @@ response format
 }
 ```
 
-
-----
-
-## POST
-
-- Create Profile
-
-    *POST: /api/profile*
-
-request params
-```
-{
-    email: string | undefined
-    displayed_name: string | undefined
-    instagram_username: string | undefined
-    profile_picture: bytea | undefined
-}
-```
 
 ----
 
@@ -169,19 +127,3 @@ request params
 ```
 
 ---
-
-## PUT
-
-- Edit Profile
-
-    *PUT: /api/profile*
-
-request params
-```
-{
-    email: string | undefined
-    displayed_name: string | undefined
-    instagram_username: string | undefined
-    profile_picture: bytea | undefined
-}
-```
