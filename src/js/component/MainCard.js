@@ -9,7 +9,7 @@ class MainCard extends React.Component {
     }
     render() {
         return (
-            <Card hoverable style={{ width: "100%" }} cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}>
+            <Card hoverable style={{ width: "100%" }} cover={<img alt="example" src={this.props.imgUrl} />}>
                 <Meta title="Europe Street beat" description="www.instagram.com" />
             </Card>
         )
