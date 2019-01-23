@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import RegistrationForm from './js/component/RegistrationForm'
 import LoginForm from './js/component/LoginForm'
 import Navvv from './js/component/Navvv'
+import MainGrid from './js/component/MainGrid'
 
 class App extends Component {
     constructor(props) {
@@ -22,6 +23,7 @@ class App extends Component {
         return (
             <div>
                 <Navvv />
+                <MainGrid />
          
 
             </div>
