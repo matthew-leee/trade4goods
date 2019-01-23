@@ -6,7 +6,7 @@ import { Link } from "react-router-dom"
 class MyGoods extends Component {
     componentDidMount() {
         // assume me fetching some shit
-
+        // const json = axios.get("/users/someone")
     }
     render() {
         return (
@@ -29,9 +29,7 @@ class MyGoods extends Component {
                                     <Icon type="setting" />
                                 </Link>,
 
-                                <Icon type="edit" />,
-
-                                <Icon type="ellipsis" />
+                                <Icon type="edit" />
                             ]}
                         >
                             <Card.Meta
@@ -89,7 +87,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-
+        handleMyGoods: (json)=>{
+            // dispatch(actions.renderMyGoods(json))
+        }
     }
 }
 
