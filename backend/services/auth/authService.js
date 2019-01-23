@@ -16,8 +16,8 @@ module.exports = class {
     async isAuthenticated(token) {
         try {
             const reply = await this.smembersAsync('jwt')
-            const jwt = reply.find(element => element === token)
-            return (jwt) ? this.jwt.decode(jwt) : null
+            const match = reply.find(element => element === token)
+            return (match) ? Number.parseInt(await this.jwt.decode(match)) : false
         } catch (err) {
             throw err
         }
@@ -55,9 +55,9 @@ module.exports = class {
                         access_token: incomingInfo.access_token,
                         username: incomingInfo.username
                     }
-                    let newId = await this.knex('users_credential').insert(incomingInfo).returning('login_id');
+                    let newId = await this.knex('users_credential').insert(incomingInfo).returning('user_id');
                     newId = newId[0]
-                    await this.knex('users_credential').where('login_id', newId).update({ email_isVerifying: false })
+                    await this.knex('users_credential').where('user_id', newId).update({ email_isVerifying: false })
                     return this.loginFacebook(incomingInfo.access_token)
                 }
 
@@ -87,9 +87,9 @@ module.exports = class {
                         access_token: incomingInfo.access_token,
                         username: incomingInfo.username
                     }
-                    let newId = await this.knex('users_credential').insert(incomingInfo).returning('login_id');
+                    let newId = await this.knex('users_credential').insert(incomingInfo).returning('user_id');
                     newId = newId[0]
-                    await this.knex('users_credential').where('login_id', newId).update({ email_isVerifying: false })
+                    await this.knex('users_credential').where('user_id', newId).update({ email_isVerifying: false })
                     return this.loginGoogle(incomingInfo.access_token)
                 }
                 // ======================================== Local SignUp Handle ========================================
@@ -147,7 +147,7 @@ module.exports = class {
                     const key = this.randomstring.generate();
                     this.redisClient.setex(key, 60 * 60 * 24, incomingInfo.email)
                     this.nodemailer.sendVerificationMail(incomingInfo.email, key)
-                    let newId = await this.knex('users_credential').insert(incomingInfo).returning('login_id');
+                    let newId = await this.knex('users_credential').insert(incomingInfo).returning('user_id');
                     newId = newId[0]
                     return newId
                 }
@@ -161,9 +161,8 @@ module.exports = class {
         try {
             let user = await this.knex('users_credential').where('username', username).orWhere('email', username)
             user = user[0]
-            if (user) {
-                await this.bcrypt.checkPassword(password, user.password)
-                const jwt = this.jwt.sign(user.login_id, process.env.JWT_SECRET)
+            if (user && await this.bcrypt.checkPassword(password, user.password)) {
+                const jwt = this.jwt.sign(user.user_id, process.env.JWT_SECRET)
                 this.redisClient.sadd('jwt', jwt)
                 return jwt
             } else {
@@ -182,7 +181,7 @@ module.exports = class {
             let user = await this.knex('users_credential').where('access_token', access_token);
             user = user[0]
             if (user) {
-                const jwt = this.jwt.sign(user.login_id, process.env.JWT_SECRET)
+                const jwt = this.jwt.sign(user.user_id, process.env.JWT_SECRET)
                 this.redisClient.sadd('jwt', jwt)
                 return jwt
             } else {
@@ -208,7 +207,7 @@ module.exports = class {
             let user = await this.knex('users_credential').where('access_token', access_token);
             user = user[0]
             if (user) {
-                const jwt = this.jwt.sign(user.login_id, process.env.JWT_SECRET)
+                const jwt = this.jwt.sign(user.user_id, process.env.JWT_SECRET)
                 this.redisClient.sadd('jwt', jwt)
                 return jwt
             } else {

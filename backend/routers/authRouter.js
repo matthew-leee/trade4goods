@@ -1,8 +1,17 @@
 'use strict';
 module.exports = (router, authService) => {
+    router.get('api/isLoggedIn', async (req,res) => {
+        try {
+            (await authService.isAuthenticated(req.session.jwt)) ?
+            res.status(200).send(true) : res.status(200).send(false)
+        } catch(err) {
+            res.status(500).json(err)
+        }
+    })
     router.post('/api/signup', async (req, res) => {
         try {
             await signUp(req.body)
+            res.sendStatus(201)
         } catch (err) {
             res.status(500).json(err)
         }
@@ -64,7 +73,7 @@ module.exports = (router, authService) => {
     router.post('/api/forgetPassword', async (req, res) => {
         try {
             await authService.requestPasswordRequest(req.body.email)
-            res.sendStatus(200)
+            res.sendStatus(202)
         } catch(err) {
             res.status(500).json(err)
         }
