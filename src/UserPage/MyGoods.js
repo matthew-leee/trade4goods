@@ -3,12 +3,16 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import { Link } from "react-router-dom"
 import actions from "./actions"
+import products from "../FakeData/products"
+import GeneralTags from "../AddPhotos/tags_antd"
+import ProductDetails from "./Details"
 
 class MyGoods extends Component {
     componentDidMount() {
-        // assume me fetching some shit
-        // const json = axios.get("/users/someone")
-        // data to fetch: imgsrc/Title/id/description
+        products.forEach((u) => {
+            u.openOneModal = false
+        })
+        this.props.handleProducts(products)
     }
 
     handleEdit = (e) => {
@@ -36,6 +40,44 @@ class MyGoods extends Component {
     }
 
     render() {
+        const cards = this.props.products.map((u) => {
+            return (
+                <div>
+                    <Card
+                        style={{ width: 180 }}
+                        cover={
+                            <img
+                                alt={u.name}
+                                src={u.image[0]}
+                                onClick={()=>{this.props.handleOneModal(u.product_id)}}
+                            />
+                        }
+                        actions={[
+                            <Icon type="edit" onClick={this.handleEdit} />,
+                            <Icon type="delete" onClick={this.handleDelete} />
+                        ]}
+                        key={u.product_id}
+                        id={u.product_id}
+                    >
+                        <Card.Meta
+                            title={u.name}
+                            description={u.description}
+                        />
+                        <GeneralTags tags={u.tags} closable={false} />
+
+                    </Card>
+                    <Modal
+                        centered
+                        visible={u.openOneModal}
+                        onCancel={()=>{this.props.handleOneModal(u.product_id)}}
+                        onOk={()=>{this.props.handleOneModal(u.product_id)}}
+                    >
+                        <ProductDetails details={u} />
+                    </Modal>
+                </div>
+
+            )
+        })
         return (
             <div className="myGoods">
                 <Card
@@ -43,72 +85,18 @@ class MyGoods extends Component {
                     style={{ width: 800 }}
                 >
                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                        <Card
-                            style={{ width: 180 }}
-                            cover={
-                                <img
-                                    alt="example"
-                                    src="https://media.karousell.com/media/photos/products/2019/01/10/tplink_n600__1000mb__tlwdr3600_wifi_n_gigabit_router_24ghz_5ghz_1547057675_7819267f0"
-                                />
-                            }
-                            actions={[
-                                <Icon type="edit" onClick={this.handleEdit} />,
-                                <Icon type="delete" onClick={this.handleDelete} />
-                            ]}
-                            key={12345}
-                            id={12345}
-                        >
-                            <Card.Meta
-                                title="Router. Good?"
-                                description="not so good"
-                            />
-                        </Card>
-                        <Card
-                            style={{ width: 180 }}
-                            cover={
-                                <img
-                                    alt="example"
-                                    src="https://media.karousell.com/media/photos/products/2019/01/10/tplink_n600__1000mb__tlwdr3600_wifi_n_gigabit_router_24ghz_5ghz_1547057675_7819267f0"
-                                />
-                            }
-                            actions={[
-                                <Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />
-                            ]}
-                        >
-                            <Card.Meta
-                                title="Router. Good?"
-                                description="not so good"
-                            />
-                        </Card>
-                        <Card
-                            style={{ width: 180 }}
-                            cover={
-                                <img
-                                    alt="example"
-                                    src="https://media.karousell.com/media/photos/products/2019/01/10/tplink_n600__1000mb__tlwdr3600_wifi_n_gigabit_router_24ghz_5ghz_1547057675_7819267f0"
-                                />
-                            }
-                            actions={[
-                                <Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />
-                            ]}
-                        >
-                            <Card.Meta
-                                title="Router. Good?"
-                                description="not so good"
-                            />
-                        </Card>
+                        {cards}
                         <div className="addPhotoBox" style={{ width: 180, height: 180, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", paddingLeft: 10 }}>
                             <Button onClick={this.props.handleModal}>
                                 click me bastard
                             </Button>
                             <Modal
-                                title="Vertically centered modal dialog"
+                                title="Add Photos"
                                 centered
                                 visible={this.props.openModal}
-                                onOk={this.props.handleModal}
                                 onCancel={this.props.handleModal}
+                                onOk={this.props.handleModal}
                             >
-                                
                             </Modal>
 
                         </div>
@@ -123,7 +111,8 @@ class MyGoods extends Component {
 const mapStateToProps = (state) => {
     const s = state.userReducers
     return {
-        openModal: s.openModal
+        openModal: s.openModal,
+        products: s.products
     }
 }
 
@@ -131,6 +120,12 @@ const mapDispatchToProps = (dispatch) => {
     return {
         handleModal: () => {
             dispatch(actions.openModal())
+        },
+        handleProducts: (products) => {
+            dispatch(actions.fetchProducts(products))
+        },
+        handleOneModal: (id) => {
+            dispatch(actions.openOneModal(id))
         }
     }
 }

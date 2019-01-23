@@ -213,15 +213,12 @@ class AddPhotoForm extends React.Component {
 
           <Form.Item {...formItemLayout} label="Tags">
             <Input placeholder="Press Spacebar after finishing One Tag" onChange={this.props.handleTagChange} value={this.props.typingTag} />
-            <GeneralTags tags={this.props.finishedTag} />
+            <GeneralTags tags={this.props.finishedTag} closable={true} />
           </Form.Item>
 
           <Form.Item {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit">Submit</Button>
           </Form.Item>
-
-
-
 
         </Form>
 
