@@ -48,23 +48,6 @@ describe('Profile Service', () => {
         done()
     })
 
-    test('should throw error on create profile if the login id is invalid', async done => {
-        const information = {
-            displayed_name: 'John',
-            phone_number: 30624700,
-            profile_picture: image_base64
-        }
-        try {
-            await profileService.createProfile(information, 0)
-        } catch (err) {
-            expect(err).toEqual({
-                error: "Unauthorized",
-                message: "Unknown error, user has not been registered"
-            })
-            done()
-        }
-    })
-
     test('should throw error on create profile if the profile already exists', async done => {
         const information1 = {
             displayed_name: 'John',
@@ -81,6 +64,7 @@ describe('Profile Service', () => {
             await profileService.createProfile(information2, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 400,
                 error: "Profile Exist",
                 message: "Profile already exist, please do not create a new one",
                 suggestSolution: "Use Edit Profile instead"
@@ -100,6 +84,7 @@ describe('Profile Service', () => {
             await profileService.createProfile(information, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 422,
                 error: "Invalid Name",
                 message: "Displayed Name contained invalid characters",
                 suggestSolution: "Rename the displayed name"
@@ -117,6 +102,7 @@ describe('Profile Service', () => {
             await profileService.createProfile(information, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 422,
                 error: "Invalid Name",
                 message: "Displayed Name cannot be an empty field",
                 suggestSolution: "Enter the displayed name field"
@@ -135,6 +121,7 @@ describe('Profile Service', () => {
             await profileService.createProfile(information, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 422,
                 error: "Invalid Phone Number",
                 message: "Phone number can contain numbers only",
             })
@@ -151,6 +138,7 @@ describe('Profile Service', () => {
             await profileService.createProfile(information, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 422,
                 error: "Invalid Phone Number",
                 message: "Phone number can contain numbers only",
             })
@@ -168,6 +156,7 @@ describe('Profile Service', () => {
             await profileService.createProfile(information, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 415,
                 error: "Invalid Image Format",
                 message: "Image has to be base64 encoded, this is probably an error at processing the image",
                 suggestSolution: "Please skip uploading profile picture for now, contact us for help"
@@ -224,29 +213,6 @@ describe('Profile Service', () => {
         done();
     })
 
-    test('should throw error for invalid user id when trying to update profile', async done => {
-        const information = {
-            displayed_name: 'John',
-            phone_number: 30624700,
-            profile_picture: image_base64
-        }
-        await profileService.createProfile(information, test_user_id)
-        const newInformation = {
-            displayed_name: 'Mr John',
-            phone_number: 534202
-        }
-        try {
-            await profileService.updateProfile(newInformation, 0)
-        } catch (err) {
-            expect(err).toEqual({
-                error: "Unauthorized",
-                message: "Unknown error, user has not been registered"
-            })
-            await knex('users').where('user_id', test_user_id).del();
-            done();
-        }
-    })
-
     test('should throw error for invalid user that has no profile created beforehand', async done => {
         const newInformation = {
             displayed_name: 'Mr John',
@@ -256,6 +222,7 @@ describe('Profile Service', () => {
             await profileService.updateProfile(newInformation, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 403,
                 error: "Profile Does Not Exist",
                 message: "Unknown Error, profile not found",
                 suggestSolution: "Sign Up and create a new profile"
@@ -279,6 +246,7 @@ describe('Profile Service', () => {
             await profileService.updateProfile(newInformation, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 422,
                 error: "Invalid Name",
                 message: "Displayed Name contained invalid characters",
                 suggestSolution: "Rename the displayed name"
@@ -303,6 +271,7 @@ describe('Profile Service', () => {
             await profileService.updateProfile(newInformation, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 422,
                 error: "Invalid Phone Number",
                 message: "Phone number can contain numbers only",
             })
@@ -326,28 +295,10 @@ describe('Profile Service', () => {
             await profileService.updateProfile(newInformation, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 415,
                 error: "Invalid Image Format",
                 message: "Image has to be base64 encoded, this is probably an error at processing the image",
                 suggestSolution: "Please do not upload profile picture for now, contact us for help"
-            })
-            await knex('users').where('user_id', test_user_id).del();
-            done();
-        }
-    })
-
-    test('should throw error for get profile but invalid user id was provided', async done => {
-        const information = {
-            displayed_name: 'John',
-            phone_number: 30624700,
-            profile_picture: image_base64
-        }
-        await profileService.createProfile(information, test_user_id)
-        try {
-            await profileService.getProfile(0)
-        } catch (err) {
-            expect(err).toEqual({
-                error: "Unauthorized",
-                message: "Unknown error, user has not been registered"
             })
             await knex('users').where('user_id', test_user_id).del();
             done();

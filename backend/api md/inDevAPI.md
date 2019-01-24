@@ -56,24 +56,6 @@ response format
 
 ----
 
-## POST
-
-- Upload Product
-
-    *POST: /api/product*
-
-request params
-```
-{
-    product_name: string
-    product_image: bytea
-    product_description: string | undefined
-    trade_location: string | undefined
-    expectation: string | undefined
-    tags: string[]
-}
-```
-----
 
 ## POST
 

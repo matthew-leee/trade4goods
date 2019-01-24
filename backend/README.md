@@ -2,7 +2,8 @@
 
 ## Setup
 
-### create .env file with following parameters:
+### .env environmental variables
+create .env file at rootDir with following parameters:
 ```
 #database
 DB_NAME=
@@ -37,33 +38,50 @@ MAIL_PASSWORD=
 ```
 
 ### Install NPM Packages
+Run npm install to install packages
 ```
-npm install
+$ npm install
 ```
 
-### Start Postgres and Redis Service
+### Create HTTPS Certification
+Create a localhost certificate
 ```
-on ubuntu:
-    sudo service postgresql start
-    redis-server --daemonize yes
-on mac:
-    brew services start postgresql
-    redis-server --daemonize yes
+$ openssl req -x509 -out localhost.crt -keyout localhost.key \
+  -newkey rsa:2048 -nodes -sha256 \
+  -subj '/CN=localhost' -extensions EXT -config <( \
+   printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
+
 ```
+Put localhost.crt and localhost.key in rootDir/cert
+
+Self sign the localhost certifcate and trust it on your local computer with [the following procedure]
+
+(https://blogs.technet.microsoft.com/sbs/2008/05/08/installing-a-self-signed-certificate-as-a-trusted-root-ca-in-windows-vista/)
+
 
 ### Run Knex Database Migration
 ```
-knex migrate:latest
+$ knex migrate:rollback
+$ knex migrate:latest
 ```
 
 ---
 
-### Start the server
+## Starting the Server
+
+### Start Postgres and Redis Service
+Start services before starting the server
+```
+$ sudo service postgresql start
+$ redis-server --daemonize yes
+```
+
+### Boot Up the server
 
 ```
-nodemon app.js
+$ nodemon app.js
 ```
 *or*
 ```
-node app.js
+$ node app.js
 ```
