@@ -48,23 +48,6 @@ describe('Profile Service', () => {
         done()
     })
 
-    test('should throw error on create profile if the login id is invalid', async done => {
-        const information = {
-            displayed_name: 'John',
-            phone_number: 30624700,
-            profile_picture: image_base64
-        }
-        try {
-            await profileService.createProfile(information, 0)
-        } catch (err) {
-            expect(err).toEqual({
-                error: "Unauthorized",
-                message: "Unknown error, user has not been registered"
-            })
-            done()
-        }
-    })
-
     test('should throw error on create profile if the profile already exists', async done => {
         const information1 = {
             displayed_name: 'John',
@@ -224,29 +207,6 @@ describe('Profile Service', () => {
         done();
     })
 
-    test('should throw error for invalid user id when trying to update profile', async done => {
-        const information = {
-            displayed_name: 'John',
-            phone_number: 30624700,
-            profile_picture: image_base64
-        }
-        await profileService.createProfile(information, test_user_id)
-        const newInformation = {
-            displayed_name: 'Mr John',
-            phone_number: 534202
-        }
-        try {
-            await profileService.updateProfile(newInformation, 0)
-        } catch (err) {
-            expect(err).toEqual({
-                error: "Unauthorized",
-                message: "Unknown error, user has not been registered"
-            })
-            await knex('users').where('user_id', test_user_id).del();
-            done();
-        }
-    })
-
     test('should throw error for invalid user that has no profile created beforehand', async done => {
         const newInformation = {
             displayed_name: 'Mr John',
@@ -329,25 +289,6 @@ describe('Profile Service', () => {
                 error: "Invalid Image Format",
                 message: "Image has to be base64 encoded, this is probably an error at processing the image",
                 suggestSolution: "Please do not upload profile picture for now, contact us for help"
-            })
-            await knex('users').where('user_id', test_user_id).del();
-            done();
-        }
-    })
-
-    test('should throw error for get profile but invalid user id was provided', async done => {
-        const information = {
-            displayed_name: 'John',
-            phone_number: 30624700,
-            profile_picture: image_base64
-        }
-        await profileService.createProfile(information, test_user_id)
-        try {
-            await profileService.getProfile(0)
-        } catch (err) {
-            expect(err).toEqual({
-                error: "Unauthorized",
-                message: "Unknown error, user has not been registered"
             })
             await knex('users').where('user_id', test_user_id).del();
             done();
