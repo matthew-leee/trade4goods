@@ -61,6 +61,7 @@ Self sign the localhost certifcate and trust it on your local computer with [the
 
 ### Run Knex Database Migration
 ```
+$ knex migrate:rollback
 $ knex migrate:latest
 ```
 
