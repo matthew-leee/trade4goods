@@ -38,11 +38,12 @@ exports.up = function (knex, Promise) {
         knex.schema.createTable('products', table => {
             table.increments('product_id').unsigned().primary();
             table.string('name').notNullable();
-            table.binary('image').nullable();
+            table.binary('image').notNullable();
             table.string('description').nullable();
+            table.string('expectation').notNullable().defaultTo('free to offer');
             table.string('trade_location').nullable();
             table.specificType('tags', 'VARCHAR[]').nullable();
-            table.integer('uploaded_by').notNullable();
+            table.integer('uploaded_by').notNullable().references('user_id').inTable('users');
             table.timestamp('uploaded_at').notNullable().defaultTo(knex.fn.now());
             table.specificType('liked_by', 'INT[]').nullable();
             table.specificType('comments', 'INT[]').nullable();
