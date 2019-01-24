@@ -3,7 +3,7 @@ const
     bcrypt = require('bcrypt'),
     Bcrypt = require('../services/auth/bcrypt'),
     jwt = require('jsonwebtoken'),
-    { promisify } = require('util'),
+    promisify = require('util').promisify,
     env = require('./config/env'),
     redis = require('redis'),
     randomstring = require('randomstring'),
@@ -85,6 +85,7 @@ describe('AuthService', () => {
             await authService.signUp(information)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 400,
                 error: 'Duplicated Email',
                 message: 'This email is under verifying',
                 suggestSolution: 'Check your mailbox for verification email or request a new verification email'
@@ -112,6 +113,7 @@ describe('AuthService', () => {
             await authService.signUp(facebookInformation)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 400,
                 error: 'Duplicated Email',
                 message: 'example@example.com duplicates with account test_username',
                 suggestSolution: 'Merge Facebook account with test_username'
@@ -139,6 +141,7 @@ describe('AuthService', () => {
             await authService.signUp(googleInformation)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 400,
                 error: 'Duplicated Email',
                 message: 'example@example.com duplicates with account test_username',
                 suggestSolution: 'Merge Google account with test_username'
@@ -166,6 +169,7 @@ describe('AuthService', () => {
             await authService.signUp(information2)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 400,
                 error: 'Duplicated Username',
                 message: `username test_username duplicated`,
                 suggestSolution: `Signup with another username`
@@ -186,6 +190,7 @@ describe('AuthService', () => {
             await authService.signUp(information)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 422,
                 error: 'Unmatched Password',
                 message: 'Password submitted does not match the confirmed password',
                 suggestSolution: `Recheck both of the informations being submitted`
@@ -205,6 +210,7 @@ describe('AuthService', () => {
             await authService.signUp(information)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 422,
                 error: 'Invalid Email',
                 message: `The email This is Obviously not @ valid email is invalid`,
                 suggestSolution: 'check typo on email'
@@ -224,6 +230,7 @@ describe('AuthService', () => {
             await authService.signUp(information)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 422,
                 error: 'Invalid Username',
                 message: 'Username must be 5 to 15 characters long and contains no invalid character',
                 suggestSolution: 'rename the username'
@@ -318,6 +325,7 @@ describe('AuthService', () => {
             await authService.loginLocal(information.email, 'invalid password')
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 401,
                 error: 'Incorrect Credential',
                 message: `username or password is not found`,
             })
@@ -338,6 +346,7 @@ describe('AuthService', () => {
             await authService.loginLocal('invliad username', 'Abcd1234')
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 401,
                 error: 'Incorrect Credential',
                 message: `username or password is not found`,
             })
@@ -358,6 +367,7 @@ describe('AuthService', () => {
             await authService.loginLocal('example@example.com', 'Invalid password')
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 401,
                 error: 'Incorrect Credential',
                 message: `username or password is not found`,
             })
@@ -448,6 +458,7 @@ describe('AuthService', () => {
             await authService.verifyEmail('invalid key')
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 403,
                 error: 'Expired Key',
                 message: 'The key has been expired or invalid'
             })
@@ -470,6 +481,7 @@ describe('AuthService', () => {
             await authService.verifyEmail('test_key')
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 403,
                 error: 'Expired Key',
                 message: 'The key has been expired or invalid'
             })
@@ -479,7 +491,7 @@ describe('AuthService', () => {
     })
 
     test('should reset password with correct information', async done => {
-        const testBcrypt = new Bcrypt(bcrypt)
+        const testBcrypt = new Bcrypt(bcrypt, promisify)
         const information = {
             username: 'test_username',
             password: 'Abcd1234',
@@ -509,6 +521,7 @@ describe('AuthService', () => {
             await authService.resetPassword('qwer1234', 'qwer1234', 'invalid key')
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 403,
                 error: 'Expired Key',
                 message: 'The key has been expired or invalid',
                 suggestSolution: 'Request for another password reset email'
@@ -532,6 +545,7 @@ describe('AuthService', () => {
             await authService.resetPassword('qwer1234', 'qwer4321', 'test_key')
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 422,
                 error: 'Unmatched Password',
                 message: 'Password submitted does not match the confirmed password',
                 suggestSolution: `Recheck both of the informations being submitted`

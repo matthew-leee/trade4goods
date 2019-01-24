@@ -5,7 +5,9 @@ module.exports = (router, authService) => {
             (await authService.isAuthenticated(req.session.jwt)) ?
             res.status(200).send(true) : res.status(200).send(false)
         } catch(err) {
-            res.status(500).json(err)
+            const statusCode = err.statusCode || 500
+            delete err.statusCode
+            res.status(statusCode).json(err)
         }
     })
     router.post('/api/signup', async (req, res) => {
@@ -13,7 +15,9 @@ module.exports = (router, authService) => {
             await signUp(req.body)
             res.sendStatus(201)
         } catch (err) {
-            res.status(500).json(err)
+            const statusCode = err.statusCode || 500
+            delete err.statusCode
+            res.status(statusCode).json(err)
         }
     })
 
@@ -23,7 +27,9 @@ module.exports = (router, authService) => {
             req.session.jwt = jwt
             res.sendStatus(200)
         } catch (err) {
-            res.status(500).json(err)
+            const statusCode = err.statusCode || 500
+            delete err.statusCode
+            res.status(statusCode).json(err)
         }
     })
 
@@ -35,7 +41,9 @@ module.exports = (router, authService) => {
                 res.sendStatus(200)
             }
         } catch (err) {
-            res.status(500).json(err)
+            const statusCode = err.statusCode || 500
+            delete err.statusCode
+            res.status(statusCode).json(err)
         }
     })
 
@@ -47,7 +55,9 @@ module.exports = (router, authService) => {
                 res.sendStatus(200)
             }
         } catch (err) {
-            res.status(500).json(err)
+            const statusCode = err.statusCode || 500
+            delete err.statusCode
+            res.status(statusCode).json(err)
         }
     })
 
@@ -57,7 +67,9 @@ module.exports = (router, authService) => {
             req.session.jwt = null
                 (logoutStatus) ? res.sendStatus(200) : res.status(500).send('this user is not logged in')
         } catch (err) {
-            res.status(500).json(err)
+            const statusCode = err.statusCode || 500
+            delete err.statusCode
+            res.status(statusCode).json(err)
         }
     })
 
@@ -66,7 +78,9 @@ module.exports = (router, authService) => {
             await authService.verifyEmail(req.body.key)
             res.sendStatus(200)
         } catch(err) {
-            res.status(500).json(err)
+            const statusCode = err.statusCode || 500
+            delete err.statusCode
+            res.status(statusCode).json(err)
         }
     })
 
@@ -75,7 +89,9 @@ module.exports = (router, authService) => {
             await authService.requestPasswordRequest(req.body.email)
             res.sendStatus(202)
         } catch(err) {
-            res.status(500).json(err)
+            const statusCode = err.statusCode || 500
+            delete err.statusCode
+            res.status(statusCode).json(err)
         }
     })
 
@@ -84,7 +100,9 @@ module.exports = (router, authService) => {
             await authService.resetPassword(req.body.password, req.body.confirmed_password, req.body.key)
             res.sendStatus(200)
         } catch(err) {
-            res.status(500).json(err)
+            const statusCode = err.statusCode || 500
+            delete err.statusCode
+            res.status(statusCode).json(err)
         }
     })
 }

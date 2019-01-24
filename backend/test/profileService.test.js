@@ -64,6 +64,7 @@ describe('Profile Service', () => {
             await profileService.createProfile(information2, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 400,
                 error: "Profile Exist",
                 message: "Profile already exist, please do not create a new one",
                 suggestSolution: "Use Edit Profile instead"
@@ -83,6 +84,7 @@ describe('Profile Service', () => {
             await profileService.createProfile(information, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 422,
                 error: "Invalid Name",
                 message: "Displayed Name contained invalid characters",
                 suggestSolution: "Rename the displayed name"
@@ -100,6 +102,7 @@ describe('Profile Service', () => {
             await profileService.createProfile(information, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 422,
                 error: "Invalid Name",
                 message: "Displayed Name cannot be an empty field",
                 suggestSolution: "Enter the displayed name field"
@@ -118,6 +121,7 @@ describe('Profile Service', () => {
             await profileService.createProfile(information, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 422,
                 error: "Invalid Phone Number",
                 message: "Phone number can contain numbers only",
             })
@@ -134,6 +138,7 @@ describe('Profile Service', () => {
             await profileService.createProfile(information, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 422,
                 error: "Invalid Phone Number",
                 message: "Phone number can contain numbers only",
             })
@@ -151,6 +156,7 @@ describe('Profile Service', () => {
             await profileService.createProfile(information, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 415,
                 error: "Invalid Image Format",
                 message: "Image has to be base64 encoded, this is probably an error at processing the image",
                 suggestSolution: "Please skip uploading profile picture for now, contact us for help"
@@ -216,6 +222,7 @@ describe('Profile Service', () => {
             await profileService.updateProfile(newInformation, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 403,
                 error: "Profile Does Not Exist",
                 message: "Unknown Error, profile not found",
                 suggestSolution: "Sign Up and create a new profile"
@@ -239,6 +246,7 @@ describe('Profile Service', () => {
             await profileService.updateProfile(newInformation, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 422,
                 error: "Invalid Name",
                 message: "Displayed Name contained invalid characters",
                 suggestSolution: "Rename the displayed name"
@@ -263,6 +271,7 @@ describe('Profile Service', () => {
             await profileService.updateProfile(newInformation, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 422,
                 error: "Invalid Phone Number",
                 message: "Phone number can contain numbers only",
             })
@@ -286,6 +295,7 @@ describe('Profile Service', () => {
             await profileService.updateProfile(newInformation, test_user_id)
         } catch (err) {
             expect(err).toEqual({
+                statusCode: 415,
                 error: "Invalid Image Format",
                 message: "Image has to be base64 encoded, this is probably an error at processing the image",
                 suggestSolution: "Please do not upload profile picture for now, contact us for help"

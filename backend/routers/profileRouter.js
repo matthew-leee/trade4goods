@@ -10,7 +10,9 @@ module.exports = (router, authService, profileService) => {
                 res.sendStatus(401);
             }
         } catch (err) {
-            res.status(500).json(err)
+            const statusCode = err.statusCode || 500
+            delete err.statusCode
+            res.status(statusCode).json(err)
         }
     })
 
@@ -24,7 +26,9 @@ module.exports = (router, authService, profileService) => {
                 res.sendStatus(401);
             }
         } catch (err) {
-            res.status(500).json(err)
+            const statusCode = err.statusCode || 500
+            delete err.statusCode
+            res.status(statusCode).json(err)
         }
     })
 
@@ -38,7 +42,9 @@ module.exports = (router, authService, profileService) => {
                 res.sendStatus(401);
             }
         } catch(err) {
-            res.status(500).json(err)
+            const statusCode = err.statusCode || 500
+            delete err.statusCode
+            res.status(statusCode).json(err)
         }
     })
 }

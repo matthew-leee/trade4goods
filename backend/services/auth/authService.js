@@ -33,6 +33,7 @@ module.exports = class {
                 case (incomingInfo.hasOwnProperty('facebook_id')): {
                     if (emailExist) {
                         throw {
+                            statusCode: 400,
                             error: 'Duplicated Email',
                             message: `${incomingInfo.email} duplicates with account ${emailExist.username}`,
                             suggestSolution: `Merge Facebook account with ${emailExist.username}`
@@ -65,6 +66,7 @@ module.exports = class {
                 case (incomingInfo.hasOwnProperty('google_id')): {
                     if (emailExist) {
                         throw {
+                            statusCode: 400,
                             error: 'Duplicated Email',
                             message: `${incomingInfo.email} duplicates with account ${emailExist.username}`,
                             suggestSolution: `Merge Google account with ${emailExist.username}`
@@ -97,12 +99,14 @@ module.exports = class {
                     if (emailExist) {
                         if (emailExist.email_isVerifying) {
                             throw {
+                                statusCode: 400,
                                 error: 'Duplicated Email',
                                 message: 'This email is under verifying',
                                 suggestSolution: 'Check your mailbox for verification email or request a new verification email'
                             }
                         } else {
                             throw {
+                                statusCode: 400,
                                 error: 'Duplicated Email',
                                 message: `${incomingInfo.email} duplicates with account ${emailExist.username}`,
                                 suggestSolution: 'Login directly or choose forget passowrd'
@@ -113,6 +117,7 @@ module.exports = class {
                     usernameExist = usernameExist[0]
                     if (usernameExist) {
                         throw {
+                            statusCode: 400,
                             error: 'Duplicated Username',
                             message: `username ${incomingInfo.username} duplicated`,
                             suggestSolution: `Signup with another username`
@@ -120,6 +125,7 @@ module.exports = class {
                     }
                     if (incomingInfo.password !== incomingInfo.confirmed_password) {
                         throw {
+                            statusCode: 422,
                             error: 'Unmatched Password',
                             message: 'Password submitted does not match the confirmed password',
                             suggestSolution: `Recheck both of the informations being submitted`
@@ -128,6 +134,7 @@ module.exports = class {
 
                     if (incomingInfo.username.length < 5 || incomingInfo.username.length > 15 || /\W/.test(incomingInfo.username)) {
                         throw {
+                            statusCode: 422,
                             error: 'Invalid Username',
                             message: 'Username must be 5 to 15 characters long and contains no invalid character',
                             suggestSolution: 'rename the username'
@@ -136,6 +143,7 @@ module.exports = class {
 
                     if (!/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(incomingInfo.email)) {
                         throw {
+                            statusCode: 422,
                             error: 'Invalid Email',
                             message: `The email ${incomingInfo.email} is invalid`,
                             suggestSolution: 'check typo on email'
@@ -167,6 +175,7 @@ module.exports = class {
                 return jwt
             } else {
                 throw {
+                    statusCode: 401,
                     error: 'Incorrect Credential',
                     message: `username or password is not found`,
                 }
@@ -190,6 +199,7 @@ module.exports = class {
                 data.access_token = access_token
                 if (!data.email) {
                     throw {
+                        statusCode: 400,
                         error: 'Insufficient Credential',
                         message: 'An email was not found from your Facebook profile, an email address is needed for using this app, please consider signing up locally',
                         suggestSolution: 'Open up your email permission or sign up locally, if you think it is a bug, please report to us'
@@ -216,6 +226,7 @@ module.exports = class {
                 data.access_token = access_token
                 if (!data.email) {
                     throw {
+                        statusCode: 400,
                         error: 'Insufficient Credential',
                         message: 'An email was not found from your Google profile, an email address is needed for using this app, please consider signing up locally',
                         suggestSolution: 'Open up your email permission or sign up locally, if you think it is a bug, please report to us'
@@ -244,6 +255,7 @@ module.exports = class {
                 this.redisClient.del(key)
             } else {
                 throw {
+                    statusCode: 403,
                     error: 'Expired Key',
                     message: 'The key has been expired or invalid'
                 }
@@ -270,6 +282,7 @@ module.exports = class {
         try {
             if (password !== confirmed_password) {
                 throw {
+                    statusCode: 422,
                     error: 'Unmatched Password',
                     message: 'Password submitted does not match the confirmed password',
                     suggestSolution: `Recheck both of the informations being submitted`
@@ -278,6 +291,7 @@ module.exports = class {
             const email = await this.getAsync(key)
             if (!email) {
                 throw {
+                    statusCode: 403,
                     error: 'Expired Key',
                     message: 'The key has been expired or invalid',
                     suggestSolution: 'Request for another password reset email'
