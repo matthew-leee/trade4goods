@@ -37,12 +37,16 @@ knex = require('knex')({
 
 //modules
 const
-Bcrypt = require('./services/auth/bcrypt'),
-Nodemailer = require('./services/auth/mailVerify')
 redisClient = require('./init/init-redis')(redis),
-authService = require('./services/auth/authService'),
-profileService = require('./services/profile/profileService'),
-router = require('./routers/router')(express, new authService(axios, new Bcrypt(bcrypt, promisify), jwt, promisify, redisClient, knex, new Nodemailer(nodemailer), randomstring), new profileService(knex))
+BcryptService = require('./services/auth/bcrypt'),
+NodemailerService = require('./services/auth/mailVerify'),
+AuthService = require('./services/auth/authService'),
+ProfileService = require('./services/profile/profileService'),
+Bcrypt = new BcryptService(bcrypt, promisify),
+Nodemailer = new NodemailerService(nodemailer),
+authService = new AuthService(axios, Bcrypt, jwt, promisify, redisClient, knex, Nodemailer, randomstring),
+profileService = new ProfileService(knex),
+router = require('./routers/router')(express, authService, profileService)
 require('./init/init-session')(app, redisClient, expressSession, RedisStore)
 require('./init/init-app')(app, express, bodyParser, cors, router)
 
