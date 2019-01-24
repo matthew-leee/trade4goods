@@ -38,7 +38,7 @@ knex = require('knex')({
 //modules
 const
 Bcrypt = require('./services/auth/bcrypt'),
-Nodemailer = require('./services/auth/mailVerify')
+Nodemailer = require('./services/auth/mailVerify'),
 redisClient = require('./init/init-redis')(redis),
 authService = require('./services/auth/authService'),
 profileService = require('./services/profile/profileService'),

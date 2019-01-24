@@ -36,10 +36,16 @@ class ProductDetails extends Component {
                 description: u.status == 1 ? "Trading" : "Traded",
             }
         ]
+        const comments = u.comments.map((a)=>{
+            return {
+                title: a.user,
+                description: a.comment
+            }
+        })
         return (
             <div>
                 <Row gutter={10}>
-                    <Col span={12}>
+                    <Col span={8}>
                         <div className="imageCarosel">
                             <h2>{u.name}</h2>
                             <Carousel autoplay>
@@ -47,7 +53,8 @@ class ProductDetails extends Component {
                             </Carousel>
                         </div>
                     </Col>
-                    <Col span={12}>
+                    <Col span={8}>
+                        <h4>Product Details</h4>
                         <div className="detailsList">
                             <List
                                 itemLayout="vertical"
@@ -63,6 +70,26 @@ class ProductDetails extends Component {
                             >
                             </List>
                         </div>
+                    </Col>
+                
+                
+                    
+                    <Col span={8}>
+                        <h4>Comments</h4>
+                        <List
+                        itemLayout="horizontal"
+                        dataSource={comments}
+                        renderItem={item=>(
+                            <List.Item key={`${u.product_id}comment`}>
+                                <List.Item.Meta
+                                    title={<h5>{item.title}</h5>}
+                                    description={item.description}
+                                />
+                            </List.Item>
+                        )}
+                        >
+
+                        </List>
                     </Col>
                 </Row>
             </div>

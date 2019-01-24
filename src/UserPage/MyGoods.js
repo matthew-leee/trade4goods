@@ -80,6 +80,7 @@ class MyGoods extends Component {
         })
         return (
             <div className="myGoods">
+                <h1>{`You are searching ${this.props.submit}, RIGHT?????`}</h1>
                 <Card
                     title="MyGoods"
                     style={{ width: 800 }}
@@ -110,9 +111,11 @@ class MyGoods extends Component {
 
 const mapStateToProps = (state) => {
     const s = state.userReducers
+    const search = state.searchReducers
     return {
         openModal: s.openModal,
-        products: s.products
+        products: s.products,
+        submit: search.submit
     }
 }
 

@@ -3,6 +3,7 @@ import IgFetch from "./IgFetch"
 import Home from "./Home"
 import WrappedAddPhotoForm from "./AddPhotos/form_antd"
 import UserPage from "./UserPage/main"
+import Search from "./Search/search"
 import {
   BrowserRouter,
   Route,
@@ -22,6 +23,7 @@ class App extends Component {
               <p><Link to="/">Home</Link></p>
               <p><Link to="/addPhotos">Add Photos</Link></p>
               <p><Link to="/userPage">User Page</Link></p>
+              <p><Link to="/search">Search</Link></p>
               <p><Link to="/igFetch">Fetch ig AC(Beta function)</Link></p>
 
             </div>
@@ -29,6 +31,7 @@ class App extends Component {
             <Route exact path={"/"} component={Home} />
             <Route path={"/addPhotos"} component={WrappedAddPhotoForm} />
             <Route path={"/userPage"} component={UserPage} />
+            <Route path={"/search"} component={Search} />
             <Route path={"/igFetch"} component={IgFetch} />
 
           </div>

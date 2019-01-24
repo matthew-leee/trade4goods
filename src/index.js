@@ -4,15 +4,17 @@ import './index.css';
 // import SampleApp from './SampleReduxApp'
 import App from './App'
 import * as serviceWorker from './serviceWorker';
-import { createStore, Action, applyMiddleware, combineReducers } from "redux";
+import { createStore, applyMiddleware, combineReducers } from "redux";
 import { Provider } from "react-redux"
 import photoReducers from "./AddPhotos/reducers"
 import userReducers from "./UserPage/reducers"
+import searchReducers from "./Search/reducers"
 import logger from "redux-logger";
 
 const rootReducers = combineReducers ({
     photoReducers,
-    userReducers
+    userReducers,
+    searchReducers
 })
 
 const store = createStore(rootReducers, applyMiddleware(logger))
