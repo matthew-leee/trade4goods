@@ -25,7 +25,6 @@ class App extends Component {
               <p><Link to="/userPage">User Page</Link></p>
               <p><Link to="/search">Search</Link></p>
               <p><Link to="/igFetch">Fetch ig AC(Beta function)</Link></p>
-
             </div>
 
             <Route exact path={"/"} component={Home} />
@@ -40,4 +39,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default App

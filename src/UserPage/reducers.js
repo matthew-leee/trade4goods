@@ -1,7 +1,8 @@
 
 const userReducers = (state = {
     openModal: false,
-    products: []
+    products: [],
+    result: ""
 }, action) => {
     switch (action.type) {
         case "OPEN_MODAL":
@@ -38,6 +39,11 @@ const userReducers = (state = {
             return {
                 ...state,
                 products: newProducts
+            }
+        case "SAVE_SEARCH":
+            return {
+                ...state,
+                result: action.result
             }
         default:
             return state

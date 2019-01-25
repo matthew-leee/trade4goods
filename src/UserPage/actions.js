@@ -15,6 +15,17 @@ const actions = {
             type: "OPEN_ONE_MODAL",
             id: id
         }
+    },
+    saveSearch: (result)=>{
+        return {
+            type: "SAVE_SEARCH",
+            result: result
+        }
+    },
+    clearSearch: () =>{
+        return {
+            type: "CLEAR_SEARCH"
+        }
     }
 }
 

@@ -9,10 +9,16 @@ const searchReducers = (state = {
                 search: action.search
             }
         case "SUBMIT_SEARCH":
-        const submit = state.search
+            const submit = state.search
             return {
                 ...state,
                 submit: submit,
+                search: ""
+            }
+        case "CLEAR_SEARCH":
+            return {
+                ...state,
+                submit: "",
                 search: ""
             }
         default:

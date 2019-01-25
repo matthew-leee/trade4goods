@@ -14,7 +14,12 @@ class MyGoods extends Component {
         })
         this.props.handleProducts(products)
     }
-
+    rerouteSearch = () => {
+        if (this.props.submit){
+            this.props.saveSearch(this.props.submit)
+            this.props.clearSearch()
+        }
+    }   
     handleEdit = (e) => {
         const boo = window.confirm("edit?")
         if (boo) {
@@ -49,7 +54,7 @@ class MyGoods extends Component {
                             <img
                                 alt={u.name}
                                 src={u.image[0]}
-                                onClick={()=>{this.props.handleOneModal(u.product_id)}}
+                                onClick={() => { this.props.handleOneModal(u.product_id) }}
                             />
                         }
                         actions={[
@@ -69,8 +74,8 @@ class MyGoods extends Component {
                     <Modal
                         centered
                         visible={u.openOneModal}
-                        onCancel={()=>{this.props.handleOneModal(u.product_id)}}
-                        onOk={()=>{this.props.handleOneModal(u.product_id)}}
+                        onCancel={() => { this.props.handleOneModal(u.product_id) }}
+                        onOk={() => { this.props.handleOneModal(u.product_id) }}
                     >
                         <ProductDetails details={u} />
                     </Modal>
@@ -80,7 +85,8 @@ class MyGoods extends Component {
         })
         return (
             <div className="myGoods">
-                <h1>{`You are searching ${this.props.submit}, RIGHT?????`}</h1>
+            {this.rerouteSearch()}
+                <h1>{this.props.result}</h1>
                 <Card
                     title="MyGoods"
                     style={{ width: 800 }}
@@ -115,6 +121,7 @@ const mapStateToProps = (state) => {
     return {
         openModal: s.openModal,
         products: s.products,
+        result: s.result,
         submit: search.submit
     }
 }
@@ -129,6 +136,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         handleOneModal: (id) => {
             dispatch(actions.openOneModal(id))
+        },
+        saveSearch: (result) =>{
+            dispatch(actions.saveSearch(result))
+        },
+        clearSearch: ()=>{
+            dispatch(actions.clearSearch())
         }
     }
 }
