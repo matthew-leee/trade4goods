@@ -105,7 +105,6 @@ class MyGoods extends Component {
                                 onOk={this.props.handleModal}
                             >
                             </Modal>
-
                         </div>
                     </div>
                 </Card>

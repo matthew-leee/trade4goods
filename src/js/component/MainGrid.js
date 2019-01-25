@@ -25,7 +25,9 @@ class MainGrid extends React.Component {
             )
         })
         return (
-            <div style={{marginTop: "10vh"}}>
+            <div 
+            // style={{marginTop: "10vh"}}
+            >
                 
                 <Row gutter={{xs: 4, sm: 8, md: 16, lg: 16}}>
                     {cards}

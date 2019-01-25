@@ -21,7 +21,7 @@ class App extends Component {
             <BrowserRouter>
                 <div>
                     <Navvv />
-                    <div>
+                    <div style={{marginTop: "10vh"}}>
                         <Route exact path={"/"} component={MainGrid} />
                         <Route path={"/addPhotos"} component={AddPhotos} />
                         <Route path={"/userPage"} component={UserPage} />

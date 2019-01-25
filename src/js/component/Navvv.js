@@ -74,9 +74,6 @@ class ConnectedNavvv extends React.Component {
                         <li className="nav-item">
                             <Link className="nav-link" to="/userPage">User Page</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/search">Search</Link>
-                        </li>
                     </ul>
                 </div>
                 {this.state.tryLogin && <LoginForm handleLogin={this.handleLoginToggle} />}
