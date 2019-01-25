@@ -1,4 +1,4 @@
-const actions = {
+const actions_addPhotos = {
     AddPhotos_Details: (data) => {
         return {
             type: "ADDPHOTOS_DETAILS",
@@ -37,4 +37,4 @@ const actions = {
     }
 }
 
-export default actions
+export default actions_addPhotos

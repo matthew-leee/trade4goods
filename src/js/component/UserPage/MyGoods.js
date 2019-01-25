@@ -1,9 +1,8 @@
 import { Card, Icon, Popconfirm, message, Button, Modal } from "antd"
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { Link } from "react-router-dom"
-import actions from "./actions"
-import products from "../FakeData/products"
+import actions_userPage from "../../actions/userPage"
+import products from "../../../FakeData/products"
 import GeneralTags from "../AddPhotos/tags_antd"
 import ProductDetails from "./Details"
 
@@ -45,7 +44,9 @@ class MyGoods extends Component {
     }
 
     render() {
-        const cards = this.props.products.map((u) => {
+        const cards = this.props.products
+        .slice(0, 3)
+        .map((u) => {
             return (
                 <div>
                     <Card
@@ -116,8 +117,8 @@ class MyGoods extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const s = state.userReducers
-    const search = state.searchReducers
+    const s = state.userReducer
+    const search = state.searchReducer
     return {
         openModal: s.openModal,
         products: s.products,
@@ -129,19 +130,19 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         handleModal: () => {
-            dispatch(actions.openModal())
+            dispatch(actions_userPage.openModal())
         },
         handleProducts: (products) => {
-            dispatch(actions.fetchProducts(products))
+            dispatch(actions_userPage.fetchProducts(products))
         },
         handleOneModal: (id) => {
-            dispatch(actions.openOneModal(id))
+            dispatch(actions_userPage.openOneModal(id))
         },
         saveSearch: (result) =>{
-            dispatch(actions.saveSearch(result))
+            dispatch(actions_userPage.saveSearch(result))
         },
         clearSearch: ()=>{
-            dispatch(actions.clearSearch())
+            dispatch(actions_userPage.clearSearch())
         }
     }
 }

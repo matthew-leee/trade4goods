@@ -1,4 +1,4 @@
-const actions = {
+const actions_userPage = {
     openModal: ()=>{
         return {
             type: "OPEN_MODAL"
@@ -29,4 +29,4 @@ const actions = {
     }
 }
 
-export default actions
+export default actions_userPage

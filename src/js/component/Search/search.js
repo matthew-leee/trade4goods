@@ -1,8 +1,8 @@
 import React, { Component } from "react"
-import { Input } from "antd"
 import { connect } from "react-redux";
-import actions from "./actions"
+import actions_search from "../../actions/search"
 import { Redirect } from "react-router-dom"
+
 class Search extends Component {
     redirect = () => {
         if (this.props.submit) {
@@ -23,7 +23,7 @@ class Search extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const search = state.searchReducers
+    const search = state.searchReducer
     return {
         search: search.search,
         submit: search.submit
@@ -34,11 +34,11 @@ const mapDispatchToProps = (dispatch) => {
     return {
         handleSearch: (e) => {
             const search = e.target.value
-            dispatch(actions.storeSearch(search))
+            dispatch(actions_search.storeSearch(search))
         },
         handleSubmit: (e) =>{
             e.preventDefault();
-            dispatch(actions.submitSearch())
+            dispatch(actions_search.submitSearch())
         }
     }
 }

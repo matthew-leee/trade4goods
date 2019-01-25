@@ -1,4 +1,4 @@
-const searchReducers = (state = {
+const searchReducer = (state = {
     search: "",
     submit: ""
 }, action) => {
@@ -26,4 +26,4 @@ const searchReducers = (state = {
     }
 }
 
-export default searchReducers
+export default searchReducer

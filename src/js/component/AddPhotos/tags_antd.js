@@ -3,7 +3,7 @@ import {
 } from 'antd';
 import React, {Component} from "react"
 import {connect} from "react-redux"
-import actions from "./actions"
+import actions_addPhotos from "../../actions/addPhotos"
 
 class GeneralTags extends Component {
     constructor(props){
@@ -40,7 +40,7 @@ const mapStateToProps = (state) =>{
 const mapDispatchToProps = (dispatch)=>{
     return {
         handleClose: (tag)=>{
-            dispatch(actions.AddPhotosForm_deleteTag(tag))
+            dispatch(actions_addPhotos.AddPhotosForm_deleteTag(tag))
         }
     }
 }

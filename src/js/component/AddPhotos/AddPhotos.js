@@ -5,14 +5,12 @@ import {
   Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete, Tag
 } from 'antd';
 import TextArea from "antd/lib/input/TextArea";
-import FormItem from "antd/lib/form/FormItem";
-import actions from "./actions"
+import actions_addPhotos from "../../actions/addPhotos"
 import { connect } from "react-redux"
 import GeneralTags from "./tags_antd"
 import uuidv1 from "uuid/v1"
 
 const { Option } = Select;
-const AutoCompleteOption = AutoComplete.Option;
 
 const residences = [
   {
@@ -228,7 +226,7 @@ class AddPhotoForm extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const s = state.photoReducers
+  const s = state.photoReducer
   return {
     typingTag: s.typingTag,
     finishedTag: s.finishedTag,
@@ -241,9 +239,9 @@ const mapDispatchToProps = (dispatch) => {
     handleTagChange: (e) => {
       const input = e.target.value
       if (input.indexOf(" ") == input.length - 1) {
-        dispatch(actions.AddPhotosForm_finishedTag(input.slice(0, input.length - 1)))
+        dispatch(actions_addPhotos.AddPhotosForm_finishedTag(input.slice(0, input.length - 1)))
       } else {
-        dispatch(actions.AddPhotosForm_typingTag(input))
+        dispatch(actions_addPhotos.AddPhotosForm_typingTag(input))
       }
     },
     handleFiles: (e) => {
@@ -258,13 +256,13 @@ const mapDispatchToProps = (dispatch) => {
           const reader = new FileReader();
           reader.readAsDataURL(file)
           reader.onloadend = () => {
-            dispatch(actions.PreviewPhotos({
+            dispatch(actions_addPhotos.PreviewPhotos({
               src: reader.result,
               key: String(uuidv1())
             }))
           }
         } else {
-          dispatch(actions.PreviewPhotos({
+          dispatch(actions_addPhotos.PreviewPhotos({
             src: "fail",
             key: String(uuidv1())
           }))

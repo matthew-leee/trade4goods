@@ -1,4 +1,4 @@
-const actions = {
+const actions_search = {
     storeSearch: (value)=>{
         return {
             type: "STORE_SEARCH",
@@ -12,4 +12,4 @@ const actions = {
     }
 }
 
-export default actions
+export default actions_search

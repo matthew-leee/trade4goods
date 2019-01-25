@@ -2,7 +2,7 @@ import React from 'react';
 import RegistrationForm from './RegistrationForm'
 import LoginForm from './LoginForm'
 import { connect } from "react-redux";
-
+import {Link} from "react-router-dom"
 
 
 
@@ -36,7 +36,7 @@ class ConnectedNavvv extends React.Component {
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     
-                <a className="navbar-brand d-inline" href="#">Trade4Goods</a>
+                <Link className="navbar-brand d-inline" to="/">Trade4Goods</Link>
                 <div class="input-group" style={{width:"30%"}}>
                     <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1" />
                     <div class="input-group-append">
@@ -68,6 +68,15 @@ class ConnectedNavvv extends React.Component {
                         {!this.props.isLogin && <li className="nav-item">
                             <a className="nav-link" onClick={this.handleRegToggle}>Register</a>
                         </li>}
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/addPhotos">Add Photos</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/userPage">User Page</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/search">Search</Link>
+                        </li>
                     </ul>
                 </div>
                 {this.state.tryLogin && <LoginForm handleLogin={this.handleLoginToggle} />}

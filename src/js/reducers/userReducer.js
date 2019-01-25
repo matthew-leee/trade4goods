@@ -1,5 +1,5 @@
 
-const userReducers = (state = {
+const userReducer = (state = {
     openModal: false,
     products: [],
     result: ""
@@ -50,4 +50,4 @@ const userReducers = (state = {
     }
 }
 
-export default userReducers
+export default userReducer

@@ -44,7 +44,7 @@ class ProductDetails extends Component {
         })
         return (
             <div>
-                <Row gutter={10}>
+                <Row gutter={100}>
                     <Col span={8}>
                         <div className="imageCarosel">
                             <h2>{u.name}</h2>
