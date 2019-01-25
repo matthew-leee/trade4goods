@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { hello } from '../actions/hello'
+import { hello } from '../js/actions/hello'
 
 
 const mapDispatchToProps = (dispatch) => {

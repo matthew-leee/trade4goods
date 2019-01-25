@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import IgFetch from "./IgFetch"
 import Home from "./Home"
-import WrappedAddPhotoForm from "./js/component/AddPhotos/AddPhotos"
-import UserPage from "./js/component/UserPage/main"
-import Search from "./js/component/Search/Search"
+import WrappedAddPhotoForm from "../js/component/AddPhotos/AddPhotos"
+import UserPage from "../js/component/UserPage/main"
+import Search from "../js/component/Search/Search"
 import {
   BrowserRouter,
   Route,

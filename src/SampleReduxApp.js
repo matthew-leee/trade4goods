@@ -8,7 +8,7 @@ import MainGrid from './js/component/MainGrid'
 
 import AddPhotos from "./js/component/AddPhotos/AddPhotos"
 import UserPage from "./js/component/UserPage/main"
-import Search from "./js/component/Search/Search"
+import "./App.css"
 
 import {
     BrowserRouter,

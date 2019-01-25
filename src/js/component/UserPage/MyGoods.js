@@ -1,12 +1,15 @@
-import { Card, Icon, Popconfirm, message, Button, Modal } from "antd"
+import { Card, Icon, Popconfirm, message, Button, Modal, Row, Col } from "antd"
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import actions_userPage from "../../actions/userPage"
 import products from "../../../FakeData/products"
-import GeneralTags from "../AddPhotos/tags_antd"
-import ProductDetails from "./Details"
+import MyGoodsCard from "./cards/MyGoodsCard"
+
+import Popup from 'reactjs-popup'   //npm Reactjs-Popup
+import { popUpCloseTag, content } from '../compCSS/popupCss'
 
 class MyGoods extends Component {
+
     componentDidMount() {
         products.forEach((u) => {
             u.openOneModal = false
@@ -14,11 +17,11 @@ class MyGoods extends Component {
         this.props.handleProducts(products)
     }
     rerouteSearch = () => {
-        if (this.props.submit){
+        if (this.props.submit) {
             this.props.saveSearch(this.props.submit)
             this.props.clearSearch()
         }
-    }   
+    }
     handleEdit = (e) => {
         const boo = window.confirm("edit?")
         if (boo) {
@@ -44,52 +47,52 @@ class MyGoods extends Component {
     }
 
     render() {
+        console.log (this.props.products)
         const cards = this.props.products
-        .slice(0, 3)
-        .map((u) => {
-            return (
-                <div>
-                    <Card
-                        style={{ width: 180 }}
-                        cover={
-                            <img
-                                alt={u.name}
-                                src={u.image[0]}
-                                onClick={() => { this.props.handleOneModal(u.product_id) }}
-                            />
-                        }
-                        actions={[
-                            <Icon type="edit" onClick={this.handleEdit} />,
-                            <Icon type="delete" onClick={this.handleDelete} />
-                        ]}
-                        key={u.product_id}
-                        id={u.product_id}
-                    >
-                        <Card.Meta
-                            title={u.name}
+            .slice(0, 3)
+            .map((u) => {
+                return (
+                    <div>
+                        <MyGoodsCard
+                            name={u.name}
+                            image={u.image[0]}
+                            id={u.product_id}
                             description={u.description}
+                            tags={u.tags}
+                            handleEdit={this.handleEdit}
+                            handleDelete={this.handleDelete}
+                            handleOneModal={this.props.handleOneModal}
+                            openOneModal={u.openOneModal}
+                            allDetails={u}
                         />
-                        <GeneralTags tags={u.tags} closable={false} />
-
-                    </Card>
-                    <Modal
-                        centered
-                        visible={u.openOneModal}
-                        onCancel={() => { this.props.handleOneModal(u.product_id) }}
-                        onOk={() => { this.props.handleOneModal(u.product_id) }}
-                    >
-                        <ProductDetails details={u} />
-                    </Modal>
-                </div>
-
-            )
-        })
+                    </div>
+                )
+            })
+        const allCards = this.props.products
+            .map((u) => {
+                return (
+                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >
+                        <MyGoodsCard
+                            name={u.name}
+                            image={u.image[0]}
+                            id={u.product_id}
+                            description={u.description}
+                            tags={u.tags}
+                            handleEdit={this.handleEdit}
+                            handleDelete={this.handleDelete}
+                            handleOneModal={this.props.handleOneModal}
+                            openOneModal={u.openOneModal}
+                            allDetails={u}
+                        />
+                    </Col>
+                )
+            })
         return (
             <div className="myGoods">
-            {this.rerouteSearch()}
+                {this.rerouteSearch()}
                 <Card
-                    title="MyGoods"
-                    style={{ width: 800 }}
+                    title="My Goods"
+                    style={{ width: "40vw" }}
                 >
                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                         {cards}
@@ -97,14 +100,20 @@ class MyGoods extends Component {
                             <Button onClick={this.props.handleModal}>
                                 click me bastard
                             </Button>
-                            <Modal
-                                title="Add Photos"
-                                centered
-                                visible={this.props.openModal}
-                                onCancel={this.props.handleModal}
-                                onOk={this.props.handleModal}
-                            >
-                            </Modal>
+
+                            {this.props.openModal && 
+                            <Popup open={true} closeOnDocumentClick onClose={this.props.handleModal}>
+                                <div style={content} >
+                                    <a style={popUpCloseTag} onClick={this.props.handleModal}>&times;</a>
+                                    <div>
+                                        <h1>My Goods</h1>
+                                        <Row gutter={{ xs: 4, sm: 8, md: 16, lg: 16 }}>
+                                            {allCards}
+                                        </Row>
+                                    </div>
+                                </div>
+                            </Popup>}
+
                         </div>
                     </div>
                 </Card>
@@ -137,10 +146,10 @@ const mapDispatchToProps = (dispatch) => {
         handleOneModal: (id) => {
             dispatch(actions_userPage.openOneModal(id))
         },
-        saveSearch: (result) =>{
+        saveSearch: (result) => {
             dispatch(actions_userPage.saveSearch(result))
         },
-        clearSearch: ()=>{
+        clearSearch: () => {
             dispatch(actions_userPage.clearSearch())
         }
     }
