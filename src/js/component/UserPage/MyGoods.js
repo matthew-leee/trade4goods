@@ -47,7 +47,6 @@ class MyGoods extends Component {
     }
 
     render() {
-        console.log (this.props.products)
         const cards = this.props.products
             .slice(0, 3)
             .map((u) => {
