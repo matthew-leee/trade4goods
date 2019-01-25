@@ -1,6 +1,3 @@
-import React from 'react';
-
-
 export const popUpCloseTag = {
     cursor: 'pointer',
     position: 'absolute',
@@ -20,5 +17,4 @@ export const content = {
     width: '100%',
     height:'100%',
     padding: '12px',
-    
 }

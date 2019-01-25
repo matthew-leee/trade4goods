@@ -6,36 +6,28 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Navvv from './js/component/Navvv'
 import MainGrid from './js/component/MainGrid'
 
-import WrappedAddPhotoForm from "./js/component/AddPhotos/AddPhotos"
+import AddPhotos from "./js/component/AddPhotos/AddPhotos"
 import UserPage from "./js/component/UserPage/main"
-import Search from "./js/component/Search/search"
+import Search from "./js/component/Search/Search"
 
 import {
     BrowserRouter,
-    Route,
-    Link
+    Route
 } from 'react-router-dom'
 
 class App extends Component {
-    constructor(props) {
-        super(props)
-
-    }
-
-
     render() {
         return (
             <BrowserRouter>
                 <div>
                     <Navvv />
-                    <Route exact path={"/"} component={MainGrid} />
-                    <Route path={"/addPhotos"} component={WrappedAddPhotoForm} />
-                    <Route path={"/userPage"} component={UserPage} />
-                    <Route path={"/search"} component={Search} />
+                    <div>
+                        <Route exact path={"/"} component={MainGrid} />
+                        <Route path={"/addPhotos"} component={AddPhotos} />
+                        <Route path={"/userPage"} component={UserPage} />
+                    </div>
                 </div>
             </BrowserRouter>
-
-
         );
     }
 }

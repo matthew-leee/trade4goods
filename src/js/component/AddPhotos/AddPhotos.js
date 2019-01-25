@@ -273,6 +273,6 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 // set id in the name field
-const WrappedAddPhotoForm = Form.create({ name: 'AddPhotoForm' })(connect(mapStateToProps, mapDispatchToProps)(AddPhotoForm));
+const AddPhotos = Form.create({ name: 'AddPhotoForm' })(connect(mapStateToProps, mapDispatchToProps)(AddPhotoForm));
 
-export default WrappedAddPhotoForm
+export default AddPhotos

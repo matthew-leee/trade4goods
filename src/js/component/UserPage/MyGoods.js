@@ -87,7 +87,6 @@ class MyGoods extends Component {
         return (
             <div className="myGoods">
             {this.rerouteSearch()}
-                <h1>{this.props.result}</h1>
                 <Card
                     title="MyGoods"
                     style={{ width: 800 }}
@@ -110,6 +109,7 @@ class MyGoods extends Component {
                         </div>
                     </div>
                 </Card>
+                <h1>{this.props.result}</h1>
             </div>
         )
     }
