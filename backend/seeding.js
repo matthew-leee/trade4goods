@@ -18,8 +18,8 @@ const knex = require('knex')({
 
 
     await knex(seedingTable[0]).del();
-    await knex(seedingTable[1]).del();
     await knex(seedingTable[2]).del();
+    await knex(seedingTable[1]).del();
 
     for (let i = 1; i < fakeDataGenerateNumber; i++) {
         let picUrl = 'https://dummyimage.com/' + Math.floor(Math.random() * (1200 - 350) + 350) + '/' + Math.floor(Math.random() * 999999) + '/' + Math.floor(Math.random() * 999999) + '.png'
@@ -47,7 +47,7 @@ const knex = require('knex')({
         let expectation = faker.lorem.sentences()
         let trade_location = faker.lorem.word()
         let tags = [faker.lorem.word(), faker.lorem.word()]
-        let uploaded_by = i
+        // let uploaded_by = i
         let liked_by = null
         let comments = null
         let offered_by = null
@@ -77,7 +77,7 @@ const knex = require('knex')({
         let chat_basket =null
 
 
-        let cool = { "name": name, "image": image, "description": description, "expectation": expectation, "trade_location": trade_location, "tags": tags, "uploaded_by": uploaded_by, "liked_by": liked_by, "comments": comments, "offered_by": offered_by, "sold_to": sold_to, "sold_at": sold_at }
+        let cool = { "name": name, "image": image, "description": description, "expectation": expectation, "trade_location": trade_location, "tags": tags, "liked_by": liked_by, "comments": comments, "offered_by": offered_by, "sold_to": sold_to, "sold_at": sold_at }
 
         let cooool = { "username": username, "password": password, "email": email, "email_isVerifying": email_isVerifying, "google_id": google_id, "facebook_id": facebook_id, "access_token": access_token }
 
@@ -86,7 +86,7 @@ const knex = require('knex')({
         console.log(cool,cooool,coooooooool)
 
 
-        productArr.push({ "name": name, "image": image, "description": description, "expectation": expectation, "trade_location": trade_location, "tags": tags, "uploaded_by": uploaded_by, "liked_by": liked_by, "comments": comments, "offered_by": offered_by, "sold_to": sold_to, "sold_at": sold_at })
+        productArr.push({ "name": name, "image": image, "description": description, "expectation": expectation, "trade_location": trade_location, "tags": tags, "liked_by": liked_by, "comments": comments, "offered_by": offered_by, "sold_to": sold_to, "sold_at": sold_at })
 
         userCreArr.push({ "username": username, "password": password, "email": email, "email_isVerifying": email_isVerifying, "google_id": google_id, "facebook_id": facebook_id, "access_token": access_token })
 
@@ -94,11 +94,19 @@ const knex = require('knex')({
         console.log("looks good count:" + i)
     }
     await knex(seedingTable[1]).insert(userCreArr)
+    
+    // await knex(seedingTable[0]).insert(productArr)
+    // const userCIds = await knex.select("user_id").from('users_credential')
+    // usersArr.forEach((u, i)=>{
+    //     u.user_id = userCIds[i]
+    // })
     await knex(seedingTable[2]).insert(usersArr)
+
+    const userIds = await knex.select("user_id").from('users')
+    productArr.forEach((u, i)=>{
+        u.user_id = userIds[i]
+    })
     await knex(seedingTable[0]).insert(productArr)
-
-
-
     console.log("success update table data: " + seedingTable)
 
 })();
