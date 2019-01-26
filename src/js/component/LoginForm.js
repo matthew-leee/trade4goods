@@ -23,10 +23,19 @@ class NormalLoginForm extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields(async (err, values) => {
             if (!err) {
                 //some stuff is success
                 console.log('Received values of form: ', values);
+                const newValue = {
+                    username: values.userId,
+                    email: values.email,
+                    password: values.password,
+                    confirmed_password: values.password
+                }
+                console.log(`newValue = ${newValue}`)
+                // {userId: "happyhappy", email: "happy@gmail.com", 
+                // password: "happy12345", confirm: "happy12345", instagram: "oldmatt", …}
                 this.setState({ open: false }) // it will close the form immediately
             }
         });
