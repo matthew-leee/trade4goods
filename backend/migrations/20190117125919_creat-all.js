@@ -39,8 +39,8 @@ exports.up = function (knex, Promise) {
             table.increments('product_id').unsigned().primary();
             table.string('name').notNullable();
             table.binary('image').notNullable();
-            table.string('description').nullable();
-            table.string('expectation').notNullable().defaultTo('free to offer');
+            table.string('description',1000).nullable();
+            table.string('expectation',1000).notNullable().defaultTo('free to offer');
             table.string('trade_location').nullable();
             table.specificType('tags', 'VARCHAR[]').nullable();
             table.integer('uploaded_by').notNullable().references('user_id').inTable('users');
