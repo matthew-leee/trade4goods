@@ -23,13 +23,15 @@ class MainCard extends React.Component {
         };
         img.onerror = () => {
           this.setState({
-            error: true
+            loading: false,
+            error: true,
+            imgPic: require('./asset/gif/error404.gif')
           });
         };
       }
-    render() {
 
-   
+
+    render() {
 
         return (
             <Card hoverable style={{ width: "100%", marginTop:"10px"}} cover={<img alt="example" src={this.state.imgPic} />} 
@@ -39,8 +41,6 @@ class MainCard extends React.Component {
             </Skeleton>
             </Card>
         )
-
-
     }
 }
 
