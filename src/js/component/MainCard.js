@@ -12,9 +12,9 @@ class MainCard extends React.Component {
     }
     render() {
         return (
-            <Card hoverable style={{ width: "100%" }} cover={<img alt="example" src={this.props.imgUrl} />} 
+            <Card hoverable style={{ width: "100%", flexDirection: "column" }} cover={<img alt="example" src={this.props.imgUrl} />} 
             actions={[<Icon type="heart" />, <Icon type="message" />, <Icon type="share-alt" />]} >
-                <Meta title="Europe Street beat" description="www.instagram.com" />
+                <Meta title={this.props.name} description={this.props.description} />
             </Card>
         )
 
