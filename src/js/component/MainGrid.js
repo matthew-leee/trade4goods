@@ -65,7 +65,7 @@ class MainGrid extends React.Component {
     render() {
 
         // infinite scrolling bottom div
-        const loader = <div className="loader">Loading ...</div>;
+        const loader = <div className="loader" key={0}>Loading ...</div>;
 
         // Seprate product into 6 rows
         let cards = this.state.showArr.map((el) => {
