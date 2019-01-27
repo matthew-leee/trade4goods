@@ -3,7 +3,7 @@ import RegistrationForm from './RegistrationForm'
 import LoginForm from './LoginForm'
 import { connect } from "react-redux";
 import {Link} from "react-router-dom"
-import Search from "./Search/Search"
+import Search from "./Search/search"
 
 
 const mapStateToProps = state => {

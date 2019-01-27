@@ -3,7 +3,7 @@ import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Butto
 import Popup from 'reactjs-popup'   //npm Reactjs-Popup
 import { popUpCloseTag, content } from './compCSS/popupCss'
 import TermsAndConditions from './TermsAndCondition'
-
+import axios from 'axios'
 
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
@@ -35,10 +35,12 @@ class RegistrationFormgp extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.form.validateFieldsAndScroll((err, values) => {
+        this.props.form.validateFieldsAndScroll(async (err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-                console.log(values.email)
+                let res = await axios.post('https://localhost:8443/api/signup',values)
+                console.log(res)
+
                 this.setState({ open: false }) // it will close the form immediately
             }
         });
@@ -117,7 +119,7 @@ class RegistrationFormgp extends React.Component {
                             {...formItemLayout}
                             label="Username"
                         >
-                            {getFieldDecorator('userId', {
+                            {getFieldDecorator('username', {
                                 rules: [{ required: true, message: 'Please input your Username!', whitespace: true }],
                             })(
                                 <Input />

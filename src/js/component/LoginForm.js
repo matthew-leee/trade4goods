@@ -26,6 +26,8 @@ class NormalLoginForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 //some stuff is success
+
+
                 console.log('Received values of form: ', values);
                 this.setState({ open: false }) // it will close the form immediately
             }
