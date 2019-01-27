@@ -12,14 +12,14 @@ const knex = require('knex')({
 (async function excalibur() {
     let productArr = [];
     let seedingTable = 'products'
-    let fakeDataGenerateNumber = 50
+    let fakeDataGenerateNumber = 200
 
 
     await knex(seedingTable).del();
 
     for (let i = 1; i < fakeDataGenerateNumber; i++) {
-        let picUrl = 'https://dummyimage.com/' + Math.floor(Math.random() * (1200 - 350) + 350) + '/' + Math.floor(Math.random() * 999999) + '/' + Math.floor(Math.random() * 999999) + '.png'
-        let picUrl2 = 'https://dummyimage.com/' + Math.floor(Math.random() * (1200 - 350) + 350) + '/' + Math.floor(Math.random() * 999999) + '/' + Math.floor(Math.random() * 999999) + '.png'
+        let picUrl = 'https://dummyimage.com/' + Math.floor(Math.random() * (1200 - 350) + 350) +'x'+Math.floor(Math.random() * (1200 - 350) + 350)+ '/' + Math.floor(Math.random() * 999999) + '/' + Math.floor(Math.random() * 999999) + '.png'
+        let picUrl2 = 'https://dummyimage.com/' + Math.floor(Math.random() * (1200 - 350) + 350) +'x'+Math.floor(Math.random() * (1200 - 350) + 350)+  '/' + Math.floor(Math.random() * 999999) + '/' + Math.floor(Math.random() * 999999) + '.png'
 
         //product table
         let name = faker.commerce.productName()

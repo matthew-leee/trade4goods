@@ -13,7 +13,7 @@ const knex = require('knex')({
     let userCreArr = [];
     let usersArr = [];
     let seedingTable = ['users_credential','users']
-    let fakeDataGenerateNumber = 50
+    let fakeDataGenerateNumber = 200
 
 
     await knex(seedingTable[0]).del();
