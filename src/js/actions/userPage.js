@@ -26,6 +26,12 @@ const actions_userPage = {
         return {
             type: "CLEAR_SEARCH"
         }
+    },
+    storeUser: (user) => {
+        return {
+            type: "STORE_USER",
+            user: user
+        }
     }
 }
 

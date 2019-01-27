@@ -2,7 +2,8 @@
 const userReducer = (state = {
     openModal: false,
     products: [],
-    result: ""
+    result: "",
+    user: []
 }, action) => {
     switch (action.type) {
         case "OPEN_MODAL":
@@ -19,13 +20,13 @@ const userReducer = (state = {
             }
         case "FETCH_PRODUCTS":
             return {
-                ...state, 
+                ...state,
                 products: action.products
             }
         case "OPEN_ONE_MODAL":
-            const newProducts = state.products.map((u)=>{
-                if (u.product_id == action.id){
-                    if (u.openOneModal){
+            const newProducts = state.products.map((u) => {
+                if (u.product_id == action.id) {
+                    if (u.openOneModal) {
                         u.openOneModal = false
                         return u
                     } else {
@@ -44,6 +45,12 @@ const userReducer = (state = {
             return {
                 ...state,
                 result: action.result
+            }
+        case "STORE_USER":
+        const user = action.user
+            return {
+                ...state,
+                user: [...user]
             }
         default:
             return state

@@ -26,6 +26,8 @@ class NormalLoginForm extends React.Component {
         this.props.form.validateFields(async (err, values) => {
             if (!err) {
                 //some stuff is success
+
+
                 console.log('Received values of form: ', values);
                 const newValue = {
                     username: values.userId,

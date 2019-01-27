@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { Row, Col } from "antd"
 import { connect } from "react-redux"
+import UserPanel from "./UserPanel"
 import MyGoods from "./MyGoods"
 import FollowedPost from "./FollowedPost"
 import SentReq from "./SentReq"
@@ -11,6 +12,7 @@ class UserPage extends Component {
     render() {
         return (
             <div className="userPage">
+                <UserPanel />
                 <Row>
                     <Col span={12} >
                         <MyGoods/>
