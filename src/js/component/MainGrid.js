@@ -13,8 +13,9 @@ class MainGrid extends React.Component {
         this.state = {
             productsArr: [],
             showArr: [],
-            countDownShowBatchNumber: 0
-
+            remainShowingBatch: 0,
+            showingBatch: 0,
+            hasmore: true
         }
     }
 
@@ -34,15 +35,30 @@ class MainGrid extends React.Component {
             .then(res => {
 
                 let shuffleArr = this.shuffleArray(res.data)
-                let countDownShowBatchNumber = Math.floor(shuffleArr.length / 50)
+                let remainShowingBatch = Math.floor(shuffleArr.length / 50)
                 let showArr = shuffleArr.slice(0, 50)
                 let copyState = { ...this.state }
                 copyState.productsArr = shuffleArr
                 copyState.showArr = showArr
-                copyState.countDownShowBatchNumber = countDownShowBatchNumber
+                copyState.remainShowingBatch = remainShowingBatch
                 this.setState(copyState)
             })
     }
+
+
+    showMoreItems(page) {
+        let copyState = { ...this.state }
+        if (this.state.remainShowingBatch > this.state.showingBatch) {
+            let newItemsArr = this.state.productsArr.slice(50 * this.state.showingBatch + 50, 50 * this.state.showingBatch + 100)
+            copyState.showArr = [...this.state.showArr, ...newItemsArr]
+            copyState.showingBatch = this.state.showingBatch + 1
+            this.setState(copyState)}
+        if(this.state.remainShowingBatch == page) {
+            copyState.hasmore = false
+            this.setState(copyState)
+        }
+    }
+
 
 
 
@@ -52,7 +68,7 @@ class MainGrid extends React.Component {
         const loader = <div className="loader">Loading ...</div>;
 
         // Seprate product into 6 rows
-        let cards = this.state.productsArr.map((el) => {
+        let cards = this.state.showArr.map((el) => {
             if (el.description.length > 135) {
                 el.description = el.description.slice(0, 135) + " ....."
             }
@@ -75,14 +91,23 @@ class MainGrid extends React.Component {
             <div>
 
                 <Row type="flex" gutter={10}>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c1}</Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c2}</Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c3}</Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c4}</Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c5}</Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c6}</Col>
-                </Row>
 
+                   
+
+                        <Col xs={24} sm={12} md={8} lg={6} xl={4} > <InfiniteScroll
+                        pageStart={0}
+                        loadMore={this.showMoreItems.bind(this)}
+                        hasMore={this.state.hasmore}
+                        loader={loader} useWindow={true}>{c1}</InfiniteScroll></Col>
+                        <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c2}</Col>
+                        <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c3}</Col>
+                        <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c4}</Col>
+                        <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c5}</Col>
+                        <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c6}</Col>
+
+
+               
+                </Row>
             </div>
         )
     }
