@@ -36,7 +36,7 @@ module.exports = (router) => {
         try {
             console.log("someone request all products")
             let data = await knex.raw("select * from products")
-            res.send(JSON.stringify(data))
+            res.send(JSON.stringify(data.rows))
         } catch (err) {
             const statusCode = err.statusCode || 500
             delete err.statusCode
