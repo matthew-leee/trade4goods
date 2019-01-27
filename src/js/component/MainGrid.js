@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Col, } from 'antd';
 import MainCard from './MainCard'
 import Axios from 'axios';
-
+import InfiniteScroll from 'react-infinite-scroller';
 
 
 
@@ -11,14 +11,11 @@ class MainGrid extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            productsArr: []
+            productsArr: [],
+            showArr: [],
+            countDownShowBatchNumber: 0
+
         }
-    }
-    componentDidMount() {
-        Axios.get('https://localhost:8443/getallproductsplease')
-            .then(res => {
-                this.setState({ productsArr: res.data })
-            })
     }
 
     shuffleArray(a) {
@@ -32,8 +29,27 @@ class MainGrid extends React.Component {
         return a;
     }
 
+    componentDidMount() {
+        Axios.get('https://localhost:8443/getallproductsplease')
+            .then(res => {
+
+                let shuffleArr = this.shuffleArray(res.data)
+                let countDownShowBatchNumber = Math.floor(shuffleArr.length / 50)
+                let showArr = shuffleArr.slice(0, 50)
+                let copyState = { ...this.state }
+                copyState.productsArr = shuffleArr
+                copyState.showArr = showArr
+                copyState.countDownShowBatchNumber = countDownShowBatchNumber
+                this.setState(copyState)
+            })
+    }
+
+
 
     render() {
+
+        // infinite scrolling bottom div
+        const loader = <div className="loader">Loading ...</div>;
 
         // Seprate product into 6 rows
         let cards = this.state.productsArr.map((el) => {
@@ -41,16 +57,16 @@ class MainGrid extends React.Component {
                 el.description = el.description.slice(0, 135) + " ....."
             }
             return (
-                <MainCard description={el.description} name={el.name} imgUrl={el.image[0]} />
+                <MainCard key={el.product_id} description={el.description} name={el.name} imgUrl={el.image[0]} />
             )
         })
-        let bb = this.shuffleArray(cards)
-        let c1 = bb.filter((el, i) => { return ((i + 1) % 6 === 1) })
-        let c2 = bb.filter((el, i) => { return ((i + 1) % 6 === 2) })
-        let c3 = bb.filter((el, i) => { return ((i + 1) % 6 === 3) })
-        let c4 = bb.filter((el, i) => { return ((i + 1) % 6 === 4) })
-        let c5 = bb.filter((el, i) => { return ((i + 1) % 6 === 5) })
-        let c6 = bb.filter((el, i) => { return ((i + 1) % 6 === 0) })
+
+        let c1 = cards.filter((el, i) => { return ((i + 1) % 6 === 1) })
+        let c2 = cards.filter((el, i) => { return ((i + 1) % 6 === 2) })
+        let c3 = cards.filter((el, i) => { return ((i + 1) % 6 === 3) })
+        let c4 = cards.filter((el, i) => { return ((i + 1) % 6 === 4) })
+        let c5 = cards.filter((el, i) => { return ((i + 1) % 6 === 5) })
+        let c6 = cards.filter((el, i) => { return ((i + 1) % 6 === 0) })
 
 
 
@@ -58,7 +74,7 @@ class MainGrid extends React.Component {
         return (
             <div>
 
-                <Row type="flex" gutter={{ xs: 4, sm: 8, md: 16, lg: 16 }}>
+                <Row type="flex" gutter={10}>
                     <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c1}</Col>
                     <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c2}</Col>
                     <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c3}</Col>
