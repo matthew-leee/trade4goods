@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Col, } from 'antd';
 import MainCard from './MainCard'
 import Axios from 'axios';
-const faker = require('faker');
+
 
 
 
@@ -10,15 +10,15 @@ const faker = require('faker');
 class MainGrid extends React.Component {
     constructor(props) {
         super(props)
-        this.state={
+        this.state = {
             productsArr: []
         }
     }
-    componentDidMount(){
+    componentDidMount() {
         Axios.get('https://localhost:8443/getallproductsplease')
-        .then(res=>{
-            this.setState({productsArr:res.data})
-        })
+            .then(res => {
+                this.setState({ productsArr: res.data })
+            })
     }
 
     shuffleArray(a) {
@@ -31,44 +31,42 @@ class MainGrid extends React.Component {
         }
         return a;
     }
-    
-    
-    render() {
-        
-        let cards = this.state.productsArr.map((el)=>{
-            if (el.description.length > 135){
-                el.description = el.description.slice(0,135) + " ....."
-            }
 
-            return(
-               <MainCard description={el.description} name={el.name} imgUrl={el.image[0]}/>
+
+    render() {
+
+        // Seprate product into 6 rows
+        let cards = this.state.productsArr.map((el) => {
+            if (el.description.length > 135) {
+                el.description = el.description.slice(0, 135) + " ....."
+            }
+            return (
+                <MainCard description={el.description} name={el.name} imgUrl={el.image[0]} />
             )
         })
         let bb = this.shuffleArray(cards)
-        let c1 = bb.filter((el,i)=>{return((i+1) % 6 === 1)})
-        let c2 = bb.filter((el,i)=>{return((i+1) % 6 === 2)})
-        let c3 = bb.filter((el,i)=>{return((i+1) % 6 === 3)})
-        let c4 = bb.filter((el,i)=>{return((i+1) % 6 === 4)})
-        let c5 = bb.filter((el,i)=>{return((i+1) % 6 === 5)})
-        let c6 = bb.filter((el,i)=>{return((i+1) % 6 === 0)})
-    
-        
-        
+        let c1 = bb.filter((el, i) => { return ((i + 1) % 6 === 1) })
+        let c2 = bb.filter((el, i) => { return ((i + 1) % 6 === 2) })
+        let c3 = bb.filter((el, i) => { return ((i + 1) % 6 === 3) })
+        let c4 = bb.filter((el, i) => { return ((i + 1) % 6 === 4) })
+        let c5 = bb.filter((el, i) => { return ((i + 1) % 6 === 5) })
+        let c6 = bb.filter((el, i) => { return ((i + 1) % 6 === 0) })
+
+
+
 
         return (
             <div>
-                
-                <Row type="flex" gutter={{xs: 4, sm: 8, md: 16, lg: 16}}>
-                <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c1}</Col>
-                <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c2}</Col>
-                <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c3}</Col>
-                <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c4}</Col>
-                <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c5}</Col>
-                <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c6}</Col>
 
-                    {/* {cards} */}
+                <Row type="flex" gutter={{ xs: 4, sm: 8, md: 16, lg: 16 }}>
+                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c1}</Col>
+                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c2}</Col>
+                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c3}</Col>
+                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c4}</Col>
+                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c5}</Col>
+                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c6}</Col>
                 </Row>
-            
+
             </div>
         )
     }
