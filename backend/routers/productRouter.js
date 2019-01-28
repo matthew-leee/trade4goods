@@ -1,6 +1,6 @@
 'use strict'
 module.exports = (authService, productService) => {
-    router.post('/api/product/', (req, res) => {
+    router.post('/api/product/', async (req, res) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
             if (user_id) {
@@ -16,7 +16,18 @@ module.exports = (authService, productService) => {
         }
     })
 
-    router.put('/api/product/', (req, res) => {
+    router.get('/api/product/:id', async (req, res) => {
+        try {
+            const productInfo = await productService.getProduct(req.params.id)
+            res.send(200).json(productInfo);
+        } catch (err) {
+            const statusCode = err.statusCode || 500
+            delete err.statusCode
+            res.status(statusCode).json(err)
+        }
+    })
+
+    router.put('/api/product/', async (req, res) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
             if (user_id) {
@@ -32,7 +43,7 @@ module.exports = (authService, productService) => {
         }
     })
 
-    router.delete('/api/product/:id', (req, res) => {
+    router.delete('/api/product/:id', async (req, res) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
             if (user_id) {
