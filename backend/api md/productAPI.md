@@ -43,6 +43,36 @@ status: 401 Unauthorized
 
 ---
 
+## GET
+
+- product profile
+
+    *GET: /api/product/:id*
+
+response format
+
+```
+{
+    product_id: int
+    name: string
+    image: bytea | null
+    description: string | null
+    trade_location: string | null
+    expectation: string
+    tags: string[]
+    uploaded_by: int (user_id)
+    uploaded_at: date
+    liked_by: int[] (user_id[]) | null
+    offered_by: int[] (product_id[]) | null
+    comments: string | null
+    sold_to: int (user_id) | null
+    sold_at: date | null
+    status: int (1: available, 2: under offered, 3: trading, 4: sold out)
+}
+```
+
+----
+
 ## PUT
 
 - upload product

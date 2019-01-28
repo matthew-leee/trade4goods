@@ -18,8 +18,6 @@ response format
     profile_picture: bytea (base64 encoded image) | null,
     uploaded_products: null | int[] (product_id),
     liked_products: null | int[] (product_id),
-    offered_products: null | int[] (product_id),
-    products_being_offered: null | int[] (product_id),
     trade_history: null | int[] (product_id),
     credibility: int,
     chat_basket: null | int[] (chat_id) 
