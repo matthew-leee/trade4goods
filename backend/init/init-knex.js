@@ -1,4 +1,3 @@
-'use strict';
 module.exports = knex => knex({
     client: 'postgresql',
     connection: {

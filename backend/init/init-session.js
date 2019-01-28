@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (app, redisClient, expressSession, RedisStore) => {
     const redisStoreSetting = {
         client: redisClient,

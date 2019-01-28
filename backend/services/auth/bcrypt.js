@@ -1,4 +1,3 @@
-'use strict';
 module.exports = class {
     constructor(bcrypt, promisify) {
         this.genSalteAsync = promisify(bcrypt.genSalt)

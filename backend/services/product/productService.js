@@ -1,4 +1,3 @@
-'use strict';
 module.exports = class {
     constructor(knex, userProductService) {
         this.knex = knex
@@ -216,12 +215,15 @@ module.exports = class {
             throw err
         }
     }
+
+
     /* TODO : 
     [x] upload product 
     [x] edit product
     [x] delete product
     [x] get product
     [] offer product
+    [] delete offer product
     [] comment on product
     [] delete comment on product
     [] like product

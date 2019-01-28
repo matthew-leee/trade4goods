@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (router, authService) => {
     router.get('/api/isLoggedIn', async (req,res) => {
         try {

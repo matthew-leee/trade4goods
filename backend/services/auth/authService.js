@@ -1,4 +1,4 @@
-'use strict';
+/* eslint-disable no-throw-literal */
 module.exports = class {
     constructor(axios, bcrypt, jwt, promisify, redisClient, knex, nodemailer, randomstring) {
         this.axios = axios
@@ -46,7 +46,7 @@ module.exports = class {
                         let i = 0;
                         while (usernameExist.username === incomingInfo.username) {
                             if (incomingInfo.username + i !== usernameExist.usernameExist) {
-                                incomingInfo.username + i
+                                incomingInfo.username = incomingInfo.username + i
                             }
                         }
                     }
@@ -79,7 +79,7 @@ module.exports = class {
                         let i = 0;
                         while (usernameExist.username === incomingInfo.username) {
                             if (incomingInfo.username + i !== usernameExist.usernameExist) {
-                                incomingInfo.username + i
+                                incomingInfo.username = incomingInfo.username + i
                             }
                         }
                     }

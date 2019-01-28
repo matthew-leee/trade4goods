@@ -1,4 +1,3 @@
-'use strict';
 module.exports = class {
     constructor(knex) {
         this.knex = knex

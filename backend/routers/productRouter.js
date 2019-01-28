@@ -1,5 +1,4 @@
-'use strict'
-module.exports = (authService, productService) => {
+module.exports = (router, authService, productService) => {
     router.post('/api/product/', async (req, res) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)

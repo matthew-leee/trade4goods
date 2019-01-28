@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (router, authService, profileService) => {
     router.post('/api/profile/', async (req, res) => {
         try {
