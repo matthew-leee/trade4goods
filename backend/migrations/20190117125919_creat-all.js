@@ -20,8 +20,6 @@ exports.up = function (knex, Promise) {
             table.binary('profile_picture').nullable();
             table.specificType('uploaded_products', 'INT[]').nullable();
             table.specificType('liked_products', 'INT[]').nullable();
-            table.specificType('offered_products', 'INT[]').nullable();
-            table.specificType('products_being_offered', 'INT[]').nullable();
             table.specificType('trade_history', 'INT[]').nullable();
             table.integer('credibility').unsigned().defaultTo(5)
             table.specificType('chat_basket', 'INT[]').nullable();
@@ -69,6 +67,15 @@ exports.up = function (knex, Promise) {
             table.timestamp('sent_at').notNullable();
             table.boolean('del_by_user1').notNullable().defaultTo(false);
             table.boolean('del_by_user2').notNullable().defaultTo(false);
+        }),
+
+        knex.schema.createTable('trade_history', table => {
+            table.increments('trade_id').unsigned().primary();
+            table.integer('product_id1').notNullable();
+            table.foreign('product_id1').references('product_id').inTable('products');
+            table.integer('product_id2').notNullable();
+            table.foreign('product_id2').references('product_id').inTable('products');
+            table.timestamp('trade_at').notNullable().defaultTo(knex.fn.now());
         })
     ])
 };
