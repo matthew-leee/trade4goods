@@ -7,7 +7,7 @@ class SuccessfulVerify extends React.Component {
         return (
                 <div style={content} >
                     <div>You Have Successfully Registered. </div>
-                    <p>Please check your mail box and verfy the account in 24 hours</p>
+                    <p>Feel free to play arround!</p>
                 </div>
         )
 
