@@ -1,23 +1,11 @@
-import { Card } from "antd"
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
 class TradeHistory extends Component {
     render() {
         return (
-            <div className="myGoods">
-                <Card
-                    title="MyGoods"
-                    style={{ width: 300 }}
-                >
-                    <p>Card content</p>
-                    <Card
-                        title="MyGoods"
-                        style={{ width: 50 }}
-                    >
-                        <p>Card content</p>
-                    </Card>
-                </Card>
+            <div style={{ width: "15vw", height: "93vh", backgroundColor: "#eafeea", display: "flex", justifyContent: "center" }}>
+                <h1>Trade History</h1>
             </div>
         )
     }

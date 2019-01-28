@@ -12,7 +12,7 @@ class FollowedPostCard extends Component {
         const { name, image, id, description, tags, handleDelete, handleOneModal, openOneModal, allDetails } = this.props
         return (
             <Card
-                style={{width: "10vw"}}
+                style={{width: "7vw"}}
                 cover={
                     <img
                         alt={name}

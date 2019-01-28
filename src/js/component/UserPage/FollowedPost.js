@@ -71,23 +71,23 @@ class FollowedPost extends Component {
                 )
             })
         return (
-            <div className="followedPost">
+            <div className="followedPost" style={{marginRight: "2vw", marginLeft: "2vw"}}>
                 {this.rerouteSearch()}
                 <Card
                     title="Followed Goods"
-                    style={{ width: "40vw" }}
+                    style={{ width: "30vw" }}
                 >
                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                         {cards}
                         <div className="addPhotoBox" style={{ width: 180, height: 180, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", paddingLeft: 10 }}>
-                            <Button onClick={this.props.handleModal}>
+                            <Button onClick={()=>{this.props.handleModal("FP")}}>
                                 click me bastard
                             </Button>
 
-                            {this.props.openModal && 
-                            <Popup open={true} closeOnDocumentClick onClose={this.props.handleModal}>
+                            {this.props.openFPModal && 
+                            <Popup open={true} closeOnDocumentClick onClose={()=>{this.props.handleModal("FP")}}>
                                 <div style={content} >
-                                    <a style={popUpCloseTag} onClick={this.props.handleModal}>&times;</a>
+                                    <a style={popUpCloseTag} onClick={()=>{this.props.handleModal("FP")}}>&times;</a>
                                     <div>
                                         <h1>Followed Post</h1>
                                         <Row gutter={{ xs: 4, sm: 8, md: 16, lg: 16 }}>
@@ -111,7 +111,7 @@ const mapStateToProps = (state) => {
     const s = state.userReducer
     const search = state.searchReducer
     return {
-        openModal: s.openModal,
+        openFPModal: s.openFPModal,
         products: s.products,
         result: s.result,
         submit: search.submit
@@ -120,8 +120,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        handleModal: () => {
-            dispatch(actions_userPage.openModal())
+        handleModal: (column) => {
+            dispatch(actions_userPage.openModal(column))
         },
         handleProducts: (products) => {
             dispatch(actions_userPage.fetchProducts(products))

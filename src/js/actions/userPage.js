@@ -1,7 +1,8 @@
 const actions_userPage = {
-    openModal: ()=>{
+    openModal: (column)=>{
         return {
-            type: "OPEN_MODAL"
+            type: "OPEN_MODAL",
+            column: column
         }
     },
     fetchProducts: (products)=>{
@@ -31,6 +32,11 @@ const actions_userPage = {
         return {
             type: "STORE_USER",
             user: user
+        }
+    },
+    openUploadModal: () => {
+        return {
+            type: "OPEN_UPLOADMODAL"
         }
     }
 }

@@ -36,7 +36,7 @@ class ProductDetails extends Component {
                 description: u.status == 1 ? "Trading" : "Traded",
             }
         ]
-        const comments = u.comments.map((a)=>{
+        const comments = u.comments.map((a) => {
             return {
                 title: a.user,
                 description: a.comment
@@ -71,24 +71,23 @@ class ProductDetails extends Component {
                             </List>
                         </div>
                     </Col>
-                
-                
-                    
+
+
+
                     <Col span={8}>
                         <h4>Comments</h4>
                         <List
-                        itemLayout="horizontal"
-                        dataSource={comments}
-                        renderItem={item=>(
-                            <List.Item key={`${u.product_id}comment`}>
-                                <List.Item.Meta
-                                    title={<h5>{item.title}</h5>}
-                                    description={item.description}
-                                />
-                            </List.Item>
-                        )}
+                            itemLayout="horizontal"
+                            dataSource={comments}
+                            renderItem={item => (
+                                <List.Item key={`${u.product_id}comment`}>
+                                    <List.Item.Meta
+                                        title={<h5>{item.title}</h5>}
+                                        description={item.description}
+                                    />
+                                </List.Item>
+                            )}
                         >
-
                         </List>
                     </Col>
                 </Row>

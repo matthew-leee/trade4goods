@@ -69,9 +69,6 @@ class ConnectedNavvv extends React.Component {
                             <a className="nav-link" onClick={this.handleRegToggle}>Register</a>
                         </li>}
                         <li className="nav-item">
-                            <Link className="nav-link" to="/addPhotos">Add Photos</Link>
-                        </li>
-                        <li className="nav-item">
                             <Link className="nav-link" to="/userPage">User Page</Link>
                         </li>
                     </ul>

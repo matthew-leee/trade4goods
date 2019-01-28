@@ -15,7 +15,7 @@ class ReceivedReqCard extends Component {
         
             return (
                 <Card
-                    style={{ width: "10vw" }}
+                    style={{ width: "7vw" }}
                     cover={
                         <img
                             alt={name}
@@ -34,7 +34,7 @@ class ReceivedReqCard extends Component {
                         title={name}
                         description={description}
                     />
-                    <GeneralTags tags={tags} closable={false} />
+                    {/* <GeneralTags tags={tags} closable={false} /> */}
 
                     {openOneModal && <Popup open={true} closeOnDocumentClick onClose={() => { handleOneModal(id) }}>
                         <div style={content} >
