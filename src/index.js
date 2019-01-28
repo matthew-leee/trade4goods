@@ -9,12 +9,14 @@ import { Provider } from "react-redux"
 import photoReducer from "./js/reducers/photoReducer"
 import userReducer from "./js/reducers/userReducer"
 import searchReducer from "./js/reducers/searchReducer"
+import roootReducer from "./js/reducers/rootReducer"
 import logger from "redux-logger";
 
 const rootReducers = combineReducers ({
     photoReducer,
     userReducer,
-    searchReducer
+    searchReducer,
+    roootReducer
 })
 
 const store = createStore(rootReducers, applyMiddleware(logger))
