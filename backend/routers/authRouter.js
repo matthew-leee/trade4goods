@@ -12,7 +12,7 @@ module.exports = (router, authService) => {
     })
     router.post('/api/signup', async (req, res) => {
         try {
-            await signUp(req.body)
+            await authService.signUp(req.body)
             res.sendStatus(201)
         } catch (err) {
             const statusCode = err.statusCode || 500
