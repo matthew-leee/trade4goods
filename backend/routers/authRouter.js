@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (router, authService) => {
-    router.get('api/isLoggedIn', async (req,res) => {
+    router.get('/api/isLoggedIn', async (req,res) => {
         try {
             (await authService.isAuthenticated(req.session.jwt)) ?
             res.status(200).send(true) : res.status(200).send(false)
