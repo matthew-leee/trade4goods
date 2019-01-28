@@ -1,36 +1,5 @@
 # api (in developement)
 
-
-## GET
-
-- product profile
-
-    *GET: /api/product/:id*
-
-response format
-
-```
-{
-    product_id: int
-    product_name: string
-    product_image: bytea
-    product_description: string
-    trade_location: string
-    expectation: string
-    tags: string[]
-    uploaded by: int (user_id)
-    liked_by: int[]  (user_id[])
-    offered_by: (user_id[])
-    comments: string
-    upload_date: date
-    sold_date: date
-    sold_to: int (user_id)
-    status: string
-}
-```
-
-----
-
 ## GET
 
 - chat messages

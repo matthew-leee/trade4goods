@@ -26,17 +26,11 @@ randomstring = require('randomstring'),
 expressSession = require('express-session'),
 RedisStore = require('connect-redis')(expressSession),
 redis = require('redis'),
-knex = require('knex')({
-  client: 'postgresql',
-  connection: {
-      database: process.env.DB_NAME,
-      user: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-  }
-});
+knex = require('knex');
 
 //modules
 const
+knexClient = require('./init/init-knex')(knex),
 redisClient = require('./init/init-redis')(redis),
 BcryptService = require('./services/auth/bcrypt'),
 NodemailerService = require('./services/auth/mailVerify'),
@@ -46,26 +40,13 @@ UserProductService = require('./services/product/userProductService'),
 ProductService = require('./services/product/productService'),
 Bcrypt = new BcryptService(bcrypt, promisify),
 Nodemailer = new NodemailerService(nodemailer),
-authService = new AuthService(axios, Bcrypt, jwt, promisify, redisClient, knex, Nodemailer, randomstring),
-profileService = new ProfileService(knex),
-userProductService = new UserProductService(knex),
-productService = new ProductService(knex, userProductService),
-router = require('./routers/router')(express, authService, profileService, productService)
+authService = new AuthService(axios, Bcrypt, jwt, promisify, redisClient, knexClient, Nodemailer, randomstring),
+profileService = new ProfileService(knexClient),
+userProductService = new UserProductService(knexClient),
+productService = new ProductService(knexClient, userProductService),
+router = require('./routers/router')(express, authService, profileService, productService, path)
 require('./init/init-session')(app, redisClient, expressSession, RedisStore)
-require('./init/init-app')(app, express, bodyParser, cors, router)
-
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
-
-app.use(cors());
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use("/", router)
+require('./init/init-app')(app, express, bodyParser, cors, router, path)
 
 //server starts
 server.listen(process.env.PORT, () => console.log(`server started at port ${process.env.PORT} at ${new Date()}`));
