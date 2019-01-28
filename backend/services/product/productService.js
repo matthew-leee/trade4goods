@@ -13,7 +13,7 @@ module.exports = class {
                 message: "Unknown Error, Invalid Item Name"
             }
         }
-        if ( !/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/.test(info.image)) {
+        if (!/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/.test(info.image)) {
             throw {
                 statusCode: 415,
                 error: "Invalid Image Format",
@@ -137,28 +137,90 @@ module.exports = class {
     }
 
     async deleteProduct(product_id, user_id) {
-        let originalInfo = await this.knex('products').where('product_id', product_id).andWhere('uploaded_by', user_id)
-        originalInfo = originalInfo[0]
-        if (!originalInfo) {
-            throw {
-                statusCode: 403,
-                error: "Product not belongs to user",
-                message: `user ${user_id} does not own product ${product_id}`
-            }
-        } else {
-            try {
+        try {
+            let originalInfo = await this.knex('products').where('product_id', product_id).andWhere('uploaded_by', user_id)
+            originalInfo = originalInfo[0]
+            if (!originalInfo) {
+                throw {
+                    statusCode: 403,
+                    error: "Product not belongs to user",
+                    message: `user ${user_id} does not own product ${product_id}`
+                }
+            } else {
                 await this.knex('products').where('product_id', product_id).del()
                 await this.toUser.deleteProduct(product_id, user_id)
-            } catch (err) {
-                throw err
             }
+        } catch (err) {
+            throw err
         }
     }
 
+    async getProduct(product_id) {
+        try {
+            let info = await this.knex('products').where('product_id', product_id)
+            info = info[0]
+            if (!info) {
+                throw {
+                    statusCode: 404,
+                    error: "Product not found",
+                    message: `product ${product_id} does not exists`
+                }
+            } else {
+                return info
+            }
+        } catch (err) {
+            throw err
+        }
+    }
+
+    async offerProduct(product_id, user_id, offering_product) {
+        try {
+            let product = await this.knex('products').where('product_id', product_id)
+            product = product[0]
+            let offering = await this.knex('products').where('product_id', offering_product).andWhere('uploaded_by', user_id)
+            offering = offering[0]
+            if (!offering) {
+                throw {
+                    statusCode: 403,
+                    error: "Product not belongs to user",
+                    message: `user ${user_id} does not own product ${product_id}`
+                }
+            } else if (!product) {
+                throw {
+                    statusCode: 404,
+                    error: "Product not found",
+                    message: `product ${product_id} does not exists`
+                }
+            } else if (product.status >= 3) {
+                throw {
+                    statusCode: 400,
+                    error: "Product is sold out",
+                    message: `product ${product.product_id} is under trading and cannot be offered`
+                }
+            } else if (offering.status >= 3) {
+                throw {
+                    statusCode: 400,
+                    erorr: "Product is under trading",
+                    message: `product ${offering.product_id} is under trading and cannot be offered`
+                }
+            } else {
+                const offer = {
+                    status: 2
+                }
+                (product.offered_by) ?
+                offer.offered_by = product.offered_by.push(offering.product_id) :
+                offer.offered_by = [offering.product_id]
+                await this.knex('products').where('product_id', product_id).update(offer)
+            }
+        } catch (err) {
+            throw err
+        }
+    }
     /* TODO : 
     [x] upload product 
     [x] edit product
-    [] delete product
+    [x] delete product
+    [x] get product
     [] offer product
     [] comment on product
     [] delete comment on product

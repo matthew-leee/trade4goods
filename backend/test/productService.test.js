@@ -388,4 +388,35 @@ describe('Product Service', () => {
         expect(userProductService.deleteProduct).toHaveBeenCalledWith(product.product_id, test_user_id);
         done();
     })
+
+    test('should return product info on get with corresponding product id', async done => {
+        const information = {
+            name: 'Test Item',
+            image: image_base64,
+            expectation: 'another item',
+            description: 'This is a test item, to test whether it can be injected into the database and pass tests',
+            trade_locaiton: '127.0.0.1',
+            tags: ['test', 'testing', 'happy testing'],
+        }
+        await productService.uploadProduct(information, test_user_id)
+        let product = await knex('products').where('name', 'Test Item');
+        product = product[0]
+        const info = await productService.getProduct(product.product_id);
+        expect(info).toBeDefined();
+        await knex('products').where('name', 'Test Item').del()
+        done();
+    })
+
+    test('should throw error for non-existing product', async done => {
+        try {
+            await productService.getProduct(0);
+        } catch (err) {
+            expect(err).toEqual({
+                statusCode: 404,
+                error: "Product not found",
+                message: `product 0 does not exists`
+            });
+            done();
+        }
+    })
 })
