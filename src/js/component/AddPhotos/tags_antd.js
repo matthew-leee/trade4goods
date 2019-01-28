@@ -15,7 +15,7 @@ class GeneralTags extends Component {
             const isLongTag = tag.length > 20;
             const tagElem = (
                 // close means delete
-                <Tag key={tag} closable={this.props.closable} id={tag}
+                <Tag style={{marginTop: "0.5vw"}} color="cyan" key={tag} closable={this.props.closable} id={tag}
                 afterClose={() => this.props.handleClose(tag)}
                 >
                     {isLongTag ? `${tag.slice(0, 20)}...` : tag}
