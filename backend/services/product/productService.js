@@ -258,7 +258,7 @@ module.exports = class {
                     message: `product ${product_offered.product_id} does not exists`
                 }
             }
-            const comment_id = await(user_id, comment, product_id);
+            const comment_id = await this.commentService.comment(user_id, comment, product_id);
             product.comments.push(comment_id)
             await this.knex('products').where('product_id', product.product_id).update(products)
         } catch (err) {
@@ -268,8 +268,8 @@ module.exports = class {
 
     async editComment(user_id, comment_id, commnet) {
         try {
-            await commentService.editComment(user_id, comment_id, commnet)
-        } catch(err) {
+            await this.commentService.editComment(user_id, comment_id, commnet)
+        } catch (err) {
             throw err
         }
     }
@@ -287,6 +287,34 @@ module.exports = class {
         }
     }
 
+    async likeUnlikeProduct(user_id, product_id) {
+        try {
+            let product = await this.knex('products').where('product_id', product_id)
+            product = product[0]
+            if (!product) {
+                throw {
+                    statusCode: 404,
+                    error: "Product not found",
+                    message: `product ${product_offered.product_id} does not exists`
+                }
+            }
+            if (product.liked_by.find(e => e === user_id)) {
+                const delIndex = product.liked_by.user_id.indexOf(user_id)
+                product.liked_by.splice(delIndex, 1)
+                await this.toUser.likeProduct(user_id, product_id)
+                await this.knex('products').where('product_id', product_id).update(product)
+                return 'unliked'
+            } else {
+                product.liked_by.push(user_id)
+                await this.toUser.unlikeProduct(user_id, product_id)
+                await this.knex('products').where('product_id', product_id).update(product)
+                return 'liked'
+            }
+        } catch (err) {
+            throw err
+        }
+    }
+
     /* TODO : 
     [x] upload product 
     [x] edit product
@@ -297,8 +325,8 @@ module.exports = class {
     [x] comment on product
     [x] edit comment on product
     [x] delete comment on product
-    [] like product
-    [] dislike product
+    [x] like product
+    [x] dislike product
     [] confirm product trade
 
     product status: available, offered, trading, tradeout
