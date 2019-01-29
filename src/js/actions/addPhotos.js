@@ -34,6 +34,11 @@ const actions_addPhotos = {
             type: "ADDPHOTOSFORM_DELETETAG",
             deleteTag: tag
         }
+    },
+    clearForm: ()=> {
+        return {
+            type: "CLEAR_FORM"
+        }
     }
 }
 

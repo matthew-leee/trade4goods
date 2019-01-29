@@ -16,7 +16,6 @@ const photoReducer = (state = {
     details: [],
     uploadedPhotos: [],
     previewPhotos: [],
-    tags: [],
     inputVisible: false,
     inputValue: "",
     inputConfirm: "",
@@ -53,10 +52,10 @@ const photoReducer = (state = {
             }
         case "ADDPHOTOSFORM_FINISHEDTAG":
             if (action.finishedTag) {
-                const tagExist = state.finishedTag.some((u)=>{
+                const tagExist = state.finishedTag.some((u) => {
                     return u == action.finishedTag
                 })
-                if (!tagExist){
+                if (!tagExist) {
                     return {
                         ...state,
                         finishedTag: [...state.finishedTag, action.finishedTag],
@@ -81,6 +80,13 @@ const photoReducer = (state = {
             return {
                 ...state,
                 finishedTag: filtered
+            }
+        case "CLEAR_FORM":
+            return {
+                ...state,
+                previewPhotos: [],
+                finishedTag: [],
+                uploadedPhotos: []
             }
         default:
             return state

@@ -79,12 +79,12 @@ class AddPhotoForm extends React.Component {
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
         const photos = this.props.previewPhotos
-        .filter((u) => {
-          return u.src != "fail"
-        })
-        .map((u)=>{
-          return u.src
-        })
+          .filter((u) => {
+            return u.src != "fail"
+          })
+          .map((u) => {
+            return u.src
+          })
         values.tags = [...this.props.finishedTag]
         values.photos = [...photos]
         console.log(values)
@@ -94,19 +94,26 @@ class AddPhotoForm extends React.Component {
           expectation: values.expectation,
           trade_location: `${values.location[0]},${values.location[1]}`,
           tags: values.tags,
-          image: values.photos 
+          image: values.photos
         }
-        try{
+        try {
           const addPhotosRes = await Axios("https://localhost:8443/api/product", {
             method: "post",
             data: newValues,
             withCredentials: true
           })
-          console.log (addPhotosRes)
-          message.success("upload success")
-
+          console.log(addPhotosRes)
+          alert("success")
+          this.props.form.setFieldsValue({
+            productName: "",
+            productDescription: "",
+            expectation: "",
+            location: ['HK', 'central']
+          })
+          this.props.handleSubmitForm()
+          document.querySelector("#clearImageField").setAttribute("value", "")
         } catch (err) {
-          console.log (err.response.data)
+          console.log(err.response.data)
         }
       }
     });
@@ -169,7 +176,7 @@ class AddPhotoForm extends React.Component {
         <Form onSubmit={this.handleSubmit} style={{ width: 800, height: 800 }}>
 
           <Form.Item {...formItemLayout} label="upload Photos">
-            <input type="file" multiple onChange={this.props.handleFiles} />
+            <input type="file" multiple onChange={this.props.handleFiles} id="clearImageField" />
             <div className="imgContainer" style={{ display: "flex", flexDirection: "row" }}>
               {preview}
             </div>
@@ -301,8 +308,10 @@ const mapDispatchToProps = (dispatch) => {
           }))
         }
       })
+    },
+    handleSubmitForm: ()=> {
+      dispatch(actions_addPhotos.clearForm())
     }
-
   }
 }
 

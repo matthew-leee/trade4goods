@@ -11,14 +11,10 @@ module.exports = class {
             user = user[0]
             if (user.uploaded_products == null){
                 user.uploaded_products = []
-                console.log (user)
-                user.uploaded_products.push(product_id)
-                console.log (user)
-            } else if (user.uploaded_products.length < 0) {
                 user.uploaded_products.push(product_id)
             } else {
-                console.log("invalid upload product")
-            }
+                user.uploaded_products = [...user.uploaded_products, product_id]
+            } 
             await this.knex('users').where('user_id', user_id).update(user)
         } catch (err) {
             throw err
