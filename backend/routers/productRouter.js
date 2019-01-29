@@ -1,7 +1,6 @@
 module.exports = (router, authService, productService) => {
     router.post('/api/product/', async (req, res) => {
         try {
-            console.log (req.session)
             const user_id = await authService.isAuthenticated(req.session.jwt)
             if (user_id) {
                 await productService.uploadProduct(req.body, user_id)
