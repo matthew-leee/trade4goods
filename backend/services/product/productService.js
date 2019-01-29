@@ -1,7 +1,8 @@
 module.exports = class {
-    constructor(knex, userProductService) {
+    constructor(knex, userProductService, commentService) {
         this.knex = knex
         this.toUser = userProductService
+        this.comment = commentService
     }
 
     async uploadProduct(info, user_id) {
@@ -246,6 +247,37 @@ module.exports = class {
         }
     }
 
+    async comment(product_id, user_id, comment) {
+        try {
+            let product = await this.knex('products').where('product_id', product_id)
+            product = product[0]
+            if (!product) {
+                throw {
+                    statusCode: 404,
+                    error: "Product not found",
+                    message: `product ${product_offered.product_id} does not exists`
+                }
+            }
+            const comment_id = await(user_id, comment);
+            product.comments.push(comment_id)
+            await this.knex('products').where('product_id', product.product_id).update(products)
+        } catch (err) {
+            throw err
+        }
+    }
+
+    async deleteComment(user_id, comment_id) {
+        try {
+            const product_id = this.commentService.deleteComment(user_id, comment_id)
+            let product = await this.knex('products').where('product_id', product_id)
+            product = product[0]
+            const delIndex = product.comments.indexOf(comment_id)
+            product.comments.splice(delIndex, 1)
+            await this.knex('products').where('product_id', product_id).update(product)
+        } catch (err) {
+            throw err
+        }
+    }
 
     /* TODO : 
     [x] upload product 

@@ -25,14 +25,6 @@ exports.up = function (knex, Promise) {
             table.specificType('chat_basket', 'INT[]').nullable();
         }),
 
-        knex.schema.createTable('product_comments', table => {
-            table.increments('comment_id').unsigned().primary();
-            table.integer('commentator').unsigned().notNullable();
-            table.foreign('commentator').references('user_id').inTable('users');
-            table.string('comment').notNullable();
-            table.timestamp('comment_at').notNullable().defaultTo(knex.fn.now());
-        }),
-
         knex.schema.createTable('products', table => {
             table.increments('product_id').unsigned().primary();
             table.string('name').notNullable();
@@ -51,6 +43,15 @@ exports.up = function (knex, Promise) {
             table.integer('status').notNullable().defaultTo(1);
         }),
 
+        knex.schema.createTable('product_comments', table => {
+            table.increments('comment_id').unsigned().primary();
+            table.integer('commentator').unsigned().notNullable();
+            table.foreign('commentator').references('user_id').inTable('users');
+            table.integer('comment_in_product').unsigned().notNullable();
+            table.foreign('comment_in_product').references('product_id').inTable('products');
+            table.string('comment').notNullable();
+            table.timestamp('comment_at').notNullable().defaultTo(knex.fn.now());
+        }),
         
         knex.schema.createTable('chats', table => {
             table.increments('chat_id').unsigned().primary();
@@ -86,8 +87,8 @@ exports.down = function (knex, Promise) {
         knex.schema.dropTable('trade_history'),
         knex.schema.dropTable('messages'),
         knex.schema.dropTable('chats'),
-        knex.schema.dropTable('products'),
         knex.schema.dropTable('product_comments'),
+        knex.schema.dropTable('products'),
         knex.schema.dropTable('users'),
         knex.schema.dropTable('users_credential')
     ])

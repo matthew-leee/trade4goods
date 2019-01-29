@@ -23,7 +23,7 @@ response format
 *Success*
 
 ```
-status: 200 OK
+status: 201 Created
 ```
 
 *Unauthorized*
@@ -250,6 +250,78 @@ status: 401 Unauthorized
 {
     error: string
     message: string
+}
+```
+
+---
+
+## POST
+
+- comment on product
+
+    *POST: /api/comment/*
+
+request params
+```
+{
+    product_id: int (product id to comment on)
+    comment: string
+}
+```
+
+response format
+
+*Success*
+
+```
+status: 201 CREATED
+```
+
+*Unauthorized*
+```
+status: 401 Unauthorized
+```
+
+*Failure*
+
+```
+{
+    statusCode: 404,
+    error: "Product not found",
+    message: `product ${product_offered.product_id} does not exists`
+}
+```
+
+---
+
+## DELETE
+
+- comment on product
+
+    *DELETE: /api/comment/:id*
+
+    *provide comment id in param*
+
+response format
+
+*Success*
+
+```
+status: 200 OK
+```
+
+*Unauthorized*
+```
+status: 401 Unauthorized
+```
+
+*Failure*
+
+```
+{
+    statusCode: 404,
+    error: "Product not found",
+    message: `product ${product_offered.product_id} does not exists`
 }
 ```
 
