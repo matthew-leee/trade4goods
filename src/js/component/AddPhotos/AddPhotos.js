@@ -84,19 +84,25 @@ class AddPhotoForm extends React.Component {
         values.tags = [...this.props.finishedTag]
         values.photos = [...photos]
         console.log(values)
+        const newValues = {
+          name: values.productName,
+          description: values.productDescription,
+          expectation: values.expectation,
+          trade_location: `${values.location[0]},${values.location[1]}`,
+          tags: values.tags,
+          iamge: values.photos 
+        }
         try{
-
           const addPhotosRes = await Axios("https://localhost:8443/api/product", {
             method: "post",
-            data: values,
+            data: newValues,
             withCredentials: true
           })
-
           console.log (addPhotosRes)
           message.success("upload success")
 
         } catch (err) {
-          console.log (`err: ${err.response.data}`)
+          console.log (err.response.data)
         }
       }
     });

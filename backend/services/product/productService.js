@@ -13,14 +13,14 @@ module.exports = class {
                 message: "Unknown Error, Invalid Item Name"
             }
         }
-        if (!/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/.test(info.image)) {
-            throw {
-                statusCode: 415,
-                error: "Invalid Image Format",
-                message: "Image has to be base64 encoded, this is probably an error at processing the image",
-                suggestSolution: "Please skip uploading profile picture for now, contact us for help"
-            }
-        }
+        // if (!/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/.test(info.image)) {
+        //     throw {
+        //         statusCode: 415,
+        //         error: "Invalid Image Format",
+        //         message: "Image has to be base64 encoded, this is probably an error at processing the image",
+        //         suggestSolution: "Please skip uploading profile picture for now, contact us for help"
+        //     }
+        // }
         if (info.description && typeof info.description !== 'string') {
             throw {
                 statusCode: 422,
