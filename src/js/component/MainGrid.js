@@ -15,7 +15,7 @@ function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = state => {
     const search = state.roootReducer
-    return { searchArr: search.searchArr,productsArr: search.productsArr };
+    return { searchArr: search.searchArr, productsArr: search.productsArr };
 };
 
 
@@ -46,27 +46,32 @@ class ConnectedMainGrid extends React.Component {
     componentDidMount() {
         Axios.get('https://localhost:8443/api/allProducts/')
             .then(res => {
-
-                let shuffleArr = this.shuffleArray(res.data)
-                this.props.updateProducts(shuffleArr)
-                let remainShowingBatch = Math.floor(shuffleArr.length / 50)
-                let showArr = shuffleArr.slice(0, 50)
-                let copyState = { ...this.state }
-                copyState.productsArr = shuffleArr
-                copyState.showArr = showArr
-                copyState.remainShowingBatch = remainShowingBatch
-                this.setState(copyState)
+                if (this.props.searchArr.length === 0) {
+                    let shuffleArr = this.shuffleArray(res.data)
+                    this.props.updateProducts(shuffleArr)
+                    let remainShowingBatch = Math.floor(shuffleArr.length / 50)
+                    let showArr = shuffleArr.slice(0, 50)
+                    let copyState = { ...this.state }
+                    copyState.productsArr = shuffleArr
+                    copyState.showArr = showArr
+                    copyState.remainShowingBatch = remainShowingBatch
+                    this.setState(copyState)
+                } else {
+                    let filterArr = this.props.searchArr
+                    let remainShowingBatch = Math.floor(filterArr.length / 50)
+                    let showArr = filterArr.slice(0, 50)
+                    let copyState = { ...this.state }
+                    copyState.productsArr = filterArr
+                    copyState.showArr = showArr
+                    copyState.remainShowingBatch = remainShowingBatch
+                    this.setState(copyState)
+                }
             })
     }
 
 
     componentWillReceiveProps(nextProps) {
-        let filterArr =[]
-        if (this.props.searchArr.length > 0){
-            filterArr = nextProps.searchArr
-        }else{
-            filterArr = this.props.productsArr
-        }
+        let filterArr = nextProps.searchArr
         let remainShowingBatch = Math.floor(filterArr.length / 50)
         let showArr = filterArr.slice(0, 50)
         let copyState = { ...this.state }
@@ -74,9 +79,6 @@ class ConnectedMainGrid extends React.Component {
         copyState.showArr = showArr
         copyState.remainShowingBatch = remainShowingBatch
         this.setState(copyState)
-        console.log(this.state.productsArr)
-
-
     }
 
     showMoreItems(page) {
