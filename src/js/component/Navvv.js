@@ -3,10 +3,18 @@ import RegistrationForm from './RegistrationForm'
 import LoginForm from './LoginForm'
 import { connect } from "react-redux";
 import { Link } from "react-router-dom"
+import {updateFilterArr,updateFilterKey} from '../actions/hello'
 import Search from "./Search/search"
 import { Select } from 'antd';
 const _ = require('lodash')
 const Option = Select.Option;
+
+function mapDispatchToProps(dispatch) {
+    return {
+        updateFilterArr: arr => dispatch(updateFilterArr(arr)),
+        updateFilterKey: arr=> dispatch(updateFilterKey(arr))
+    };
+  }
 
 
 const mapStateToProps = state => {
@@ -36,9 +44,21 @@ class ConnectedNavvv extends React.Component {
     }
 
     handleChange = (value) => {
-        let arr = value
-        
-        console.log(arr[0]);
+
+        let arr = [...value]
+
+        let filterArr = this.props.productsArr.filter(el=>{
+            return arr.includes(el.name)
+        })
+        if (filterArr.length === 0) {
+            filterArr = this.props.productsArr
+        }
+        console.log(filterArr)
+       
+        //return the filter key word in array
+       this.props.updateFilterKey(arr)
+       //return filtered products list
+       this.props.updateFilterArr(filterArr)
       }
 
       
@@ -53,7 +73,7 @@ class ConnectedNavvv extends React.Component {
         .map(el => el[0])
         .value()
         for(let i =0; i < prodctNameArr.length; i++){
-            children.push(<Option key={prodctNameArr[i] + i}>{prodctNameArr[i]}</Option>)
+            children.push(<Option key={prodctNameArr[i] }>{prodctNameArr[i]}</Option>)
         }
 
         let prodctTagsArr = _.chain(nextProps.productsArr)
@@ -67,7 +87,7 @@ class ConnectedNavvv extends React.Component {
         .value()
         console.log(prodctTagsArr)
         for(let i =0; i < prodctTagsArr.length; i++){
-            children.push(<Option key={prodctTagsArr[i]+ i }>{prodctTagsArr[i]}</Option>)
+            children.push(<Option key={prodctTagsArr[i]}>{prodctTagsArr[i]}</Option>)
         }
 
         this.setState({arr:children})
@@ -111,7 +131,7 @@ class ConnectedNavvv extends React.Component {
 }
 
 
-const Navv = connect(mapStateToProps)(ConnectedNavvv);
+const Navv = connect(mapStateToProps,mapDispatchToProps)(ConnectedNavvv);
 
 
 
