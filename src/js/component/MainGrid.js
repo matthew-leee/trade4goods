@@ -39,7 +39,7 @@ class ConnectedMainGrid extends React.Component {
     }
 
     componentDidMount() {
-        Axios.get('https://localhost:8443/getallproductsplease')
+        Axios.get('https://localhost:8443/api/allProducts/')
             .then(res => {
 
                 let shuffleArr = this.shuffleArray(res.data)
