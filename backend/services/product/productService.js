@@ -167,8 +167,7 @@ module.exports = class {
 
     async getAllProduct() {
         try {
-            let info = await this.knex('products')
-            return info[0]
+            return await this.knex('products')
         } catch (err) {
             throw err
         }
