@@ -35,8 +35,10 @@ class ConnectedNavvv extends React.Component {
         this.setState({ tryRegister: !this.state.tryRegister })
     }
 
-    handleChange = () => {
-        console.log("hi");
+    handleChange = (value) => {
+        let arr = value
+        
+        console.log(arr[0]);
       }
 
       
