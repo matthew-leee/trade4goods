@@ -16,7 +16,7 @@ class MyGoods extends Component {
         //})
         //this.props.handleProducts(products)
         const products = this.props.productsArr
-        
+
     }
     rerouteSearch = () => {
         if (this.props.submit) {
