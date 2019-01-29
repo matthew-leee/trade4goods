@@ -165,6 +165,15 @@ module.exports = class {
         }
     }
 
+    async getAllProduct() {
+        try {
+            let info = await this.knex('products')
+            return info[0]
+        } catch (err) {
+            throw err
+        }
+    }
+
     async offerProduct(product_offered, user_offering, product_offering) {
         try {
             product_offered = await this.knex('products').where('product_id', product_offered)
