@@ -1,5 +1,4 @@
 module.exports = (app, redisClient, expressSession, RedisStore) => {
-    console.log('initializing session')
     const redisStoreSetting = {
         client: redisClient,
         unset: "destroy"
