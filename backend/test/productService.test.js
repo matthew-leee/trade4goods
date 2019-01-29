@@ -17,9 +17,10 @@ const
     }
 
 describe('Product Service', () => {
-    let productService, test_user_id, image_base64;
+    let productService, test_user_id, image_url;
     beforeAll(() => {
-        image_base64 = fs.readFileSync(__dirname + '/config/image.png', { encoding: 'base64' })
+        // image_base64= fs.readFileSync(__dirname + '/config/image.png', { encoding: 'base64' })
+        image_url = 'url to image'
     })
 
     beforeEach(async () => {
@@ -33,7 +34,7 @@ describe('Product Service', () => {
         const information = {
             displayed_name: 'John',
             phone_number: 30624700,
-            profile_picture: image_base64
+            profile_picture: image_url
         }
         await profileService.createProfile(information, test_user_id)
         productService = new ProductService(knex, userProductService)
@@ -51,7 +52,7 @@ describe('Product Service', () => {
     test('should successfully upload a product for correct information', async done => {
         const information = {
             name: 'Test Item',
-            image: image_base64,
+            image: image_url,
             expectation: 'another item',
             description: 'This is a test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '127.0.0.1',
@@ -68,7 +69,7 @@ describe('Product Service', () => {
     test('should call userProductService.uploadProduct to update users tables on valid upload', async done => {
         const information = {
             name: 'Test Item',
-            image: image_base64,
+            image: image_url,
             expectation: 'another item',
             description: 'This is a test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '127.0.0.1',
@@ -85,7 +86,7 @@ describe('Product Service', () => {
     test('should successfully upload a product with only name and image', async done => {
         const information = {
             name: 'Test Item',
-            image: image_base64,
+            image: image_url,
         }
         await productService.uploadProduct(information, test_user_id)
         let product = await knex('products').where('name', 'Test Item');
@@ -98,7 +99,7 @@ describe('Product Service', () => {
     test('should throw error on product upload for name that is not string', async done => {
         const information = {
             name: 123,
-            image: image_base64,
+            image: image_url,
             expectation: 'another item',
             description: 'This is a test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '127.0.0.1',
@@ -118,7 +119,7 @@ describe('Product Service', () => {
 
     test('should throw error on product upload for name that is missing', async done => {
         const information = {
-            image: image_base64,
+            image: image_url,
             expectation: 'another item',
             description: 'This is a test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '127.0.0.1',
@@ -136,53 +137,53 @@ describe('Product Service', () => {
         }
     })
 
-    test('should throw error on product upload for invalid image format', async done => {
-        const information = {
-            name: 'Test Item',
-            image: 'not base64 img',
-            expectation: 'another item',
-            description: 'This is a test item, to test whether it can be injected into the database and pass tests',
-            trade_locaiton: '127.0.0.1',
-            tags: ['test', 'testing', 'happy testing'],
-        }
-        try {
-            await productService.uploadProduct(information, test_user_id)
-        } catch (err) {
-            expect(err).toEqual({
-                statusCode: 415,
-                error: "Invalid Image Format",
-                message: "Image has to be base64 encoded, this is probably an error at processing the image",
-                suggestSolution: "Please skip uploading profile picture for now, contact us for help"
-            })
-            done();
-        }
-    })
+    // test('should throw error on product upload for invalid image format', async done => {
+    //     const information = {
+    //         name: 'Test Item',
+    //         image: 'not base64 img',
+    //         expectation: 'another item',
+    //         description: 'This is a test item, to test whether it can be injected into the database and pass tests',
+    //         trade_locaiton: '127.0.0.1',
+    //         tags: ['test', 'testing', 'happy testing'],
+    //     }
+    //     try {
+    //         await productService.uploadProduct(information, test_user_id)
+    //     } catch (err) {
+    //         expect(err).toEqual({
+    //             statusCode: 415,
+    //             error: "Invalid Image Format",
+    //             message: "Image has to be base64 encoded, this is probably an error at processing the image",
+    //             suggestSolution: "Please skip uploading profile picture for now, contact us for help"
+    //         })
+    //         done();
+    //     }
+    // })
 
-    test('should throw error on product upload for missing image', async done => {
-        const information = {
-            name: 'Test Item',
-            expectation: 'another item',
-            description: 'This is a test item, to test whether it can be injected into the database and pass tests',
-            trade_locaiton: '127.0.0.1',
-            tags: ['test', 'testing', 'happy testing'],
-        }
-        try {
-            await productService.uploadProduct(information, test_user_id)
-        } catch (err) {
-            expect(err).toEqual({
-                statusCode: 415,
-                error: "Invalid Image Format",
-                message: "Image has to be base64 encoded, this is probably an error at processing the image",
-                suggestSolution: "Please skip uploading profile picture for now, contact us for help"
-            })
-            done();
-        }
-    })
+    // test('should throw error on product upload for missing image', async done => {
+    //     const information = {
+    //         name: 'Test Item',
+    //         expectation: 'another item',
+    //         description: 'This is a test item, to test whether it can be injected into the database and pass tests',
+    //         trade_locaiton: '127.0.0.1',
+    //         tags: ['test', 'testing', 'happy testing'],
+    //     }
+    //     try {
+    //         await productService.uploadProduct(information, test_user_id)
+    //     } catch (err) {
+    //         expect(err).toEqual({
+    //             statusCode: 415,
+    //             error: "Invalid Image Format",
+    //             message: "Image has to be base64 encoded, this is probably an error at processing the image",
+    //             suggestSolution: "Please skip uploading profile picture for now, contact us for help"
+    //         })
+    //         done();
+    //     }
+    // })
 
     test('should throw error on product upload for invalid description', async done => {
         const information = {
             name: 'Test Item',
-            image: image_base64,
+            image: image_url,
             expectation: 'another item',
             description: true,
             trade_locaiton: '127.0.0.1',
@@ -203,7 +204,7 @@ describe('Product Service', () => {
     test('should throw error on product upload for invalid expected item', async done => {
         const information = {
             name: 'Test Item',
-            image: image_base64,
+            image: image_url,
             expectation: ['thing', 'another thing'],
             description: 'This is a test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '127.0.0.1',
@@ -224,7 +225,7 @@ describe('Product Service', () => {
     test('should throw error on product upload for invalid trade location', async done => {
         const information = {
             name: 'Test Item',
-            image: image_base64,
+            image: image_url,
             expectation: 'another item',
             description: 'This is a test item, to test whether it can be injected into the database and pass tests',
             trade_location: { 127: 0, 0: 1 },
@@ -245,7 +246,7 @@ describe('Product Service', () => {
     test('should throw error on product upload for invalid tags', async done => {
         const information = {
             name: 'Test Item',
-            image: image_base64,
+            image: image_url,
             expectation: 'another item',
             description: 'This is a test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '127.0.01',
@@ -266,7 +267,7 @@ describe('Product Service', () => {
     test('should successfully update a product information if provided correctly', async done => {
         const information = {
             name: 'Test Item',
-            image: image_base64,
+            image: image_url,
             expectation: 'another item',
             description: 'This is a test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '127.0.0.1',
@@ -277,7 +278,7 @@ describe('Product Service', () => {
         product = product[0]
         const update = {
             name: 'Test Item2',
-            image: image_base64,
+            image: image_url,
             expectation: 'apple',
             description: 'This is another test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '192.168.0.1',
@@ -294,7 +295,7 @@ describe('Product Service', () => {
     test('should not update a product information if product_id doesn\'t go under the user', async done => {
         const information = {
             name: 'Test Item',
-            image: image_base64,
+            image: image_url,
             expectation: 'another item',
             description: 'This is a test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '127.0.0.1',
@@ -305,7 +306,7 @@ describe('Product Service', () => {
         product = product[0]
         const update = {
             name: 'Test Item2',
-            image: image_base64,
+            image: image_url,
             expectation: 'apple',
             description: 'This is another test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '192.168.0.1',
@@ -331,7 +332,7 @@ describe('Product Service', () => {
     test('should delete a product providing with matched product id and user id', async done => {
         const information = {
             name: 'Test Item',
-            image: image_base64,
+            image: image_url,
             expectation: 'another item',
             description: 'This is a test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '127.0.0.1',
@@ -350,7 +351,7 @@ describe('Product Service', () => {
     test('should throw error if trying to delete product with unmatched user id and product id', async done => {
         const information = {
             name: 'Test Item',
-            image: image_base64,
+            image: image_url,
             expectation: 'another item',
             description: 'This is a test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '127.0.0.1',
@@ -375,7 +376,7 @@ describe('Product Service', () => {
     test('should call userProductService.deleteProduct to update users tables on valid delete', async done => {
         const information = {
             name: 'Test Item',
-            image: image_base64,
+            image: image_url,
             expectation: 'another item',
             description: 'This is a test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '127.0.0.1',
@@ -392,7 +393,7 @@ describe('Product Service', () => {
     test('should return product info on get with corresponding product id', async done => {
         const information = {
             name: 'Test Item',
-            image: image_base64,
+            image: image_url,
             expectation: 'another item',
             description: 'This is a test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '127.0.0.1',
@@ -435,7 +436,7 @@ describe('Product Service', () => {
         await profileService.createProfile(user2, test_user_id2)
         let product1 = {
             name: 'Test Item',
-            image: image_base64,
+            image: image_url,
             expectation: 'another item',
             description: 'This is a test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '127.0.0.1',
@@ -446,7 +447,7 @@ describe('Product Service', () => {
         product1 = product1[0]
         let product2 = {
             name: 'Test Item2',
-            image: image_base64,
+            image: image_url,
             expectation: 'item',
             description: 'This is another test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '127.0.0.1',
@@ -480,7 +481,7 @@ describe('Product Service', () => {
         await profileService.createProfile(user2, test_user_id2)
         let product1 = {
             name: 'Test Item',
-            image: image_base64,
+            image: image_url,
             expectation: 'another item',
             description: 'This is a test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '127.0.0.1',
@@ -491,7 +492,7 @@ describe('Product Service', () => {
         product1 = product1[0]
         let product2 = {
             name: 'Test Item2',
-            image: image_base64,
+            image: image_url,
             expectation: 'item',
             description: 'This is another test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '127.0.0.1',
@@ -526,7 +527,7 @@ describe('Product Service', () => {
         await profileService.createProfile(user2, test_user_id2)
         let product1 = {
             name: 'Test Item',
-            image: image_base64,
+            image: image_url,
             expectation: 'another item',
             description: 'This is a test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '127.0.0.1',
@@ -537,7 +538,7 @@ describe('Product Service', () => {
         product1 = product1[0]
         let product2 = {
             name: 'Test Item2',
-            image: image_base64,
+            image: image_url,
             expectation: 'item',
             description: 'This is another test item, to test whether it can be injected into the database and pass tests',
             trade_locaiton: '127.0.0.1',

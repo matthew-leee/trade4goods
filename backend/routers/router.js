@@ -3,6 +3,7 @@ module.exports = (express, authService, routerService, productService, path) => 
     require('./authRouter')(router, authService)
     require('./allP')(router)
     require('./profileRouter')(router, authService, routerService)
+    require('./productRouter')(router, authService, productService)
     router.get('/*', (req, res) => res.sendFile(path.join(__dirname,'..','public','index.html')));
     return router;
 };

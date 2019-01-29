@@ -1,7 +1,8 @@
 module.exports = class {
-    constructor(knex, userProductService) {
+    constructor(knex, userProductService, commentService) {
         this.knex = knex
         this.toUser = userProductService
+        this.comment = commentService
     }
 
     async uploadProduct(info, user_id) {
@@ -88,14 +89,7 @@ module.exports = class {
                 injectingInfo.name = info.name
             }
 
-            if (info.image && !/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/.test(info.image)) {
-                throw {
-                    statusCode: 415,
-                    error: "Invalid Image Format",
-                    message: "Image has to be base64 encoded, this is probably an error at processing the image",
-                    suggestSolution: "Please skip uploading profile picture for now, contact us for help"
-                }
-            } else if (info.image) {
+            if (info.image) {
                 injectingInfo.image = info.image
             }
 
@@ -167,6 +161,14 @@ module.exports = class {
             } else {
                 return info
             }
+        } catch (err) {
+            throw err
+        }
+    }
+
+    async getAllProducts() {
+        try {
+            return await this.knex('products')
         } catch (err) {
             throw err
         }
@@ -245,6 +247,45 @@ module.exports = class {
         }
     }
 
+    async comment(product_id, user_id, comment) {
+        try {
+            let product = await this.knex('products').where('product_id', product_id)
+            product = product[0]
+            if (!product) {
+                throw {
+                    statusCode: 404,
+                    error: "Product not found",
+                    message: `product ${product_offered.product_id} does not exists`
+                }
+            }
+            const comment_id = await(user_id, comment, product_id);
+            product.comments.push(comment_id)
+            await this.knex('products').where('product_id', product.product_id).update(products)
+        } catch (err) {
+            throw err
+        }
+    }
+
+    async editComment(user_id, comment_id, commnet) {
+        try {
+            await commentService.editComment(user_id, comment_id, commnet)
+        } catch(err) {
+            throw err
+        }
+    }
+
+    async deleteComment(user_id, comment_id) {
+        try {
+            const product_id = this.commentService.deleteComment(user_id, comment_id)
+            let product = await this.knex('products').where('product_id', product_id)
+            product = product[0]
+            const delIndex = product.comments.indexOf(comment_id)
+            product.comments.splice(delIndex, 1)
+            await this.knex('products').where('product_id', product_id).update(product)
+        } catch (err) {
+            throw err
+        }
+    }
 
     /* TODO : 
     [x] upload product 
@@ -253,8 +294,9 @@ module.exports = class {
     [x] get product
     [x] offer product
     [x] delete offer product
-    [] comment on product
-    [] delete comment on product
+    [x] comment on product
+    [x] edit comment on product
+    [x] delete comment on product
     [] like product
     [] dislike product
     [] confirm product trade

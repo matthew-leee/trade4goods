@@ -23,7 +23,7 @@ response format
 *Success*
 
 ```
-status: 200 OK
+status: 201 Created
 ```
 
 *Unauthorized*
@@ -55,20 +55,50 @@ response format
 {
     product_id: int
     name: string
-    image: bytea | null
+    image: string[]
     description: string | null
     trade_location: string | null
     expectation: string
     tags: string[]
     uploaded_by: int (user_id)
     uploaded_at: date
-    liked_by: int[] (user_id[]) | null
-    offered_by: int[] (product_id[]) | null
-    comments: string | null
+    liked_by: int[] (user_id[])
+    offered_by: int[] (product_id[])
+    comments: int (comments_id[])
     sold_to: int (user_id) | null
     sold_at: date | null
     status: int (1: available, 2: trading, 3: sold out)
 }
+```
+
+----
+
+## GET
+
+- all products profile
+
+    *GET: /api/allProducts/*
+
+response format
+
+```
+[{
+    product_id: int
+    name: string
+    image: string[]
+    description: string | null
+    trade_location: string | null
+    expectation: string
+    tags: string[]
+    uploaded_by: int (user_id)
+    uploaded_at: date
+    liked_by: int[] (user_id[])
+    offered_by: int[] (product_id[])
+    comments: int (comments_id[])
+    sold_to: int (user_id) | null
+    sold_at: date | null
+    status: int (1: available, 2: trading, 3: sold out)
+}]
 ```
 
 ----
@@ -142,6 +172,195 @@ status: 401 Unauthorized
 {
     error: "Product not belongs to user",
     message: 'user (userID) does not own product (Product ID)'
+}
+```
+
+---
+
+## POST
+
+- offer product
+
+    *POST: /api/offer/product*
+
+request params
+```
+{
+    product_offered: int (product id being offered)
+    product_offering: int (product id for offering)
+}
+```
+
+response format
+
+*Success*
+
+```
+status: 200 OK
+```
+
+*Unauthorized*
+```
+status: 401 Unauthorized
+```
+
+*Failure*
+
+```
+{
+    error: string
+    message: string
+}
+```
+
+---
+
+## DELETE
+
+- cancel offer product
+
+    *DELETE: /api/offer/product?product_offered=int&product_offering=int*
+    
+    *provide both product id in query*
+
+request params
+```
+{
+    product_offered: int (product id being offered)
+    product_offering: int (product id for offering)
+}
+```
+
+response format
+
+*Success*
+
+```
+status: 200 OK
+```
+
+*Unauthorized*
+```
+status: 401 Unauthorized
+```
+
+*Failure*
+
+```
+{
+    error: string
+    message: string
+}
+```
+
+---
+
+## POST
+
+- comment on product
+
+    *POST: /api/comment/*
+
+request params
+```
+{
+    product_id: int (product id to comment on)
+    comment: string
+}
+```
+
+response format
+
+*Success*
+
+```
+status: 201 CREATED
+```
+
+*Unauthorized*
+```
+status: 401 Unauthorized
+```
+
+*Failure*
+
+```
+{
+    statusCode: 404,
+    error: "Product not found",
+    message: `product ${product_offered.product_id} does not exists`
+}
+```
+
+---
+
+## PUT
+
+- edit comment on product
+
+    *POST: /api/comment/*
+
+request params
+```
+{
+    comment_id: int
+    comment: string
+}
+```
+
+response format
+
+*Success*
+
+```
+status: 200 OK
+```
+
+*Unauthorized*
+```
+status: 401 Unauthorized
+```
+
+*Failure*
+
+```
+{
+    statusCode: 404,
+    error: "Product not found",
+    message: `product ${product_offered.product_id} does not exists`
+}
+```
+
+---
+
+## DELETE
+
+- comment on product
+
+    *DELETE: /api/comment/:id*
+
+    *provide comment id in param*
+
+response format
+
+*Success*
+
+```
+status: 200 OK
+```
+
+*Unauthorized*
+```
+status: 401 Unauthorized
+```
+
+*Failure*
+
+```
+{
+    statusCode: 404,
+    error: "Product not found",
+    message: `product ${product_offered.product_id} does not exists`
 }
 ```
 

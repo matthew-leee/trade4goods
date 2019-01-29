@@ -115,7 +115,6 @@ module.exports = class {
                     let usernameExist = await this.knex('users_credential').where('username', incomingInfo.username);
                     usernameExist = usernameExist[0]
                     if (usernameExist) {
-                        console.log('Duplicated Username')
                         throw {
                             statusCode: 400,
                             error: 'Duplicated Username',
@@ -124,7 +123,6 @@ module.exports = class {
                         }
                     }
                     if (incomingInfo.password !== incomingInfo.confirmed_password) {
-                        console.log('Unmatched Password')
                         throw {
                             statusCode: 422,
                             error: 'Unmatched Password',
@@ -134,7 +132,6 @@ module.exports = class {
                     }
 
                     if (incomingInfo.username.length < 5 || incomingInfo.username.length > 15 || /\W/.test(incomingInfo.username)) {
-                        console.log('Invalid Username')
                         throw {
                             statusCode: 422,
                             error: 'Invalid Username',
@@ -144,7 +141,6 @@ module.exports = class {
                     }
 
                     if (!/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(incomingInfo.email)) {
-                        console.log('Invalid Email')
                         throw {
                             statusCode: 422,
                             error: 'Invalid Email',
@@ -154,8 +150,6 @@ module.exports = class {
                     }
                     delete incomingInfo.confirmed_password
                     const hashedPassword = await this.bcrypt.hashPassword(incomingInfo.password);
-
-                    console.log(hashedPassword)
                     incomingInfo.password = hashedPassword;
                     const key = this.randomstring.generate();
                     this.redisClient.setex(key, 60 * 60 * 24, incomingInfo.email)
@@ -175,6 +169,13 @@ module.exports = class {
             let user = await this.knex('users_credential').where('username', username).orWhere('email', username)
             user = user[0]
             if (user && await this.bcrypt.checkPassword(password, user.password)) {
+                if (user.email_isVerifying) {
+                    throw {       
+                        statusCode: 403,
+                        error: 'Unverified Email',
+                        message: `email has not been verified, please check your mailbox for verification email`,
+                    }
+                }
                 const jwt = this.jwt.sign(user.user_id, process.env.JWT_SECRET)
                 this.redisClient.sadd('jwt', jwt)
                 return jwt

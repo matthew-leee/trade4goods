@@ -38,22 +38,6 @@ response format
 
 ## POST
 
-- offer product
-
-    *POST: /api/offer/:product_id
-
-    the product id stands for the targeted product to offer
-
-request params
-```
-{
-    products_being_offered: int[] (product_id[])
-}
-```
-----
-
-## POST
-
 - start chat
 
     *POST: /api/startchat/:userid*

@@ -22,7 +22,6 @@ class MainCard extends React.Component {
           });
         };
         img.onerror = (err) => {
-          console.log(err)
           this.setState({
             loading: false,
             error: true,

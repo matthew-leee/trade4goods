@@ -293,6 +293,7 @@ describe('AuthService', () => {
             email: 'example@example.com'
         }
         const id = await authService.signUp(information)
+        await knex('users_credential').where('user_id',id).update({email_isVerifying: false})
         const jwt = await authService.loginLocal('test_username', 'Abcd1234')
         expect(jwt).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
         await knex('users_credential').where('user_id', id).del();
@@ -307,6 +308,7 @@ describe('AuthService', () => {
             email: 'example@example.com'
         }
         const id = await authService.signUp(information)
+        await knex('users_credential').where('user_id',id).update({email_isVerifying: false})
         const jwt = await authService.loginLocal('example@example.com', 'Abcd1234')
         expect(jwt).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
         await knex('users_credential').where('user_id', id).del();
@@ -322,6 +324,7 @@ describe('AuthService', () => {
         }
         const id = await authService.signUp(information)
         try {
+            await knex('users_credential').where('user_id',id).update({email_isVerifying: false})
             await authService.loginLocal(information.email, 'invalid password')
         } catch (err) {
             expect(err).toEqual({
@@ -343,6 +346,7 @@ describe('AuthService', () => {
         }
         const id = await authService.signUp(information)
         try {
+            await knex('users_credential').where('user_id',id).update({email_isVerifying: false})
             await authService.loginLocal('invliad username', 'Abcd1234')
         } catch (err) {
             expect(err).toEqual({
@@ -364,6 +368,7 @@ describe('AuthService', () => {
         }
         const id = await authService.signUp(information)
         try {
+            await knex('users_credential').where('user_id',id).update({email_isVerifying: false})
             await authService.loginLocal('example@example.com', 'Invalid password')
         } catch (err) {
             expect(err).toEqual({
@@ -384,6 +389,7 @@ describe('AuthService', () => {
             email: 'example@example.com'
         }
         const id = await authService.signUp(information)
+        await knex('users_credential').where('user_id',id).update({email_isVerifying: false})
         const jwt = await authService.loginLocal('test_username', 'Abcd1234')
         expect(await authService.logout(jwt)).toEqual(1);
         await knex('users_credential').where('user_id', id).del();
@@ -564,6 +570,7 @@ describe('AuthService', () => {
             email: 'example@example.com'
         }
         const id = await authService.signUp(information)
+        await knex('users_credential').where('user_id',id).update({email_isVerifying: false})
         const jwt = await authService.loginLocal('example@example.com', 'Abcd1234')
         expect(await authService.isAuthenticated(jwt)).toEqual(id);
         await knex('users_credential').where('user_id', id).del();
@@ -578,6 +585,7 @@ describe('AuthService', () => {
             email: 'example@example.com'
         }
         const id = await authService.signUp(information)
+        await knex('users_credential').where('user_id',id).update({email_isVerifying: false})
         expect(await authService.isAuthenticated('invalid jwt')).toBeFalsy();
         await knex('users_credential').where('user_id', id).del();
         done();
