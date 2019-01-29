@@ -2,7 +2,7 @@ import { Card, Icon, Popconfirm, message, Button, Modal, Row, Col } from "antd"
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import actions_userPage from "../../actions/userPage"
-import products from "../../../FakeData/products"
+// import products from "../../../FakeData/products"
 import MyGoodsCard from "./cards/MyGoodsCard"
 
 import Popup from 'reactjs-popup'   //npm Reactjs-Popup
@@ -10,11 +10,13 @@ import { popUpCloseTag, content } from '../compCSS/popupCss'
 
 class MyGoods extends Component {
 
-    componentDidMount() {
-        products.forEach((u) => {
-            u.openOneModal = false
-        })
-        this.props.handleProducts(products)
+    componentDidMount = () => {
+        //products.forEach((u) => {
+        //    u.openOneModal = false
+        //})
+        //this.props.handleProducts(products)
+        const products = this.props.productsArr
+        
     }
     rerouteSearch = () => {
         if (this.props.submit) {
@@ -126,11 +128,13 @@ class MyGoods extends Component {
 const mapStateToProps = (state) => {
     const s = state.userReducer
     const search = state.searchReducer
+    const rooot = state.roootReducer
     return {
         openMGModal: s.openMGModal,
         products: s.products,
         result: s.result,
-        submit: search.submit
+        submit: search.submit,
+        productsArr: rooot.productsArr
     }
 }
 

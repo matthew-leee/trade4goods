@@ -110,11 +110,13 @@ class FollowedPost extends Component {
 const mapStateToProps = (state) => {
     const s = state.userReducer
     const search = state.searchReducer
+    const rooot = state.roootReducer
     return {
         openFPModal: s.openFPModal,
         products: s.products,
         result: s.result,
-        submit: search.submit
+        submit: search.submit,
+        productsArr: rooot.productsArr
     }
 }
 

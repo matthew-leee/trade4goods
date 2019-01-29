@@ -125,11 +125,13 @@ class ReceivedReq extends Component {
 const mapStateToProps = (state) => {
     const s = state.userReducer
     const search = state.searchReducer
+    const rooot = state.roootReducer
     return {
         openRQModal: s.openRQModal,
         products: s.products,
         result: s.result,
-        submit: search.submit
+        submit: search.submit,
+        productsArr: rooot.productsArr
     }
 }
 

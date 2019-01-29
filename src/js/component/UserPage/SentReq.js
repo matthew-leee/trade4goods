@@ -128,11 +128,13 @@ class SentReq extends Component {
 const mapStateToProps = (state) => {
     const s = state.userReducer
     const search = state.searchReducer
+    const rooot = state.roootReducer
     return {
         openSQModal: s.openSQModal,
         products: s.products,
         result: s.result,
-        submit: search.submit
+        submit: search.submit,
+        productsArr: state.productsArr
     }
 }
 
