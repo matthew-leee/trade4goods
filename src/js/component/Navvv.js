@@ -80,7 +80,7 @@ class ConnectedNavvv extends React.Component {
         for(let i =0; i < prodctNameArr.length; i++){
             children.push(<Option key={prodctNameArr[i] }>{prodctNameArr[i]}</Option>)
         }
-
+        
         let prodctTagsArr = _.chain(nextProps.productsArr)
         .map(el => el.tags)
         .flatten()
