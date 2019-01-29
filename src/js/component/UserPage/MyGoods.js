@@ -137,7 +137,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         handleModal: (column) => {
-            console.log (column)
             dispatch(actions_userPage.openModal(column))
         },
         handleProducts: (products) => {
