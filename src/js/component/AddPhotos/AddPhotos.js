@@ -9,6 +9,7 @@ import actions_addPhotos from "../../actions/addPhotos"
 import { connect } from "react-redux"
 import GeneralTags from "./tags_antd"
 import uuidv1 from "uuid/v1"
+import Axios from "axios";
 
 const { Option } = Select;
 
@@ -69,7 +70,7 @@ class AddPhotoForm extends React.Component {
     console.log(props)
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -79,6 +80,7 @@ class AddPhotoForm extends React.Component {
         values.tags = [...this.props.finishedTag]
         values.photos = [...photos]
         console.log (values)
+        // const addPhotosRes = await Axios.post("https://localhost:8443/api/product")
       }
     });
   }

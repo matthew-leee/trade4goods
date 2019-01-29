@@ -2,6 +2,7 @@ import React from 'react'
 import { Form, Icon, Input, Button, Checkbox, } from 'antd';
 import Popup from 'reactjs-popup'   //npm Reactjs-Popup
 import {popUpCloseTag, content} from './compCSS/popupCss'
+import Axios from 'axios';
 
 class NormalLoginForm extends React.Component {
     constructor(props) {
@@ -30,15 +31,12 @@ class NormalLoginForm extends React.Component {
 
                 console.log('Received values of form: ', values);
                 const newValue = {
-                    username: values.userId,
-                    email: values.email,
-                    password: values.password,
-                    confirmed_password: values.password
+                    username_or_email: values.userName,
+                    password: values.password
                 }
-                console.log(`newValue = ${newValue}`)
-                // {userId: "happyhappy", email: "happy@gmail.com", 
-                // password: "happy12345", confirm: "happy12345", instagram: "oldmatt", …}
-                this.setState({ open: false }) // it will close the form immediately
+                const res = Axios.post("https://localhost:8443/api/signin")
+                console.log (res)
+                if (re
             }
         });
     }
