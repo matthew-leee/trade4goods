@@ -1,4 +1,4 @@
-import { HELLO_WORLD,UPDATE_PRODUCTS } from '../action-types/action-type'
+import { HELLO_WORLD,UPDATE_PRODUCTS,UPDATE_FILTERARR,UPDATE_FILTERKEY } from '../action-types/action-type'
 
 
 export function hello() {
@@ -7,4 +7,12 @@ export function hello() {
 
 export function updateProducts(payload) {
     return { type: UPDATE_PRODUCTS, payload }
+};
+
+export function updateFilterArr(payload) {
+    return { type: UPDATE_FILTERARR, payload }
+};
+
+export function updateFilterKey(payload) {
+    return { type: UPDATE_FILTERKEY, payload }
 };

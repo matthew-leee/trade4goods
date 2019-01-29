@@ -4,14 +4,19 @@ import { Row, Col, } from 'antd';
 import MainCard from './MainCard'
 import Axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroller';
-import {updateProducts} from '../actions/hello'
+import { updateProducts } from '../actions/hello'
 
 function mapDispatchToProps(dispatch) {
     return {
-        updateProducts: arr => dispatch(updateProducts(arr))
+        updateProducts: arr => dispatch(updateProducts(arr)),
+
     };
-  }
-  
+}
+
+const mapStateToProps = state => {
+    const search = state.roootReducer
+    return { searchArr: search.searchArr,productsArr: search.productsArr };
+};
 
 
 class ConnectedMainGrid extends React.Component {
@@ -19,7 +24,7 @@ class ConnectedMainGrid extends React.Component {
         super(props)
         this.state = {
             productsArr: [],
-            filterArr:[],
+            filterArr: [],
             showArr: [],
             remainShowingBatch: 0,
             showingBatch: 0,
@@ -51,10 +56,28 @@ class ConnectedMainGrid extends React.Component {
                 copyState.showArr = showArr
                 copyState.remainShowingBatch = remainShowingBatch
                 this.setState(copyState)
-                console.log(this.state.productsArr)
             })
     }
 
+
+    componentWillReceiveProps(nextProps) {
+        let filterArr =[]
+        if (this.props.searchArr.length > 0){
+            filterArr = nextProps.searchArr
+        }else{
+            filterArr = this.props.productsArr
+        }
+        let remainShowingBatch = Math.floor(filterArr.length / 50)
+        let showArr = filterArr.slice(0, 50)
+        let copyState = { ...this.state }
+        copyState.productsArr = filterArr
+        copyState.showArr = showArr
+        copyState.remainShowingBatch = remainShowingBatch
+        this.setState(copyState)
+        console.log(this.state.productsArr)
+
+
+    }
 
     showMoreItems(page) {
         let copyState = { ...this.state }
@@ -62,8 +85,9 @@ class ConnectedMainGrid extends React.Component {
             let newItemsArr = this.state.productsArr.slice(50 * this.state.showingBatch + 50, 50 * this.state.showingBatch + 100)
             copyState.showArr = [...this.state.showArr, ...newItemsArr]
             copyState.showingBatch = this.state.showingBatch + 1
-            this.setState(copyState)}
-        if(this.state.remainShowingBatch == page) {
+            this.setState(copyState)
+        }
+        if (this.state.remainShowingBatch == page) {
             copyState.hasmore = false
             this.setState(copyState)
         }
@@ -102,21 +126,21 @@ class ConnectedMainGrid extends React.Component {
 
                 <Row type="flex" gutter={10}>
 
-                   
 
-                        <Col xs={24} sm={12} md={8} lg={6} xl={4} > <InfiniteScroll
+
+                    <Col xs={24} sm={12} md={8} lg={6} xl={4} > <InfiniteScroll
                         pageStart={0}
                         loadMore={this.showMoreItems.bind(this)}
                         hasMore={this.state.hasmore}
                         loader={loader} useWindow={true}>{c1}</InfiniteScroll></Col>
-                        <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c2}</Col>
-                        <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c3}</Col>
-                        <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c4}</Col>
-                        <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c5}</Col>
-                        <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c6}</Col>
+                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c2}</Col>
+                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c3}</Col>
+                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c4}</Col>
+                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c5}</Col>
+                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c6}</Col>
 
 
-               
+
                 </Row>
             </div>
         )
@@ -124,6 +148,6 @@ class ConnectedMainGrid extends React.Component {
 }
 
 
-const MainGrid = connect(null, mapDispatchToProps)(ConnectedMainGrid);
+const MainGrid = connect(mapStateToProps, mapDispatchToProps)(ConnectedMainGrid);
 
 export default MainGrid;
