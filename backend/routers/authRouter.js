@@ -26,7 +26,8 @@ module.exports = (router, authService) => {
             const jwt = await authService.loginLocal(req.body.username_or_email, req.body.password)
             req.session.jwt = jwt
             console.log (req.session)
-            res.sendStatus(200)
+            // res.sendStatus(200)
+            res.send(jwt)
         } catch (err) {
             const statusCode = err.statusCode || 500
             delete err.statusCode

@@ -85,11 +85,18 @@ class AddPhotoForm extends React.Component {
         values.photos = [...photos]
         console.log(values)
         try{
-          const addPhotosRes = await Axios.post("https://localhost:8443/api/product")
+
+          const addPhotosRes = await Axios("https://localhost:8443/api/product", {
+            method: "post",
+            data: values,
+            withCredentials: true
+          })
+
           console.log (addPhotosRes)
           message.success("upload success")
+
         } catch (err) {
-          console.log (err.response.data)
+          console.log (`err: ${err.response.data}`)
         }
       }
     });
