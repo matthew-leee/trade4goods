@@ -3,6 +3,8 @@ import { Form, Icon, Input, Button, Checkbox, } from 'antd';
 import Popup from 'reactjs-popup'   //npm Reactjs-Popup
 import { popUpCloseTag, content } from './compCSS/popupCss'
 import axios from 'axios'
+import actions_userPage from '../actions/userPage';
+import {connect} from "react-redux"
 
 class NormalLoginForm extends React.Component {
     constructor(props) {
@@ -38,6 +40,14 @@ class NormalLoginForm extends React.Component {
                         withCredentials: true
                     })
                     console.log(res)
+                    
+                    // put userinfo in redux
+                    const user = await axios('https://localhost:8443/api/profile', {
+                        method: "get",
+                        withCredentials: true
+                    })
+                    console.log (user.data)
+                    this.props.storeMyUser(user.data)
 
                 } catch (err) {
                     console.log(err.response.status)
@@ -106,6 +116,20 @@ class NormalLoginForm extends React.Component {
     }
 }
 
-const LoginForm = Form.create({ name: 'normal_login' })(NormalLoginForm);
+const mapStateToProps = (state) => {
+    return {
+
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        storeMyUser: (user) => {
+            dispatch(actions_userPage.storeMyUser(user))
+        }
+    }
+}
+
+const LoginForm = Form.create({ name: 'normal_login' })(connect(mapStateToProps, mapDispatchToProps)(NormalLoginForm));
 
 export default LoginForm;

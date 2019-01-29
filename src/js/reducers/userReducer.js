@@ -9,7 +9,8 @@ const userReducer = (state = {
     openSQModal: false,
     openRQModal: false,
     openUploadModal: false,
-    otherUser: ""
+    otherUser: "",
+    myUser: {},
 }, action) => {
     switch (action.type) {
         case "OPEN_MODAL":
@@ -90,6 +91,11 @@ const userReducer = (state = {
             return {
                 ...state,
                 otherUser: ""
+            }
+        case "STORE_MYUSER":
+            return {
+                ...state,
+                myUser: action.myUser
             }
         default:
             return state
