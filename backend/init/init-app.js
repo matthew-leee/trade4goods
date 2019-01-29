@@ -4,7 +4,7 @@ module.exports = (app, express, bodyParser, cors, router, path) => {
     app.use(bodyParser.json());
     app.use(cors({
         origin: String(process.env.FRONTEND_URL),
-        credentials: false 
+        credentials: true 
     }));
     app.use(router);
 }
