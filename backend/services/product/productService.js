@@ -88,14 +88,7 @@ module.exports = class {
                 injectingInfo.name = info.name
             }
 
-            if (info.image && !/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/.test(info.image)) {
-                throw {
-                    statusCode: 415,
-                    error: "Invalid Image Format",
-                    message: "Image has to be base64 encoded, this is probably an error at processing the image",
-                    suggestSolution: "Please skip uploading profile picture for now, contact us for help"
-                }
-            } else if (info.image) {
+            if (info.image) {
                 injectingInfo.image = info.image
             }
 

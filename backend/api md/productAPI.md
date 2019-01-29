@@ -55,16 +55,16 @@ response format
 {
     product_id: int
     name: string
-    image: bytea | null
+    image: string[]
     description: string | null
     trade_location: string | null
     expectation: string
     tags: string[]
     uploaded_by: int (user_id)
     uploaded_at: date
-    liked_by: int[] (user_id[]) | null
-    offered_by: int[] (product_id[]) | null
-    comments: string | null
+    liked_by: int[] (user_id[])
+    offered_by: int[] (product_id[])
+    comments: int (comments_id[])
     sold_to: int (user_id) | null
     sold_at: date | null
     status: int (1: available, 2: trading, 3: sold out)
