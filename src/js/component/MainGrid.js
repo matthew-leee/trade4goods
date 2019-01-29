@@ -1,17 +1,25 @@
 import React from 'react';
+import { connect } from "react-redux";
 import { Row, Col, } from 'antd';
 import MainCard from './MainCard'
 import Axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroller';
+import {updateProducts} from '../actions/hello'
+
+function mapDispatchToProps(dispatch) {
+    return {
+        updateProducts: arr => dispatch(updateProducts(arr))
+    };
+  }
+  
 
 
-
-
-class MainGrid extends React.Component {
+class ConnectedMainGrid extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             productsArr: [],
+            filterArr:[],
             showArr: [],
             remainShowingBatch: 0,
             showingBatch: 0,
@@ -35,6 +43,7 @@ class MainGrid extends React.Component {
             .then(res => {
 
                 let shuffleArr = this.shuffleArray(res.data)
+                this.props.updateProducts(shuffleArr)
                 let remainShowingBatch = Math.floor(shuffleArr.length / 50)
                 let showArr = shuffleArr.slice(0, 50)
                 let copyState = { ...this.state }
@@ -113,5 +122,7 @@ class MainGrid extends React.Component {
     }
 }
 
+
+const MainGrid = connect(null, mapDispatchToProps)(ConnectedMainGrid);
 
 export default MainGrid;
