@@ -18,11 +18,11 @@ exports.up = function (knex, Promise) {
             table.string('displayed_name').notNullable();
             table.integer('phone_number').notNullable();
             table.string('profile_picture').nullable();
-            table.specificType('uploaded_products', 'INT[]').nullable();
-            table.specificType('liked_products', 'INT[]').nullable();
-            table.specificType('trade_history', 'INT[]').nullable();
+            table.specificType('uploaded_products', 'INT[]').defaultTo('{}');
+            table.specificType('liked_products', 'INT[]').defaultTo('{}');
+            table.specificType('trade_history', 'INT[]').defaultTo('{}');
             table.integer('credibility').unsigned().defaultTo(5)
-            table.specificType('chat_basket', 'INT[]').nullable();
+            table.specificType('chat_basket', 'INT[]').defaultTo('{}');
         }),
 
         knex.schema.createTable('products', table => {
