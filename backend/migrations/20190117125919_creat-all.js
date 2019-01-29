@@ -51,6 +51,7 @@ exports.up = function (knex, Promise) {
             table.integer('status').notNullable().defaultTo(1);
         }),
 
+        
         knex.schema.createTable('chats', table => {
             table.increments('chat_id').unsigned().primary();
             table.integer('user_id1').unsigned().notNullable();
