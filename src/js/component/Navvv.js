@@ -19,7 +19,12 @@ function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = state => {
     const search = state.roootReducer
-    return { productsArr: search.productsArr, isLogin: search.isLogin };
+    const user = state.userReducer
+    return { 
+        productsArr: search.productsArr, 
+        isLogin: search.isLogin,
+        myUser: user.myUser
+    };
 };
 
 class ConnectedNavvv extends React.Component {
@@ -112,15 +117,17 @@ class ConnectedNavvv extends React.Component {
                             <a className="nav-link" href="#">Items</a>
                         </li>}
 
-                        {!this.props.isLogin && <li className="nav-item">
+                        {!this.props.myUser.displayed_name && <li className="nav-item">
                             <a className="nav-link" onClick={this.handleLoginToggle}>Login</a>
                         </li>}
-                        {!this.props.isLogin && <li className="nav-item">
+                        {!this.props.myUser.displayed_name && <li className="nav-item">
                             <a className="nav-link" onClick={this.handleRegToggle} reg={this.handleFinToggle}>Register</a>
                         </li>}
-                        <li className="nav-item">
+                        {this.props.myUser.displayed_name && 
+                        <li className="nav-item" style={{display: "flex", flexDirection:"row"}}>
+                            <p className="nav-link">Welcome, {this.props.myUser.displayed_name}</p> 
                             <Link className="nav-link" to="/userPage">User Page</Link>
-                        </li>
+                        </li>}
                     </ul>
                 </div>
                 {this.state.tryLogin && <LoginForm handleLogin={this.handleLoginToggle} />}

@@ -61,6 +61,12 @@ const actions_userPage = {
             type: "SUBMIT_COMMENT",
             user: user
         }
+    },
+    storeMyUser: (user) => {
+        return {
+            type: "STORE_MYUSER",
+            myUser: user
+        }
     }
 }
 
