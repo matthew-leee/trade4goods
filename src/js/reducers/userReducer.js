@@ -3,6 +3,7 @@ const userReducer = (state = {
     products: [],
     result: "",
     users: [],
+    comment: "",
     openMGModal: false,
     openFPModal: false,
     openSQModal: false,
@@ -74,6 +75,16 @@ const userReducer = (state = {
             return {
                 ...state,
                 otherUser: action.otherUser
+            }
+        case "SET_COMMENT":
+            return {
+                ...state,
+                comment: action.comment,
+            }
+        case "SUBMIT_COMMENT":
+            return {
+                ...state,
+                comment: ""
             }
         case "CLOSE_OTHERUSER":
             return {

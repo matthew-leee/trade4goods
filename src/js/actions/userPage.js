@@ -49,6 +49,18 @@ const actions_userPage = {
         return {
             type: "CLOSE_OTHERUSER",
         }
+    },
+    setComment: (input) => {
+        return {
+            type: "SET_COMMENT",
+            comment: input
+        }
+    },
+    submitComment: (user) => {
+        return {
+            type: "SUBMIT_COMMENT",
+            user: user
+        }
     }
 }
 
