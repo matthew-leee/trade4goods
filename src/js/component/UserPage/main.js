@@ -8,6 +8,7 @@ import SentReq from "./SentReq"
 import ReceivedReq from "./ReceivedReq";
 import TradeHistory from "./TradeHistory"
 
+
 class UserPage extends Component {
     render() {
         return (
@@ -36,7 +37,6 @@ class UserPage extends Component {
                     </div>
 
                     <TradeHistory />
-
                 
             </div>
         )
@@ -46,13 +46,13 @@ class UserPage extends Component {
 
 const mapStateToProps = (state) => {
     return {
-
+       
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-
+        
     }
 }
 

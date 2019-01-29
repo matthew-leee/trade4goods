@@ -28,15 +28,26 @@ const actions_userPage = {
             type: "CLEAR_SEARCH"
         }
     },
-    storeUser: (user) => {
+    storeUsers: (users) => {
         return {
-            type: "STORE_USER",
-            user: user
+            type: "STORE_USERS",
+            users: users
         }
     },
     openUploadModal: () => {
         return {
             type: "OPEN_UPLOADMODAL"
+        }
+    },
+    showOtherUser: (user) => {
+        return {
+            type: "SHOW_OTHERUSER", 
+            otherUser: user
+        }
+    },
+    closeOtherUser: () => {
+        return {
+            type: "CLOSE_OTHERUSER",
         }
     }
 }
