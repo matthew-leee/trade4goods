@@ -1,4 +1,3 @@
-'use strict';
 module.exports = class {
     constructor(knex, userProductService) {
         this.knex = knex
@@ -173,55 +172,87 @@ module.exports = class {
         }
     }
 
-    async offerProduct(product_id, user_id, offering_product) {
+    async offerProduct(product_offered, user_offering, product_offering) {
         try {
-            let product = await this.knex('products').where('product_id', product_id)
-            product = product[0]
-            let offering = await this.knex('products').where('product_id', offering_product).andWhere('uploaded_by', user_id)
-            offering = offering[0]
-            if (!offering) {
+            product_offered = await this.knex('products').where('product_id', product_offered)
+            product_offered = product_offered[0]
+            product_offering = await this.knex('products').where('product_id', product_offering).andWhere('uploaded_by', user_offering)
+            product_offering = product_offering[0]
+            if (!product_offering) {
                 throw {
                     statusCode: 403,
                     error: "Product not belongs to user",
-                    message: `user ${user_id} does not own product ${product_id}`
+                    message: `user ${user_offering} does not own product ${product_offering.product_id}`
                 }
-            } else if (!product) {
+            } else if (!product_offered) {
                 throw {
                     statusCode: 404,
                     error: "Product not found",
-                    message: `product ${product_id} does not exists`
+                    message: `product ${product_offered.product_id} does not exists`
                 }
-            } else if (product.status >= 3) {
+            } else if (product_offered.status >= 2) {
                 throw {
                     statusCode: 400,
-                    error: "Product is sold out",
-                    message: `product ${product.product_id} is under trading and cannot be offered`
+                    error: "Product is under trading",
+                    message: `product ${product_offered.product_id} is under trading and cannot be offered`
                 }
-            } else if (offering.status >= 3) {
+            } else if (product_offering.status >= 2) {
                 throw {
                     statusCode: 400,
                     erorr: "Product is under trading",
-                    message: `product ${offering.product_id} is under trading and cannot be offered`
+                    message: `product ${product_offering.product_id} is under trading and cannot be offered`
                 }
             } else {
-                const offer = {
-                    status: 2
-                }
-                (product.offered_by) ?
-                offer.offered_by = product.offered_by.push(offering.product_id) :
-                offer.offered_by = [offering.product_id]
-                await this.knex('products').where('product_id', product_id).update(offer)
+                product_offered.offered_by.push(product_offering.product_id)
+                await this.knex('products').where('product_id', product_offered.product_id).update(product_offered)
             }
         } catch (err) {
             throw err
         }
     }
+
+    async cancelOfferProduct(product_offered, user_offering, product_offering) {
+        try {
+            product_offered = await this.knex('products').where('product_id', product_offered)
+            product_offered = product_offered[0]
+            product_offering = await this.knex('products').where('product_id', product_offering).andWhere('uploaded_by', user_offering)
+            product_offering = product_offering[0]
+            if (!product_offering) {
+                throw {
+                    statusCode: 403,
+                    error: "Product not belongs to user",
+                    message: `user ${user_offering} does not own product ${product_offering.product_id}`
+                }
+            } else if (!product_offered) {
+                throw {
+                    statusCode: 404,
+                    error: "Product not found",
+                    message: `product ${product_offered.product_id} does not exists`
+                }
+            } else if (!product_offered.offered_by.find(e => e === product_offering.product_id)) {
+                throw {
+                    statusCode: 406,
+                    error: "Product has not offer",
+                    message: `product ${product_offering.product_id} did not offer on ${product_offered.product_id}`
+                }
+            } else {
+                const deleteIndex = product_offered.offered_by.indexOf(product_offering.product_id)
+                product_offered.offered_by.splice(deleteIndex, 1)
+                await this.knex('products').where('product_id', product_offered.product_id).update(product_offered)
+            }
+        } catch (err) {
+            throw err
+        }
+    }
+
+
     /* TODO : 
     [x] upload product 
     [x] edit product
     [x] delete product
     [x] get product
-    [] offer product
+    [x] offer product
+    [x] delete offer product
     [] comment on product
     [] delete comment on product
     [] like product

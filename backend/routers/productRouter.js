@@ -1,4 +1,3 @@
-'use strict'
 module.exports = (router, authService, productService) => {
     router.post('/api/product/', async (req, res) => {
         try {

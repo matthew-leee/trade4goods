@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (express, authService, routerService, productService, path) => {
     const router = express.Router();
     require('./authRouter')(router, authService)

@@ -1,4 +1,4 @@
-'use strict';
+/* eslint-disable no-throw-literal */
 module.exports = class {
     constructor(axios, bcrypt, jwt, promisify, redisClient, knex, nodemailer, randomstring) {
         this.axios = axios
@@ -45,7 +45,7 @@ module.exports = class {
                         let i = 0;
                         while (usernameExist.username === incomingInfo.username) {
                             if (incomingInfo.username + i !== usernameExist.usernameExist) {
-                                incomingInfo.username + i
+                                incomingInfo.username = incomingInfo.username + i
                             }
                         }
                     }
@@ -78,7 +78,7 @@ module.exports = class {
                         let i = 0;
                         while (usernameExist.username === incomingInfo.username) {
                             if (incomingInfo.username + i !== usernameExist.usernameExist) {
-                                incomingInfo.username + i
+                                incomingInfo.username = incomingInfo.username + i
                             }
                         }
                     }
@@ -179,7 +179,7 @@ module.exports = class {
                 this.redisClient.sadd('jwt', jwt)
                 return jwt
             } else {
-                throw {
+                throw {       
                     statusCode: 401,
                     error: 'Incorrect Credential',
                     message: `username or password is not found`,

@@ -10,6 +10,10 @@ import { connect } from "react-redux"
 import GeneralTags from "./tags_antd"
 import uuidv1 from "uuid/v1"
 import Axios from "axios";
+import firebaseConfig from "../../../firebase"
+import * as firebase from 'firebase';
+
+const app = firebase.initializeApp(firebaseConfig)
 
 const { Option } = Select;
 
@@ -74,12 +78,12 @@ class AddPhotoForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const photos = this.props.previewPhotos.filter((u)=>{
+        const photos = this.props.previewPhotos.filter((u) => {
           return u.src != "fail"
         })
         values.tags = [...this.props.finishedTag]
         values.photos = [...photos]
-        console.log (values)
+        console.log(values)
         // const addPhotosRes = await Axios.post("https://localhost:8443/api/product")
       }
     });
@@ -138,8 +142,8 @@ class AddPhotoForm extends React.Component {
 
     return (
 
-      <div style={{display: "flex", justifyContent: "center", alignContent: "center",  marginTop: "24vh", marginRight: "5vw"}}>
-        <Form onSubmit={this.handleSubmit} style={{width: 800, height: 800}}>
+      <div style={{ display: "flex", justifyContent: "center", alignContent: "center", marginTop: "24vh", marginRight: "5vw" }}>
+        <Form onSubmit={this.handleSubmit} style={{ width: 800, height: 800 }}>
 
           <Form.Item {...formItemLayout} label="upload Photos">
             <input type="file" multiple onChange={this.props.handleFiles} />
@@ -252,25 +256,30 @@ const mapDispatchToProps = (dispatch) => {
         files.push(e.target.files[i])
       }
       files.forEach((file) => {
-        console.log(file.size)
-        // if image is smaller than 5MB
+        const id = String(uuidv1())
         if (file.size < 5242880) {
-          const reader = new FileReader();
-          reader.readAsDataURL(file)
-          reader.onloadend = () => {
-            dispatch(actions_addPhotos.PreviewPhotos({
-              src: reader.result,
-              key: String(uuidv1())
-            }))
-          }
+          const ref = app.storage().ref();
+          const name = `${id}-${file.name}`
+          const metadata = { contentType: file.type };
+          const task = ref.child(name).put(file, metadata)
+          task
+            .then(snapshot => snapshot.ref.getDownloadURL())
+            .then((url) => {
+              console.log(url)
+              dispatch(actions_addPhotos.PreviewPhotos({
+                src: url,
+                key: id
+              }))
+            })
         } else {
           dispatch(actions_addPhotos.PreviewPhotos({
             src: "fail",
-            key: String(uuidv1())
+            key: id
           }))
         }
       })
     }
+
   }
 }
 

@@ -67,7 +67,7 @@ response format
     comments: string | null
     sold_to: int (user_id) | null
     sold_at: date | null
-    status: int (1: available, 2: under offered, 3: trading, 4: sold out)
+    status: int (1: available, 2: trading, 3: sold out)
 }
 ```
 

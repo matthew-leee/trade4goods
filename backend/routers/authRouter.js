@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (router, authService) => {
     router.get('/api/isLoggedIn', async (req,res) => {
         try {
@@ -23,9 +22,11 @@ module.exports = (router, authService) => {
 
     router.post('/api/login', async (req, res) => {
         try {
-            const jwt = await authService.login(req.body.username_or_email, req.body.password)
+            console.log(req.body)
+            const jwt = await authService.loginLocal(req.body.username_or_email, req.body.password)
+            console.log(req.session)
             req.session.jwt = jwt
-            res.sendStatus(200)
+            res.send(jwt)
         } catch (err) {
             const statusCode = err.statusCode || 500
             delete err.statusCode
@@ -37,6 +38,7 @@ module.exports = (router, authService) => {
         try {
             const jwt = await authService.loginFacebook(req.body.access_token)
             if (jwt) {
+                
                 req.session.jwt = jwt
                 res.sendStatus(200)
             }

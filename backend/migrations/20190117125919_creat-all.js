@@ -17,12 +17,12 @@ exports.up = function (knex, Promise) {
             table.foreign('user_id').references('user_id').inTable('users_credential');
             table.string('displayed_name').notNullable();
             table.integer('phone_number').notNullable();
-            table.string('profile_picture').nullable();
-            table.specificType('uploaded_products', 'INT[]').nullable();
-            table.specificType('liked_products', 'INT[]').nullable();
-            table.specificType('trade_history', 'INT[]').nullable();
+            table.binary('profile_picture').nullable();
+            table.specificType('uploaded_products', 'INT[]').notNullable().defaultTo('{}')
+            table.specificType('liked_products', 'INT[]').notNullable().defaultTo('{}');
+            table.specificType('trade_history', 'INT[]').notNullable().defaultTo('{}');
             table.integer('credibility').unsigned().defaultTo(5)
-            table.specificType('chat_basket', 'INT[]').nullable();
+            table.specificType('chat_basket', 'INT[]').notNullable().defaultTo('{}');
         }),
 
         knex.schema.createTable('product_comments', table => {
@@ -36,16 +36,16 @@ exports.up = function (knex, Promise) {
         knex.schema.createTable('products', table => {
             table.increments('product_id').unsigned().primary();
             table.string('name').notNullable();
-            table.specificType('image','text ARRAY').notNullable();
+            table.specificType('image', 'VARCHAR[]').notNullable().defaultTo('{}');
             table.string('description',1000).nullable();
             table.string('expectation',1000).notNullable().defaultTo('free to offer');
             table.string('trade_location').nullable();
-            table.specificType('tags', 'text ARRAY').nullable();
+            table.specificType('tags', 'VARCHAR[]').notNullable().defaultTo('{}');
             table.integer('uploaded_by').notNullable().references('user_id').inTable('users');
             table.timestamp('uploaded_at').notNullable().defaultTo(knex.fn.now());
-            table.specificType('liked_by', 'INT[]').nullable();
-            table.specificType('comments', 'INT[]').nullable();
-            table.specificType('offered_by', 'INT[]').nullable();
+            table.specificType('liked_by', 'INT[]').notNullable().defaultTo('{}');
+            table.specificType('comments', 'INT[]').notNullable().defaultTo('{}');
+            table.specificType('offered_by', 'INT[]').notNullable().defaultTo('{}');
             table.integer('sold_to').nullable();
             table.timestamp('sold_at').nullable().defaultTo(null);
             table.integer('status').notNullable().defaultTo(1);
@@ -57,7 +57,7 @@ exports.up = function (knex, Promise) {
             table.integer('user_id2').unsigned().notNullable()
             table.foreign('user_id1').references('user_id').inTable('users');
             table.foreign('user_id2').references('user_id').inTable('users');
-            table.specificType('messages', 'INT[]').nullable();
+            table.specificType('messages', 'INT[]').notNullable().defaultTo('{}');
         }),
 
         knex.schema.createTable('messages', table => {
@@ -82,6 +82,7 @@ exports.up = function (knex, Promise) {
 
 exports.down = function (knex, Promise) {
     return Promise.all([
+        knex.schema.dropTable('trade_history'),
         knex.schema.dropTable('messages'),
         knex.schema.dropTable('chats'),
         knex.schema.dropTable('products'),

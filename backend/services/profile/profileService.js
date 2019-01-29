@@ -1,4 +1,4 @@
-'use strict';
+/* eslint-disable no-throw-literal */
 module.exports = class {
     constructor(knex) {
         this.knex = knex

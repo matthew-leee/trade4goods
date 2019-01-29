@@ -1,8 +1,8 @@
 import React from 'react'
 import { Form, Icon, Input, Button, Checkbox, } from 'antd';
 import Popup from 'reactjs-popup'   //npm Reactjs-Popup
-import {popUpCloseTag, content} from './compCSS/popupCss'
-import Axios from 'axios';
+import { popUpCloseTag, content } from './compCSS/popupCss'
+import axios from 'axios'
 
 class NormalLoginForm extends React.Component {
     constructor(props) {
@@ -26,17 +26,35 @@ class NormalLoginForm extends React.Component {
         e.preventDefault();
         this.props.form.validateFields(async (err, values) => {
             if (!err) {
-                //some stuff is success
-
-
-                console.log('Received values of form: ', values);
-                const newValue = {
+                let passingDB = {
                     username_or_email: values.userName,
-                    password: values.password
+                    password: values.password,
                 }
-                const res = Axios.post("https://localhost:8443/api/signin")
-                console.log (res)
-                if (re
+
+                try{
+                   let res = await axios.post('https://localhost:8443/api/login', passingDB)
+                   console.log(res)
+
+                }catch(err){
+                    console.log(err.response.status)
+                    console.log(err.response.data)
+
+                }
+
+
+
+                // if (res) {
+                //     console.log("login good")
+                //     console.log(res)
+
+                //     // this.setState({ finishReg: true })
+                //     //this.setState({ open: false }) // it will close the form immediately
+                // } else {
+                //     console.log("login no good")
+                    
+                    
+                //     window.alert("E-mail or Username exsisted, please try again")
+                // }
             }
         });
     }
@@ -71,7 +89,7 @@ class NormalLoginForm extends React.Component {
                             )}
                             <a className="login-form-forgot" href="">Forgot password</a>
                             <br />
-                            <Button type="default" htmlType="submit" className="btn btn-success" style={{fontSize:"10px"}} >
+                            <Button type="default" htmlType="submit" className="btn btn-success" style={{ fontSize: "10px" }} >
                                 Log in
                             </Button>
                             <div className="d-inline">&nbsp; Or &nbsp;</div> <a href="">register now!</a>

@@ -21,7 +21,8 @@ class MainCard extends React.Component {
             imgPic: img.src
           });
         };
-        img.onerror = () => {
+        img.onerror = (err) => {
+          console.log(err)
           this.setState({
             loading: false,
             error: true,
