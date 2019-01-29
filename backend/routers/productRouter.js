@@ -18,7 +18,7 @@ module.exports = (router, authService, productService) => {
     router.get('/api/product/:id', async (req, res) => {
         try {
             const productInfo = await productService.getProduct(req.params.id)
-            res.send(200).json(productInfo);
+            res.status(200).json(productInfo);
         } catch (err) {
             const statusCode = err.statusCode || 500
             delete err.statusCode
@@ -26,10 +26,10 @@ module.exports = (router, authService, productService) => {
         }
     })
 
-    router.get('/api/allProduct/', async (req, res) => {
+    router.get('/api/allProducts/', async (req, res) => {
         try {
-            const productInfo = await productService.getAllProduct()
-            res.send(200).json(productInfo);
+            const productInfo = await productService.getAllProducts()
+            res.status(200).json(productInfo);
         } catch (err) {
             res.status(500).json(err)
         }

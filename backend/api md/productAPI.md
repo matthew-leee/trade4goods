@@ -77,7 +77,7 @@ response format
 
 - all products profile
 
-    *GET: /api/allProduct/*
+    *GET: /api/allProducts/*
 
 response format
 

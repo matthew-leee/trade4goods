@@ -165,7 +165,7 @@ module.exports = class {
         }
     }
 
-    async getAllProduct() {
+    async getAllProducts() {
         try {
             return await this.knex('products')
         } catch (err) {
