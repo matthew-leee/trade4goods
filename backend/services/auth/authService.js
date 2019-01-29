@@ -27,7 +27,6 @@ module.exports = class {
         try {
             let emailExist = await this.knex('users_credential').where('email', incomingInfo.email);
             emailExist = emailExist[0]
-
             switch (true) {
                 // ======================================== Facebook Signup Handle ========================================
                 case (incomingInfo.hasOwnProperty('facebook_id')): {
@@ -116,6 +115,7 @@ module.exports = class {
                     let usernameExist = await this.knex('users_credential').where('username', incomingInfo.username);
                     usernameExist = usernameExist[0]
                     if (usernameExist) {
+                        console.log('Duplicated Username')
                         throw {
                             statusCode: 400,
                             error: 'Duplicated Username',
@@ -124,6 +124,7 @@ module.exports = class {
                         }
                     }
                     if (incomingInfo.password !== incomingInfo.confirmed_password) {
+                        console.log('Unmatched Password')
                         throw {
                             statusCode: 422,
                             error: 'Unmatched Password',
@@ -133,6 +134,7 @@ module.exports = class {
                     }
 
                     if (incomingInfo.username.length < 5 || incomingInfo.username.length > 15 || /\W/.test(incomingInfo.username)) {
+                        console.log('Invalid Username')
                         throw {
                             statusCode: 422,
                             error: 'Invalid Username',
@@ -142,6 +144,7 @@ module.exports = class {
                     }
 
                     if (!/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(incomingInfo.email)) {
+                        console.log('Invalid Email')
                         throw {
                             statusCode: 422,
                             error: 'Invalid Email',
@@ -151,6 +154,8 @@ module.exports = class {
                     }
                     delete incomingInfo.confirmed_password
                     const hashedPassword = await this.bcrypt.hashPassword(incomingInfo.password);
+
+                    console.log(hashedPassword)
                     incomingInfo.password = hashedPassword;
                     const key = this.randomstring.generate();
                     this.redisClient.setex(key, 60 * 60 * 24, incomingInfo.email)
@@ -174,7 +179,7 @@ module.exports = class {
                 this.redisClient.sadd('jwt', jwt)
                 return jwt
             } else {
-                throw {
+                throw {       
                     statusCode: 401,
                     error: 'Incorrect Credential',
                     message: `username or password is not found`,

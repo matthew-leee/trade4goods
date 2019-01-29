@@ -136,7 +136,7 @@ class AddPhotoForm extends React.Component {
 
     return (
 
-      <div style={{display: "flex", justifyContent: "center", alignContent: "center"}}>
+      <div style={{display: "flex", justifyContent: "center", alignContent: "center",  marginTop: "24vh", marginRight: "5vw"}}>
         <Form onSubmit={this.handleSubmit} style={{width: 800, height: 800}}>
 
           <Form.Item {...formItemLayout} label="upload Photos">

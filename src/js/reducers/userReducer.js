@@ -1,22 +1,40 @@
 
 const userReducer = (state = {
-    openModal: false,
     products: [],
     result: "",
-    user: []
+    users: [],
+    openMGModal: false,
+    openFPModal: false,
+    openSQModal: false,
+    openRQModal: false,
+    openUploadModal: false,
+    otherUser: ""
 }, action) => {
     switch (action.type) {
         case "OPEN_MODAL":
-            if (state.openModal) {
-                return {
-                    ...state,
-                    openModal: false
-                }
-            } else {
-                return {
-                    ...state,
-                    openModal: true
-                }
+            switch (action.column) {
+                case "MG":
+                    return {
+                        ...state,
+                        openMGModal: !state.openMGModal
+                    }
+                case "FP":
+                    return {
+                        ...state,
+                        openFPModal: !state.openFPModal
+                    }
+                case "SQ":
+                    return {
+                        ...state,
+                        openSQModal: !state.openSQModal
+                    }
+                case "RQ":
+                    return {
+                        ...state,
+                        openRQModal: !state.openRQModal
+                    }
+                default:
+                    return state
             }
         case "FETCH_PRODUCTS":
             return {
@@ -26,13 +44,8 @@ const userReducer = (state = {
         case "OPEN_ONE_MODAL":
             const newProducts = state.products.map((u) => {
                 if (u.product_id == action.id) {
-                    if (u.openOneModal) {
-                        u.openOneModal = false
-                        return u
-                    } else {
-                        u.openOneModal = true
-                        return u
-                    }
+                    u.openOneModal = !u.openOneModal
+                    return u
                 } else {
                     return u
                 }
@@ -46,11 +59,26 @@ const userReducer = (state = {
                 ...state,
                 result: action.result
             }
-        case "STORE_USER":
-        const user = action.user
+        case "STORE_USERS":
+            const users = action.users
             return {
                 ...state,
-                user: [...user]
+                users: [...users]
+            }
+        case "OPEN_UPLOADMODAL":
+            return {
+                ...state,
+                openUploadModal: !state.openUploadModal
+            }
+        case "SHOW_OTHERUSER":
+            return {
+                ...state,
+                otherUser: action.otherUser
+            }
+        case "CLOSE_OTHERUSER":
+            return {
+                ...state,
+                otherUser: ""
             }
         default:
             return state

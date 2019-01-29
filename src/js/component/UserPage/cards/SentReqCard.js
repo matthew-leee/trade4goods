@@ -15,7 +15,7 @@ class SentReqCard extends Component {
         if (accepted) {
             return (
                 <Card
-                    style={{ width: "10vw" , backgroundColor: "red"}}
+                    style={{ width: "7vw" , backgroundColor: "red"}}
                     cover={
                         <img
                             alt={name}
@@ -33,7 +33,7 @@ class SentReqCard extends Component {
                         title={name}
                         description={description}
                     />
-                    <GeneralTags tags={tags} closable={false} />
+                    {/* <GeneralTags tags={tags} closable={false} /> */}
 
                     {openOneModal && <Popup open={true} closeOnDocumentClick onClose={() => { handleOneModal(id) }}>
                         <div style={content} >
@@ -47,39 +47,7 @@ class SentReqCard extends Component {
         } else if (rejected) {
             return (
                 <Card
-                    style={{ width: "10vw", backgroundColor: "blue" }}
-                    cover={
-                        <img
-                            alt={name}
-                            src={image}
-                            onClick={() => { handleOneModal(id) }}
-                        />
-                    }
-                    actions={[
-                        
-                    ]}
-                    key={id}
-                    id={id}
-                >
-                    <Card.Meta
-                        title={name}
-                        description={description}
-                    />
-                    <GeneralTags tags={tags} closable={false} />
-
-                    {openOneModal && <Popup open={true} closeOnDocumentClick onClose={() => { handleOneModal(id) }}>
-                        <div style={content} >
-                            <a style={popUpCloseTag} onClick={() => { handleOneModal(id) }}>&times;</a>
-                            <ProductDetails details={allDetails} />
-                        </div>
-                    </Popup>}
-
-                </Card>
-            )
-        } else {
-            return (
-                <Card
-                    style={{ width: "10vw", backgroundColor: "green" }}
+                    style={{ width: "7vw", backgroundColor: "blue" }}
                     cover={
                         <img
                             alt={name}
@@ -97,7 +65,39 @@ class SentReqCard extends Component {
                         title={name}
                         description={description}
                     />
-                    <GeneralTags tags={tags} closable={false} />
+                    {/* <GeneralTags tags={tags} closable={false} /> */}
+
+                    {openOneModal && <Popup open={true} closeOnDocumentClick onClose={() => { handleOneModal(id) }}>
+                        <div style={content} >
+                            <a style={popUpCloseTag} onClick={() => { handleOneModal(id) }}>&times;</a>
+                            <ProductDetails details={allDetails} />
+                        </div>
+                    </Popup>}
+
+                </Card>
+            )
+        } else {
+            return (
+                <Card
+                    style={{ width: "7vw", backgroundColor: "green" }}
+                    cover={
+                        <img
+                            alt={name}
+                            src={image}
+                            onClick={() => { handleOneModal(id) }}
+                        />
+                    }
+                    actions={[
+                        <Icon type="delete" onClick={handleDelete} />
+                    ]}
+                    key={id}
+                    id={id}
+                >
+                    <Card.Meta
+                        title={name}
+                        description={description}
+                    />
+                    {/* <GeneralTags tags={tags} closable={false} /> */}
 
                     {openOneModal && <Popup open={true} closeOnDocumentClick onClose={() => { handleOneModal(id) }}>
                         <div style={content} >

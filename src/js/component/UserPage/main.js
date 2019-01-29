@@ -8,15 +8,16 @@ import SentReq from "./SentReq"
 import ReceivedReq from "./ReceivedReq";
 import TradeHistory from "./TradeHistory"
 
+
 class UserPage extends Component {
     render() {
         return (
-            <div className="userPage" style={{display: "flex", flexDirection: "row", overflowX: "scroll"}}>
+            <div className="userPage" style={{display: "flex", flexDirection: "row"}}>
                
 
                     <UserPanel />
 
-                    <div style={{width: "80vw"}}>
+                    <div style={{width: "70vw", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center", alignItems: "center"}}>
                         <Row>
                             <Col span={12} >
                                 <MyGoods />
@@ -26,18 +27,16 @@ class UserPage extends Component {
                             </Col>
                         </Row>
                         <Row>
-                            <Col span={10}>
+                            <Col span={12}>
                                 <SentReq />
                             </Col>
-                            <Col span={10}>
+                            <Col span={12}>
                                 <ReceivedReq />
-                            </Col>
-                            <Col span={4}>
-                                <TradeHistory />
                             </Col>
                         </Row>
                     </div>
 
+                    <TradeHistory />
                 
             </div>
         )
@@ -47,13 +46,13 @@ class UserPage extends Component {
 
 const mapStateToProps = (state) => {
     return {
-
+       
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-
+        
     }
 }
 

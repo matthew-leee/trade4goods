@@ -37,7 +37,7 @@ const products = [
         description: "heaven diescription",
         trade_location: ["Kowloon", "Tsim Sha Tsui"],
         tags: ["heaven", "god", "jesus"],
-        uploaded_by: "user5",
+        uploaded_by: "user2",
         uploaded_at: new Date(),
         liked_by: ["user6", "user7", "user8"],
         comments: [
