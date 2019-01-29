@@ -29,9 +29,9 @@ const knex = require('knex')({
         let trade_location = faker.lorem.word()
         let tags = [faker.lorem.word(), faker.lorem.word()]
         // let uploaded_by = i
-        let liked_by = null
-        let comments = null
-        let offered_by = null
+        let liked_by = []
+        let comments = []
+        let offered_by = []
         let sold_to = null
         let sold_at = null
 
