@@ -78,8 +78,12 @@ class AddPhotoForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
-        const photos = this.props.previewPhotos.filter((u) => {
+        const photos = this.props.previewPhotos
+        .filter((u) => {
           return u.src != "fail"
+        })
+        .map((u)=>{
+          return u.src
         })
         values.tags = [...this.props.finishedTag]
         values.photos = [...photos]
@@ -90,7 +94,7 @@ class AddPhotoForm extends React.Component {
           expectation: values.expectation,
           trade_location: `${values.location[0]},${values.location[1]}`,
           tags: values.tags,
-          iamge: values.photos 
+          image: values.photos 
         }
         try{
           const addPhotosRes = await Axios("https://localhost:8443/api/product", {

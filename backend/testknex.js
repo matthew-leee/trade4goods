@@ -9,8 +9,8 @@ const knex = require('knex')({
 });
 
 (async () => {
-    const canon = await knex("products").where("name", "canon dslr")
-    console.log (canon)
+    const google = await knex("users").where("displayed_name", "doloribuseumnon")
+    console.log (google)
 })();
 
 

@@ -5,9 +5,20 @@ module.exports = class {
 
     async uploadProduct(product_id, user_id) {
         try {
+            console.log (user_id)
             let user = await this.knex('users').where('user_id', user_id)
+            console.log (user)
             user = user[0]
-            user.uploaded_products.push(product_id)
+            if (user.uploaded_products == null){
+                user.uploaded_products = []
+                console.log (user)
+                user.uploaded_products.push(product_id)
+                console.log (user)
+            } else if (user.uploaded_products.length < 0) {
+                user.uploaded_products.push(product_id)
+            } else {
+                console.log("invalid upload product")
+            }
             await this.knex('users').where('user_id', user_id).update(user)
         } catch (err) {
             throw err
