@@ -31,17 +31,30 @@ class NormalLoginForm extends React.Component {
                     password: values.password,
                 }
 
-                let res = await axios.post('https://localhost:8443/api/login', passingDB)
-                if (res) {
-                    console.log("login good")
-                    console.log(res)
+                try{
+                   let res = await axios.post('https://localhost:8443/api/login', passingDB)
+                   console.log(res)
 
-                    // this.setState({ finishReg: true })
-                    //this.setState({ open: false }) // it will close the form immediately
-                } else {
-                    console.log("login no good")
-                    //window.alert("E-mail or Username exsisted, please try again")
+                }catch(err){
+                    console.log(err.response.status)
+                    console.log(err.response.data)
+
                 }
+
+
+
+                // if (res) {
+                //     console.log("login good")
+                //     console.log(res)
+
+                //     // this.setState({ finishReg: true })
+                //     //this.setState({ open: false }) // it will close the form immediately
+                // } else {
+                //     console.log("login no good")
+                    
+                    
+                //     window.alert("E-mail or Username exsisted, please try again")
+                // }
             }
         });
     }
