@@ -13,7 +13,7 @@ const knex = require('knex')({
     let userCreArr = [];
     let usersArr = [];
     let seedingTable = ['users_credential','users']
-    let fakeDataGenerateNumber = 200
+    let fakeDataGenerateNumber = 25
 
 
     await knex(seedingTable[0]).del();
@@ -66,17 +66,9 @@ const knex = require('knex')({
         let chat_basket =null
 
 
-      
-        // let cooool = { "username": username, "password": password, "email": email, "email_isVerifying": email_isVerifying, "google_id": google_id, "facebook_id": facebook_id, "access_token": access_token }
-
-        // let coooooooool = {"user_id":user_id,"displayed_name":displayed_name,"phone_number":phone_number,"profile_picture":profile_picture,"uploaded_products":uploaded_products,"liked_products":liked_products, "offered_products":offered_products,"products_being_offered":products_being_offered,"trade_history":trade_history,"chat_basket":chat_basket }
-
-        // console.log(cooool,coooooooool)
 
         userCreArr.push({ "username": username, "password": password, "email": email, "email_isVerifying": email_isVerifying, "google_id": google_id, "facebook_id": facebook_id, "access_token": access_token })
-
         usersArr.push({"displayed_name":displayed_name,"phone_number":phone_number,"profile_picture":profile_picture,"uploaded_products":uploaded_products,"liked_products":liked_products,"trade_history":trade_history,"chat_basket":chat_basket })
-        console.log("looks good count:" + i)
         console.log("id: ", username,'+ pw: ', realpw)
     }
     await knex(seedingTable[0]).insert(userCreArr)
@@ -88,9 +80,6 @@ const knex = require('knex')({
     })
     console.log (usersArrWithId)
     await knex(seedingTable[1]).insert(usersArrWithId)
-
-
-
     console.log("success update table data: " + seedingTable)
 
 })();
