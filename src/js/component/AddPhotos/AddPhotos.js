@@ -2,7 +2,7 @@
 import React, { Component } from "react"
 
 import {
-  Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete, Tag
+  Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, message
 } from 'antd';
 import TextArea from "antd/lib/input/TextArea";
 import actions_addPhotos from "../../actions/addPhotos"
@@ -74,9 +74,9 @@ class AddPhotoForm extends React.Component {
     console.log(props)
   }
 
-  handleSubmit = async (e) => {
+  handleSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
         const photos = this.props.previewPhotos.filter((u) => {
           return u.src != "fail"
@@ -84,7 +84,13 @@ class AddPhotoForm extends React.Component {
         values.tags = [...this.props.finishedTag]
         values.photos = [...photos]
         console.log(values)
-        // const addPhotosRes = await Axios.post("https://localhost:8443/api/product")
+        try{
+          const addPhotosRes = await Axios.post("https://localhost:8443/api/product")
+          console.log (addPhotosRes)
+          message.success("upload success")
+        } catch (err) {
+          console.log (err.response.data)
+        }
       }
     });
   }
