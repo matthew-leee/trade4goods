@@ -59,6 +59,7 @@ module.exports = class {
             tags: info.tags,
             uploaded_by: user_id
         }
+        console.log (injectingInfo)
         try {
             let product_id = await this.knex('products').insert(injectingInfo).returning('product_id');
             product_id = product_id[0]
