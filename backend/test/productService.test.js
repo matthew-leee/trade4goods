@@ -442,7 +442,7 @@ describe('Product Service', () => {
             tags: ['test', 'testing', 'happy testing'],
         }
         await productService.uploadProduct(product1, test_user_id)
-        product1 = await this.knex('products').where('name', 'Test Item')
+        product1 = await knex('products').where('name', 'Test Item')
         product1 = product1[0]
         let product2 = {
             name: 'Test Item2',
@@ -453,9 +453,111 @@ describe('Product Service', () => {
             tags: ['test', 'testing', 'happy testing'],
         }
         await productService.uploadProduct(product2, test_user_id2)
-        product2 = await this.knex('products').where('name', 'Test Item2')
-        product2 = product1[0]
+        product2 = await knex('products').where('name', 'Test Item2')
+        product2 = product2[0]
         await productService.offerProduct(product2.product_id, test_user_id, product1.product_id)
-        
+        product2 = await knex('products').where('name', 'Test Item2')
+        product2 = product2[0]
+        expect(product2.offered_by).toEqual([product1.product_id])
+        await knex('products').where('product_id', product1.product_id).orWhere('product_id', product2.product_id).del()
+        await knex('users').where('user_id', test_user_id2).del()
+        await knex('users_credential').where('user_id', test_user_id2).del()
+        done()
+    })
+
+    test('should allow user to delete offer on product they he has once offered', async done => {
+        test_user_id2 = await knex('users_credential').insert({
+            username: 'test_username2',
+            password: 'Abcd1234',
+            email: 'example2@example.com'
+        }).returning('user_id')
+        test_user_id2 = test_user_id2[0]
+        const profileService = new ProfileService(knex)
+        const user2 = {
+            displayed_name: 'TEST',
+            phone_number: 30624770,
+        }
+        await profileService.createProfile(user2, test_user_id2)
+        let product1 = {
+            name: 'Test Item',
+            image: image_base64,
+            expectation: 'another item',
+            description: 'This is a test item, to test whether it can be injected into the database and pass tests',
+            trade_locaiton: '127.0.0.1',
+            tags: ['test', 'testing', 'happy testing'],
+        }
+        await productService.uploadProduct(product1, test_user_id)
+        product1 = await knex('products').where('name', 'Test Item')
+        product1 = product1[0]
+        let product2 = {
+            name: 'Test Item2',
+            image: image_base64,
+            expectation: 'item',
+            description: 'This is another test item, to test whether it can be injected into the database and pass tests',
+            trade_locaiton: '127.0.0.1',
+            tags: ['test', 'testing', 'happy testing'],
+        }
+        await productService.uploadProduct(product2, test_user_id2)
+        product2 = await knex('products').where('name', 'Test Item2')
+        product2 = product2[0]
+        await productService.offerProduct(product2.product_id, test_user_id, product1.product_id)
+        await productService.cancelOfferProduct(product2.product_id, test_user_id, product1.product_id)
+        product2 = await knex('products').where('name', 'Test Item2')
+        product2 = product2[0]
+        expect(product2.offered_by).toEqual([])
+        await knex('products').where('product_id', product1.product_id).orWhere('product_id', product2.product_id).del()
+        await knex('users').where('user_id', test_user_id2).del()
+        await knex('users_credential').where('user_id', test_user_id2).del()
+        done()
+    })
+
+    test('should throw error on delete offer if product A is not being offered to product B', async done => {
+        test_user_id2 = await knex('users_credential').insert({
+            username: 'test_username2',
+            password: 'Abcd1234',
+            email: 'example2@example.com'
+        }).returning('user_id')
+        test_user_id2 = test_user_id2[0]
+        const profileService = new ProfileService(knex)
+        const user2 = {
+            displayed_name: 'TEST',
+            phone_number: 30624770,
+        }
+        await profileService.createProfile(user2, test_user_id2)
+        let product1 = {
+            name: 'Test Item',
+            image: image_base64,
+            expectation: 'another item',
+            description: 'This is a test item, to test whether it can be injected into the database and pass tests',
+            trade_locaiton: '127.0.0.1',
+            tags: ['test', 'testing', 'happy testing'],
+        }
+        await productService.uploadProduct(product1, test_user_id)
+        product1 = await knex('products').where('name', 'Test Item')
+        product1 = product1[0]
+        let product2 = {
+            name: 'Test Item2',
+            image: image_base64,
+            expectation: 'item',
+            description: 'This is another test item, to test whether it can be injected into the database and pass tests',
+            trade_locaiton: '127.0.0.1',
+            tags: ['test', 'testing', 'happy testing'],
+        }
+        await productService.uploadProduct(product2, test_user_id2)
+        product2 = await knex('products').where('name', 'Test Item2')
+        product2 = product2[0]
+        try {
+            await productService.cancelOfferProduct(product2.product_id, test_user_id, product1.product_id)
+        } catch (err) {
+            expect(err).toEqual({
+                statusCode: 406,
+                error: "Product has not offer",
+                message: `product ${product1.product_id} did not offer on ${product2.product_id}`
+            })
+            await knex('products').where('product_id', product1.product_id).orWhere('product_id', product2.product_id).del()
+            await knex('users').where('user_id', test_user_id2).del()
+            await knex('users_credential').where('user_id', test_user_id2).del()
+            done()
+        }
     })
 })

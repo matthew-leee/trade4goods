@@ -36,7 +36,7 @@ exports.up = function (knex, Promise) {
         knex.schema.createTable('products', table => {
             table.increments('product_id').unsigned().primary();
             table.string('name').notNullable();
-            table.binary('image').notNullable();
+            table.specificType('image', 'VARCHAR[]').notNullable().defaultTo('{}');
             table.string('description',1000).nullable();
             table.string('expectation',1000).notNullable().defaultTo('free to offer');
             table.string('trade_location').nullable();
