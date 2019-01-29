@@ -51,6 +51,7 @@ class ConnectedMainGrid extends React.Component {
                 copyState.showArr = showArr
                 copyState.remainShowingBatch = remainShowingBatch
                 this.setState(copyState)
+                console.log(this.state.productsArr)
             })
     }
 
