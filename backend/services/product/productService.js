@@ -258,10 +258,18 @@ module.exports = class {
                     message: `product ${product_offered.product_id} does not exists`
                 }
             }
-            const comment_id = await(user_id, comment);
+            const comment_id = await(user_id, comment, product_id);
             product.comments.push(comment_id)
             await this.knex('products').where('product_id', product.product_id).update(products)
         } catch (err) {
+            throw err
+        }
+    }
+
+    async editComment(user_id, comment_id, commnet) {
+        try {
+            await commentService.editComment(user_id, comment_id, commnet)
+        } catch(err) {
             throw err
         }
     }
@@ -286,8 +294,9 @@ module.exports = class {
     [x] get product
     [x] offer product
     [x] delete offer product
-    [] comment on product
-    [] delete comment on product
+    [x] comment on product
+    [x] edit comment on product
+    [x] delete comment on product
     [] like product
     [] dislike product
     [] confirm product trade

@@ -294,6 +294,45 @@ status: 401 Unauthorized
 
 ---
 
+## PUT
+
+- edit comment on product
+
+    *POST: /api/comment/*
+
+request params
+```
+{
+    comment_id: int
+    comment: string
+}
+```
+
+response format
+
+*Success*
+
+```
+status: 200 OK
+```
+
+*Unauthorized*
+```
+status: 401 Unauthorized
+```
+
+*Failure*
+
+```
+{
+    statusCode: 404,
+    error: "Product not found",
+    message: `product ${product_offered.product_id} does not exists`
+}
+```
+
+---
+
 ## DELETE
 
 - comment on product

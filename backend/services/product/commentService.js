@@ -16,6 +16,20 @@ module.exports = class {
         }
     }
 
+    async editComment(user_id, comment_id, comment) {
+        let comment = await this.knex('product_comments').where('comment_id', comment_id).andWhere('commentator', user_id)
+        comment = comment[0]
+        if (!comment) {
+            throw {
+                statusCode: 403,
+                error: `user ${user_id} has no permission to delete comment ${comment_id}`
+            }
+        } else {
+            comment.comment = comment
+            await this.knex('product_comments').where('comment_id', comment_id).andWhere('commentator', user_id).update(comment)
+        }
+    }
+
     async deleteComment(user_id, comment_id) {
         try {
             let comment = await this.knex('product_comments').where('comment_id', comment_id).andWhere('commentator', user_id)
