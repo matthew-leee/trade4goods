@@ -179,7 +179,7 @@ module.exports = class {
                 this.redisClient.sadd('jwt', jwt)
                 return jwt
             } else {
-                throw {
+                throw {       
                     statusCode: 401,
                     error: 'Incorrect Credential',
                     message: `username or password is not found`,
