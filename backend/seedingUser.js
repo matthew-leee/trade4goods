@@ -1,12 +1,12 @@
 const faker = require('faker');
-
+require('dotenv').config()
 const knex = require('knex')({
     client: 'postgresql',
     connection: {
-        database: "trade",
-        user: "trade",
-        password: "trade"
-    }
+    database: process.env.DB_NAME,
+    user:     process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD
+  },
 });
 
 (async function excalibur() {
