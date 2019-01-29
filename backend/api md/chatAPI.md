@@ -25,17 +25,6 @@ response format
 
 ----
 
-
-## POST
-
-- like product
-
-    *POST: /api/like/:product_id
-
-    the product id stands for the targeted product to like
-
-----
-
 ## POST
 
 - start chat
