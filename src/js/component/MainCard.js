@@ -39,7 +39,7 @@ class MainCard extends React.Component {
     render() {
 
         return (
-            <Card hoverable style={{ width: "100%", marginTop:"10px"}} cover={<img alt="example" src={this.state.imgPic} />} 
+            <Card hoverable style={{ width: "100%", marginTop:"10px"}} cover={<img alt="card" src={this.state.imgPic} />} 
             actions={[<Icon type="heart" />, <Icon type="message" />, <Icon type="share-alt" />]} >
             <Skeleton loading={this.state.loading}   title paragraph active>
                 <Meta title={this.props.name} description={this.props.description} avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}/>

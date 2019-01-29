@@ -75,6 +75,11 @@ class ConnectedMainGrid extends React.Component {
         let remainShowingBatch = Math.floor(filterArr.length / 50)
         let showArr = filterArr.slice(0, 50)
         let copyState = { ...this.state }
+        if(remainShowingBatch  == 1){
+            copyState.hasmore = false
+        }else{
+            copyState.hasmore = true
+        }
         copyState.productsArr = filterArr
         copyState.showArr = showArr
         copyState.remainShowingBatch = remainShowingBatch
@@ -87,7 +92,9 @@ class ConnectedMainGrid extends React.Component {
             let newItemsArr = this.state.productsArr.slice(50 * this.state.showingBatch + 50, 50 * this.state.showingBatch + 100)
             copyState.showArr = [...this.state.showArr, ...newItemsArr]
             copyState.showingBatch = this.state.showingBatch + 1
+            copyState.hasmore = true
             this.setState(copyState)
+            console.log(page)
         }
         if (this.state.remainShowingBatch == page) {
             copyState.hasmore = false
@@ -101,7 +108,7 @@ class ConnectedMainGrid extends React.Component {
     render() {
 
         // infinite scrolling bottom div
-        const loader = <div className="loader" key={0}>Loading ...</div>;
+        const loader = <div style={{ width: "100%", textAlign: "center" }} key={0}><img alt="isLoading" src={require('./asset/gif/mainPageLoadingPic.gif')}></img></div>;
 
         // Seprate product into 6 rows
         let cards = this.state.showArr.map((el) => {
@@ -130,17 +137,19 @@ class ConnectedMainGrid extends React.Component {
 
 
 
-                    <Col xs={24} sm={12} md={8} lg={6} xl={4} > <InfiniteScroll
+                    <InfiniteScroll
                         pageStart={0}
                         loadMore={this.showMoreItems.bind(this)}
                         hasMore={this.state.hasmore}
-                        loader={loader} useWindow={true}>{c1}</InfiniteScroll></Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c2}</Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c3}</Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c4}</Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c5}</Col>
-                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c6}</Col>
+                        loader={loader} useWindow={true}>
+                        <Col xs={24} sm={12} md={8} lg={6} xl={4}>{c1}</Col>
+                        <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c2}</Col>
+                        <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c3}</Col>
+                        <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c4}</Col>
+                        <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c5}</Col>
+                        <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c6}</Col>
 
+                    </InfiniteScroll>
 
 
                 </Row>
