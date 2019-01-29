@@ -5,8 +5,26 @@ import { connect } from "react-redux"
 import users from "../../../FakeData/users"
 import Popup from 'reactjs-popup'   //npm Reactjs-Popup
 import { popUpCloseTag, content } from '../compCSS/popupCss'
+import Axios from "axios";
 
 class ProductDetails extends Component {
+    constructor(props){
+        super(props)
+        this.user="user1"
+    }
+
+    handleSubmitComment = async () => {
+        try {
+            const res = Axios.post("https://localhost:8443/api/comment", {
+                product_id: this.props.details.product_id,
+                comment: this.props.comment
+            })
+            this.props.handleSubmitComment()
+        } catch (err) {
+            console.log (err.response.data)
+        }
+    }
+
     render() {
         const u = this.props.details
         const images = u.image.map((src) => {
@@ -116,6 +134,8 @@ class ProductDetails extends Component {
                             )}
                         >
                         </List>
+                        <input type="text" onChange={this.props.handleComment} value={this.props.comment} / >
+                        <button onClick={this.props.handleSubmitComment}>Submit Comment</button>
                     </Col>
                 </Row>
 
@@ -136,7 +156,8 @@ const mapStateToProps = (state) => {
     const u = state.userReducer
     return {
         otherUser: u.otherUser,
-        users: u.users
+        users: u.users,
+        comment: u.comment
     }
 }
 
@@ -147,6 +168,13 @@ const mapDispatchToProps = (dispatch) => {
         },
         handleCloseOtherUser: () => {
             dispatch(actions_userPage.closeOtherUser())
+        },
+        handleComment: (e) => {
+            const input = e.target.value
+            dispatch(actions_userPage.setComment(input))
+        },
+        handleSubmitComment: ()=>{
+            dispatch(actions_userPage.submitComment())
         }
     }
 }

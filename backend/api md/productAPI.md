@@ -10,7 +10,7 @@ request params
 ```
 {
     name: string
-    image: bytea (base64 encoded image)
+    image: string[] | null
     description: string | null
     expectation: string | null
     trade_location: string | null
@@ -23,7 +23,7 @@ response format
 *Success*
 
 ```
-status: 200 OK
+status: 201 Created
 ```
 
 *Unauthorized*
@@ -114,7 +114,7 @@ request params
 {
     product_id: int
     name: string | null
-    image: bytea (base64 encoded image) | null
+    image: string[] | null
     description: string | null
     expectation: string | null
     trade_location: string | null
@@ -250,6 +250,146 @@ status: 401 Unauthorized
 {
     error: string
     message: string
+}
+```
+
+---
+
+## POST
+
+- comment on product
+
+    *POST: /api/comment/*
+
+request params
+```
+{
+    product_id: int (product id to comment on)
+    comment: string
+}
+```
+
+response format
+
+*Success*
+
+```
+status: 201 CREATED
+```
+
+*Unauthorized*
+```
+status: 401 Unauthorized
+```
+
+*Failure*
+
+```
+{
+    error: "Product not found",
+    message: "product (product id) does not exists"
+}
+```
+
+---
+
+## PUT
+
+- edit comment on product
+
+    *POST: /api/comment/*
+
+request params
+```
+{
+    comment_id: int
+    comment: string
+}
+```
+
+response format
+
+*Success*
+
+```
+status: 200 OK
+```
+
+*Unauthorized*
+```
+status: 401 Unauthorized
+```
+
+*Failure*
+
+```
+{
+    statusCode: 403,
+    error: "user (user_id) has no permission to delete comment (comment_id)"
+}
+```
+
+---
+
+## DELETE
+
+- comment on product
+
+    *DELETE: /api/comment/:id*
+
+    *provide comment id in param*
+
+response format
+
+*Success*
+
+```
+status: 200 OK
+```
+
+*Unauthorized*
+```
+status: 401 Unauthorized
+```
+
+*Failure*
+
+```
+{
+    statusCode: 403,
+    error: "user (user_id) has no permission to delete comment (comment_id)"
+}
+```
+
+---
+
+## PUT
+
+- like and unlike product
+
+    *PUT: /api/like/:id*
+
+    *provide product id in param*
+
+response format
+
+*Success*
+
+```
+liked / unliked
+```
+
+*Unauthorized*
+```
+status: 401 Unauthorized
+```
+
+*Failure*
+
+```
+{
+    error: "Product not found",
+    message: "product (product_id) does not exists"
 }
 ```
 
