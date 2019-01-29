@@ -40,14 +40,14 @@ class RegistrationFormgp extends React.Component {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll(async (err, values) => {
             if (!err) {
-                let passingDB = {
+                const passingDB = {
                     username: values.username,
                     password: values.password,
                     confirmed_password: values.confirmed_password,
                     email: values.email
                 }
                 // console.log('Received values of form: ', passingDB);
-                let res = await axios.post('https://localhost:8443/api/signup', passingDB)
+                const res = await axios.post('https://localhost:8443/api/signup', passingDB)
                 if (res) {
                     console.log("register good")
                     this.setState({ finishReg: true })
