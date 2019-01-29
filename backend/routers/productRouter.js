@@ -26,6 +26,15 @@ module.exports = (router, authService, productService) => {
         }
     })
 
+    router.get('/api/allProduct/', async (req, res) => {
+        try {
+            const productInfo = await productService.getAllProduct()
+            res.send(200).json(productInfo);
+        } catch (err) {
+            res.status(500).json(err)
+        }
+    })
+
     router.put('/api/product/', async (req, res) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
@@ -58,18 +67,35 @@ module.exports = (router, authService, productService) => {
         }
     })
 
-    
-    //keep this shit until u make a new one for all product that status is looking for offers
-    router.get('/getallproductsplease/', async (req, res) => {
+    router.post('/api/offer/product', async (req, res) => {
         try {
-            console.log("someone request all products")
-            let data = await knex.raw("select * from products")
-            res.send(JSON.stringify(data.rows))
+            const user_id = await authService.isAuthenticated(req.session.jwt)
+            if (user_id) {
+                await productService.offerProduct(req.body.product_offered, user_id, req.body.product_offering)
+                res.sendStatus(200)
+            } else {
+                res.sendStatus(401);
+            }
         } catch (err) {
             const statusCode = err.statusCode || 500
             delete err.statusCode
             res.status(statusCode).json(err)
         }
     })
-    
+
+    router.delete('/api/offer/product', async (req, res) => {
+        try {
+            const user_id = await authService.isAuthenticated(req.session.jwt)
+            if (user_id) {
+                await productService.offerProduct(req.query.product_offered, user_id, req.query.product_offering)
+                res.sendStatus(200)
+            } else {
+                res.sendStatus(401);
+            }
+        } catch (err) {
+            const statusCode = err.statusCode || 500
+            delete err.statusCode
+            res.status(statusCode).json(err)
+        }
+    })
 }
