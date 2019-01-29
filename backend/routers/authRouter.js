@@ -22,11 +22,9 @@ module.exports = (router, authService) => {
 
     router.post('/api/login', async (req, res) => {
         try {
-            console.log(req.body)
             const jwt = await authService.loginLocal(req.body.username_or_email, req.body.password)
-            console.log(req.session)
             req.session.jwt = jwt
-            res.send(jwt)
+            res.sendStatus(200)
         } catch (err) {
             const statusCode = err.statusCode || 500
             delete err.statusCode
