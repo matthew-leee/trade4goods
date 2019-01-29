@@ -83,6 +83,7 @@ exports.up = function (knex, Promise) {
 
 exports.down = function (knex, Promise) {
     return Promise.all([
+        knex.schema.dropTable('trade_history'),
         knex.schema.dropTable('messages'),
         knex.schema.dropTable('chats'),
         knex.schema.dropTable('products'),
