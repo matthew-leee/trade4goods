@@ -24,4 +24,27 @@ module.exports = class {
             throw err
         }
     }
+
+    async likeProduct(user_id, product_id) {
+        try {
+            let user = await this.knex('users').where('user_id', user_id)
+            user = user[0]
+            user.liked_products.push(product_id)
+            await this.knex('users').where('user_id', user_id).update(user)
+        } catch (err) {
+            throw err
+        }
+    }
+
+    async unlikeProduct(user_id, product_id) {
+        try {
+            let user = await this.knex('users').where('user_id', user_id)
+            user = user[0]
+            const delIndex = user.liked_products.indexOf(product_id)
+            user.liked_products.splice(delIndex, 1)
+            await this.knex('users').where('user_id', user_id).update(user)
+        } catch (err) {
+            throw err
+        }
+    }
 }
