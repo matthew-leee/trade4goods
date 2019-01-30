@@ -116,6 +116,7 @@ module.exports = class {
     }
 
     async getProfile(id) {
+        console.log(id)
         let user = await this.knex('users').where('user_id', id)
         user = user[0]
         if (!user) {

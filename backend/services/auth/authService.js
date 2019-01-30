@@ -219,18 +219,24 @@ module.exports = class {
                         suggestSolution: 'Open up your email permission or sign up locally, if you think it is a bug, please report to us'
                     }
                 }
+                data.facebook_id = data.id
+                delete data.id
                 this.signUp(data)
             }
         } catch (err) {
+            console.log(err)
             throw err
         }
     }
 
     async loginGoogle(google_id, access_token, id_token) {
         try {
-            const verify = await this.axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${access_token}`)
-            const data = verify.data
-            if(!data.sub || google_id !== data.sub) {
+            let access_token_data = await this.axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${access_token}`)
+            access_token_data = access_token_data.data
+            let id_token_data = await this.axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${id_token}`)
+            id_token_data = id_token_data.data 
+            
+            if(!access_token_data || !id_token_data || access_token_data.email !== id_token_data.email) {
                 throw {
                     statusCode: 400,
                     error: 'Invalid Credential',
@@ -239,14 +245,14 @@ module.exports = class {
             }
             let user = await this.knex('users_credential').where('google_id', google_id);
             user = user[0]
+        
             if (user) {
                 const jwt = this.jwt.sign(user.user_id, process.env.JWT_SECRET)
                 this.redisClient.sadd('jwt', jwt)
                 return jwt
             } else {
-                const get = await this.axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${id_token}`)
-                const info = get.data
-                if (!data.email) {
+               
+                if (!id_token_data.email) {
                     throw {
                         statusCode: 400,
                         error: 'Insufficient Credential',
@@ -254,7 +260,12 @@ module.exports = class {
                         suggestSolution: 'Open up your email permission or sign up locally, if you think it is a bug, please report to us'
                     }
                 }
-                this.signUp(info)
+                const data = {
+                    google_id,
+                    email: id_token_data.email,
+                    name: id_token_data.name
+                }
+                this.signUp(data)
             }
         } catch (err) {
             throw err

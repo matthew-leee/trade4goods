@@ -79,7 +79,7 @@ response format
 
 - Create user profile
 
-    *GET: /api/profile/*
+    *POST: /api/profile/*
 
 request params
 

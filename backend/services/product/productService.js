@@ -281,6 +281,23 @@ module.exports = class {
         }
     }
 
+    async getComment(product_id) {
+        try {
+            let product = await this.knex('products').where('product_id', product_id)
+            product = product[0]
+            if (!product) {
+                throw {
+                    statusCode: 404,
+                    error: "Product not found",
+                    message: `product ${product_offered.product_id} does not exists`
+                }
+            }
+            return await commentService.getComment(product.comments)
+        } catch(err) {
+            throw err
+        }
+    }
+
     async editComment(user_id, comment_id, commnet) {
         try {
             await this.commentService.editComment(user_id, comment_id, commnet)
@@ -350,6 +367,7 @@ module.exports = class {
                 }
             } else {
                 product_offered.status = 3
+                product_offered.sold_to = product_offering.uploaded_by
                 product_offering.status = 3
                 const trade = {
                     product_id1: product_offered.product_id,

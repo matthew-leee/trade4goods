@@ -116,6 +116,17 @@ module.exports = (router, authService, productService) => {
         }
     })
 
+    router.get('/api/comment/:id', async (req, res) => {
+        try {
+            const comments = await productService.getComment(req.params.id)
+            res.status(200).json(comments)
+        } catch (err) {
+            const statusCode = err.statusCode || 500
+            delete err.statusCode
+            res.status(statusCode).json(err)
+        }
+    })
+
     router.put('/api/comment/', async (req, res) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)

@@ -7,8 +7,8 @@ exports.up = function (knex, Promise) {
             table.string('password').nullable();
             table.string('email').notNullable().unique();
             table.boolean('email_isVerifying').notNullable().defaultTo(true);
-            table.integer('google_id', null).nullable();
-            table.integer('facebook_id', null).nullable();
+            table.decimal('google_id', null).nullable();
+            table.decimal('facebook_id', null).nullable();
         }),
 
         knex.schema.createTable('users', table => {

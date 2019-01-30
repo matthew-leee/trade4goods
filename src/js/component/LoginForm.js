@@ -74,22 +74,31 @@ class NormalLoginForm extends React.Component {
 
     responseFacebook = (res) => {
 
-        let id = res._profile.id
-        let accessToken = res._token.accessToken
-
-        if (accessToken) {
+        let facebook_id = res._profile.id
+        let access_token = res._token.accessToken
+        console.log(facebook_id)
+        console.log(access_token)
+        if (access_token) {
             axios(`https://localhost:8443/api/facebook_login`,
                 {
                     method: "post",
                     data: {
-                        id: res.id,
-                        access_token: res.accessToken
+                        facebook_id: facebook_id,
+                        access_token: access_token
                     },
                     withCredentials: true
                 }
             )
-                .then(() =>
+                .then(async () => {
+                    const user = await axios('https://localhost:8443/api/profile', {
+                        method: "get",
+                        withCredentials: true
+                    })
+                    console.log(user.data)
+                    this.props.storeMyUser(user.data)
                     console.log('fb login success')
+                }
+
                 )
                 .catch(err => {
                     console.log(err.response.status)
@@ -101,20 +110,18 @@ class NormalLoginForm extends React.Component {
     }
     responseGoogle = (res) => {
 
-        let id = res._profile.id
-        let accessToken = res._token.accessToken
-        let idToken = res._token.idToken
-
-        //console.log(id)
-        if (accessToken) {
+        let google_id = res._profile.id
+        let access_token = res._token.accessToken
+        let id_token = res._token.idToken
+        console.log(res)
+        if (access_token) {
             axios(`https://localhost:8443/api/google_login`,
                 {
                     method: "post",
                     data: {
-                        id: id,
-                        access_token: accessToken,
-                        id_token: idToken
-                      
+                        google_id: google_id,
+                        access_token: access_token,
+                        id_token: id_token
                     },
                     withCredentials: true
                 }
@@ -132,8 +139,8 @@ class NormalLoginForm extends React.Component {
     }
 
     render() {
-     
-        
+
+
 
 
         const { getFieldDecorator } = this.props.form;
@@ -172,20 +179,20 @@ class NormalLoginForm extends React.Component {
                         </Form.Item>
                     </Form>
                     <div><SocialButton
-                    provider='facebook'
-                    appId='372390923567171'
-                    onLoginSuccess={this.responseFacebook}
-                    onLoginFailure={this.handleSocialLoginFailure}
-                >
-                    Login with Facebook
+                        provider='facebook'
+                        appId='372390923567171'
+                        onLoginSuccess={this.responseFacebook}
+                        onLoginFailure={this.handleSocialLoginFailure}
+                    >
+                        Login with Facebook
                     </SocialButton></div>
                     <div><SocialButton
-                    provider='google'
-                    appId='980192618991-ntaogv3tkbg21ve3qhfjq8us1f1au1gb.apps.googleusercontent.com'
-                    onLoginSuccess={this.responseGoogle}
-                    onLoginFailure={this.handleSocialLoginFailure}
-                >
-                    Login with Google
+                        provider='google'
+                        appId='980192618991-ntaogv3tkbg21ve3qhfjq8us1f1au1gb.apps.googleusercontent.com'
+                        onLoginSuccess={this.responseGoogle}
+                        onLoginFailure={this.handleSocialLoginFailure}
+                    >
+                        Login with Google
                     </SocialButton></div>
                 </div>
 

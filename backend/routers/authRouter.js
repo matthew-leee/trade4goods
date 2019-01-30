@@ -49,6 +49,7 @@ module.exports = (router, authService) => {
 
     router.post('/api/google_login', async (req, res) => {
         try {
+            
             const jwt = await authService.loginGoogle(req.body.google_id, req.body.access_token, req.body.id_token)
             if (jwt) {
                 req.session.jwt = jwt
