@@ -1,8 +1,6 @@
 module.exports = (router, authService, productService) => {
     router.post('/api/product/', async (req, res) => {
         try {
-            console.log(req.session)
-            console.log (req.body)
             const user_id = await authService.isAuthenticated(req.session.jwt)
             if (user_id) {
                 await productService.uploadProduct(req.body, user_id)
@@ -105,12 +103,12 @@ module.exports = (router, authService, productService) => {
     router.post('/api/comment/', async (req, res) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
-            if (user_id) {
-                await productService.comment(req.body.product_id, user_id, req.body.comment)
+            // if (user_id) {
+                await productService.addComment(req.body.product_id, user_id, req.body.comment)
                 res.sendStatus(201)
-            } else {
-                res.sendStatus(401);
-            }
+            // } else {
+            //     res.sendStatus(401);
+            // }
         } catch (err) {
             const statusCode = err.statusCode || 500
             delete err.statusCode
@@ -122,7 +120,7 @@ module.exports = (router, authService, productService) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
             if (user_id) {
-                await productService.comment(user_id, req.body.comment_id, req.body.comment)
+                await productService.editComment(user_id, req.body.comment_id, req.body.comment)
                 res.sendStatus(200)
             } else {
                 res.sendStatus(401);
@@ -138,7 +136,7 @@ module.exports = (router, authService, productService) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
             if (user_id) {
-                await productService.comment(user_id, req.params.id)
+                await productService.deleteComment(user_id, req.params.id)
                 res.sendStatus(200)
             } else {
                 res.sendStatus(401);
