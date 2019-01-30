@@ -211,6 +211,7 @@ module.exports = class {
                 this.redisClient.sadd('jwt', jwt)
                 return jwt
             } else {
+                console.log('else')
                 if (!data.email) {
                     throw {
                         statusCode: 400,
@@ -222,6 +223,7 @@ module.exports = class {
                 this.signUp(data)
             }
         } catch (err) {
+            console.log(err)
             throw err
         }
     }
@@ -230,7 +232,8 @@ module.exports = class {
         try {
             const verify = await this.axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${access_token}`)
             const data = verify.data
-            if(!data.sub || google_id !== data.sub) {
+            console.log(google_id, Number(data.sub))
+            if(!data.sub || google_id !==  Number(data.sub)) {
                 throw {
                     statusCode: 400,
                     error: 'Invalid Credential',
