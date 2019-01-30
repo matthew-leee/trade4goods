@@ -48,7 +48,6 @@ class MainCard extends React.Component {
 
 
   render() {
-    console.log(this.props.details.profile_picture)
     const openOneModal = this.props.allProducts
       .filter((u) => {
         return u.product_id == this.props.details.product_id
@@ -86,8 +85,10 @@ class MainCard extends React.Component {
 
 const mapStateToProps = (state) => {
   const search = state.searchReducer
+  const user = state.userReducer
   return {
-    allProducts: search.allProducts
+    allProducts: search.allProducts,
+    allUsers: user.allUsers
   }
 }
 

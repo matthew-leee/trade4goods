@@ -5,12 +5,8 @@ import MainCard from './MainCard'
 import Axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroller';
 import { updateProducts } from '../actions/hello'
-<<<<<<< HEAD
 import actions_search from '../actions/search';
 import actions_userPage from '../actions/userPage';
-=======
-require('dotenv').config()
->>>>>>> 137edfcd9c0022098d2e2c23ea80d506a1638df6
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -54,7 +50,7 @@ class ConnectedMainGrid extends React.Component {
         return a;
     }
 
-    
+
 
 
     showMoreItems = (page) => {
@@ -73,51 +69,53 @@ class ConnectedMainGrid extends React.Component {
     }
 
 
-    componentDidMount= async () => {
-        try{
+    componentDidMount = async () => {
+        try {
 
             const res = await Axios.get('https://localhost:8443/api/allProducts/')
-            res.data.forEach((u)=>{
+            console.log(res.data)
+            res.data.forEach((u) => {
                 u.openOneModal = false
-
-                if (this.props.searchArr.length === 0) {
-                    let shuffleArr = this.shuffleArray(res.data)
-                    this.props.updateProducts(shuffleArr)
-                    let remainShowingBatch = Math.floor(shuffleArr.length / 50)
-                    let showArr = shuffleArr.slice(0, 50)
-                    let copyState = { ...this.state }
-                    if (remainShowingBatch <= 1) {
-                        copyState.hasmore = false
-                    } else {
-                        copyState.hasmore = true
-                    }
-                    copyState.productsArr = shuffleArr
-                    copyState.showArr = showArr
-                    copyState.remainShowingBatch = remainShowingBatch
-                    this.setState(copyState)
-                    console.log(this.state.remainShowingBatch)
-                } else {
-                    let filterArr = this.props.searchArr
-                    let remainShowingBatch = Math.floor(filterArr.length / 50)
-                    let showArr = filterArr.slice(0, 50)
-                    let copyState = { ...this.state }
-                    if (remainShowingBatch <= 1) {
-                        copyState.hasmore = false
-                    } else {
-                        copyState.hasmore = true
-                    }
-                    copyState.productsArr = filterArr
-                    copyState.showArr = showArr
-                    copyState.remainShowingBatch = remainShowingBatch
-                    this.setState(copyState)
-                }
             })
+            this.props.storeAllProducts(res.data)
+            if (this.props.searchArr.length === 0) {
+                let shuffleArr = this.shuffleArray(res.data)
+                this.props.updateProducts(shuffleArr)
+                let remainShowingBatch = Math.floor(shuffleArr.length / 50)
+                let showArr = shuffleArr.slice(0, 50)
+                let copyState = { ...this.state }
+                if (remainShowingBatch <= 1) {
+                    copyState.hasmore = false
+                } else {
+                    copyState.hasmore = true
+                }
+                copyState.productsArr = shuffleArr
+                copyState.showArr = showArr
+                copyState.remainShowingBatch = remainShowingBatch
+                this.setState(copyState)
+                console.log(this.state.remainShowingBatch)
+            } else {
+                let filterArr = this.props.searchArr
+                let remainShowingBatch = Math.floor(filterArr.length / 50)
+                let showArr = filterArr.slice(0, 50)
+                let copyState = { ...this.state }
+                if (remainShowingBatch <= 1) {
+                    copyState.hasmore = false
+                } else {
+                    copyState.hasmore = true
+                }
+                copyState.productsArr = filterArr
+                copyState.showArr = showArr
+                copyState.remainShowingBatch = remainShowingBatch
+                this.setState(copyState)
+            }
 
-            const users = await Axios.get('https://localhost:8443/api/allProfile/')
+
+            const users = await Axios.get('https://localhost:8443/api/allProfiles/')
             this.props.storeAllUsers(users.data)
 
         } catch (err) {
-            console.log (err)
+            console.log(err)
         }
     }
 

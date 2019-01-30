@@ -47,7 +47,7 @@ module.exports = (router, authService, profileService) => {
         }
     })
 
-    router.get('/api/allProfile/', async (req, res)=>{
+    router.get('/api/allProfiles/', async (req, res)=>{
         try {
             const allProfile = await profileService.getAllProfile()
             res.json(allProfile)
