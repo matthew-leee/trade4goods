@@ -228,9 +228,11 @@ module.exports = class {
 
     async loginGoogle(google_id, access_token, id_token) {
         try {
-            const verify = await this.axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${access_token}`)
-            const data = verify.data
-            if(!data.sub || google_id !== data.sub) {
+            let access_token_data = await this.axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${access_token}`)
+            access_token_data = access_token_data.data
+            let id_token_data = await this.axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${id_token}`)
+            id_token_data = id_token_data.data 
+            if(!access_token_data || !id_token_data || access_token_data.email !== id_token_data.email) {
                 throw {
                     statusCode: 400,
                     error: 'Invalid Credential',
