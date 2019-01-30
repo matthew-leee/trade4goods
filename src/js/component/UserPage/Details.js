@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { Carousel, List, Row, Col } from "antd"
 import actions_userPage from "../../actions/userPage";
+import actions_search from '../../actions/search'
 import { connect } from "react-redux"
 import users from "../../../FakeData/users"
 import Popup from 'reactjs-popup'   //npm Reactjs-Popup
@@ -85,10 +86,15 @@ class ProductDetails extends Component {
                 description: u.status == 1 ? "Trading" : "Traded",
             }
         ]
-        const comments = u.comments.map((a) => {
+        const comments = u.comments.map(async (comment_id) => {
+            const res = await Axios(`https://localhost:8443/api/comment/${comment_id}`, {
+                method: "get",
+                withCredentials: true
+            })
+            const comment = res.data
             return {
-                title: a.user,
-                description: a.comment
+                title: comment.commentator,
+                description: comment.comment
             }
         })
         return (
@@ -194,6 +200,19 @@ const mapDispatchToProps = (dispatch) => {
                     withCredentials: true
                 })
                 console.log(res)
+                if (res.status == 201) {
+                    console.log('res')
+                    const products = await Axios('https://localhost:8443/api/allProducts/', {
+                      method: "get",
+                      withCredentials: true
+                    })
+            
+                    products.data.forEach((u) => {
+                      u.openOneModal = false
+                    })
+                    console.log(products)
+                    dispatch(actions_search.storeAllProducts(products.data))
+                  }
             } catch (err) {
                 console.log(err)
             }

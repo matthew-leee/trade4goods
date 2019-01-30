@@ -2,7 +2,7 @@ module.exports = class {
     constructor(knex, userProductService, commentService, nodemailer) {
         this.knex = knex
         this.toUser = userProductService
-        this.comment = commentService
+        this.commentService = commentService
         this.nodemailer = nodemailer
     }
 
@@ -262,6 +262,7 @@ module.exports = class {
     async addComment(product_id, user_id, comment) {
         try {
             let product = await this.knex('products').where('product_id', product_id)
+            
             product = product[0]
             if (!product) {
                 throw {
@@ -270,10 +271,12 @@ module.exports = class {
                     message: `product ${product_offered.product_id} does not exists`
                 }
             }
-            const comment_id = await this.commentService.comment(user_id, comment, product_id);
+
+            let comment_id = await this.commentService.addComment(user_id, comment, product_id);
             product.comments.push(comment_id)
-            await this.knex('products').where('product_id', product.product_id).update(products)
+            await this.knex('products').where('product_id', product.product_id).update(product)
         } catch (err) {
+            console.log(err)
             throw err
         }
     }
