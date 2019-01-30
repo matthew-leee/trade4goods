@@ -16,6 +16,15 @@ module.exports = class {
         }
     }
 
+    async getComment(comments_id) {
+        try {
+            const comments = await this.knex('product_comments')
+            return comments.filter(comment => comments_id.some(id => id === comment.id));
+        } catch(err) {
+            throw err
+        }
+    }
+
     async editComment(user_id, comment_id, comment) {
         let comment = await this.knex('product_comments').where('comment_id', comment_id).andWhere('commentator', user_id)
         comment = comment[0]

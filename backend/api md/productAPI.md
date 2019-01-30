@@ -293,6 +293,41 @@ status: 401 Unauthorized
 
 ---
 
+## GET
+
+- get comments
+
+    *GET: /api/comment/:id*
+
+    *provide product id in params*
+
+
+response format
+
+*Success*
+
+```
+[{
+    comment_id: int
+    commentator: int (user_id)
+    comment_in_product: int (product_id)
+    comment: string
+    comment_at: timestamp
+}]
+```
+
+
+*Failure*
+
+```
+{
+    error: "Product not found",
+    message: "product (product id) does not exists"
+}
+```
+
+---
+
 ## PUT
 
 - edit comment on product
