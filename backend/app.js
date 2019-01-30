@@ -49,7 +49,7 @@ userProductService = new UserProductService(knexClient),
 mailNotifyService = new MailNotifyService(nodemailer, knexClient),
 commentService = new CommentService(knexClient),
 productService = new ProductService(knexClient, userProductService, commentService, mailNotifyService),
-chatService = new ChatService(knexClient)
+chatService = new ChatService(knexClient),
 router = require('./routers/router')(express, authService, profileService, productService, chatService, path)
 require('./init/init-session')(app, redisClient, expressSession, RedisStore)
 require('./init/init-app')(app, express, bodyParser, cors, router, path)

@@ -32,7 +32,7 @@ module.exports = class {
                     suggestSolution: "Rename the displayed name"
                 }
             }
-            if (isNaN(Number(info.phone_number))) {
+            if (info.phone_number && isNaN(Number(info.phone_number))) {
                 throw {
                     statusCode: 422,
                     error: "Invalid Phone Number",
