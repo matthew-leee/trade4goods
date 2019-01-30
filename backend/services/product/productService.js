@@ -59,7 +59,7 @@ module.exports = class {
             tags: info.tags,
             uploaded_by: user_id
         }
-        console.log (injectingInfo)
+        console.log(injectingInfo)
         try {
             let product_id = await this.knex('products').insert(injectingInfo).returning('product_id');
             product_id = product_id[0]
@@ -140,6 +140,12 @@ module.exports = class {
                     error: "Product not belongs to user",
                     message: `user ${user_id} does not own product ${product_id}`
                 }
+            } else if (originalInfo.status === 3) {
+                throw {
+                    statusCode: 403,
+                    error: "Product sold",
+                    message: "Product has been sold out and cannot be deleted"
+                }
             } else {
                 await this.knex('products').where('product_id', product_id).del()
                 await this.toUser.deleteProduct(product_id, user_id)
@@ -208,6 +214,8 @@ module.exports = class {
             } else {
                 product_offered.offered_by.push(product_offering.product_id)
                 await this.knex('products').where('product_id', product_offered.product_id).update(product_offered)
+                product_offering.status = 2
+                await this.knex('products').where('product_id', product_offering.product_id).update(product_offering)
             }
         } catch (err) {
             throw err
@@ -242,6 +250,8 @@ module.exports = class {
                 const deleteIndex = product_offered.offered_by.indexOf(product_offering.product_id)
                 product_offered.offered_by.splice(deleteIndex, 1)
                 await this.knex('products').where('product_id', product_offered.product_id).update(product_offered)
+                product_offering.status = 3
+                await this.knex('products').where('product_id', product_offering.product_id).update(product_offering)
             }
         } catch (err) {
             throw err
@@ -316,20 +326,38 @@ module.exports = class {
         }
     }
 
-    /* TODO : 
-    [x] upload product 
-    [x] edit product
-    [x] delete product
-    [x] get product
-    [x] offer product
-    [x] delete offer product
-    [x] comment on product
-    [x] edit comment on product
-    [x] delete comment on product
-    [x] like product
-    [x] dislike product
-    [] confirm product trade
-
-    product status: available, offered, trading, tradeout
-    */
+    async acceptOffer(product_offered, product_owner, product_offering) {
+        try {
+            product_offered = await this.knex('products').where('product_id', product_offered).andWhere('uploaded_by', product_owner)
+            product_offered = product_offered[0]
+            product_offering = await this.knex('products').where('product_id', product_offering)
+            product_offering = product_offering[0]
+            if (!product_offered) {
+                throw {
+                    statusCode: 403,
+                    error: "Product not belongs to user",
+                    message: `user ${user_offering} does not own product ${product_offering.product_id}`
+                }
+            } else if (!product_offered.offered_by.find(e => e === product_offering.product_id)) {
+                throw {
+                    statusCode: 406,
+                    error: "Product has not offer",
+                    message: `product ${product_offering.product_id} did not offer on ${product_offered.product_id}`
+                }
+            } else {
+                product_offered.status = 3
+                product_offering.status = 3
+                const trade = {
+                    product_id1: product_offered.product_id,
+                    product_id2: product_offering.product_id
+                }
+                const trade_id = await this.knex('trade_history').insert(trade).returning('trade_id')
+                await this.toUser.insertTradeHistory(trade_id, product_owner, product_offering.uploaded_by)
+                await this.knex('products').where('product_id', product_offered.product_id).update(product_offered)
+                await this.knex('products').where('product_id', product_offering.product_id).update(product_offering)
+            }
+        } catch (err) {
+            throw err
+        }
+    }
 }
