@@ -15,7 +15,7 @@ exports.up = function (knex, Promise) {
             table.integer('user_id').unsigned().notNullable().unique();
             table.foreign('user_id').references('user_id').inTable('users_credential');
             table.string('displayed_name').notNullable();
-            table.integer('phone_number').notNullable();
+            table.integer('phone_number').nullable();
             table.string('profile_picture').nullable();
             table.specificType('uploaded_products', 'INT[]').notNullable().defaultTo('{}');
             table.specificType('liked_products', 'INT[]').notNullable().defaultTo('{}');
