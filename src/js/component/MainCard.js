@@ -8,6 +8,7 @@ import Popup from 'reactjs-popup'   //npm Reactjs-Popup
 import { popUpCloseTag, content } from './compCSS/popupCss'
 
 import actions_userPage from "../actions/userPage"
+import actions_search from "../actions/search"
 import Axios from 'axios';
 
 const { Meta } = Card;
@@ -47,12 +48,24 @@ class MainCard extends React.Component {
 
   handleLike = async (id) => {
     try {
-      console.log ("clicked")
+      console.log("clicked")
       const res = await Axios(`https://localhost:8443/api/like/${id}`, {
         method: "put",
         withCredentials: true
       })
-      console.log (res)
+      if (res.status == 200) {
+        console.log('res')
+        const products = await Axios('https://localhost:8443/api/allProducts/', {
+          method: "get",
+          withCredentials: true
+        })
+
+        products.data.forEach((u) => {
+          u.openOneModal = false
+        })
+        console.log(products)
+        this.props.storeAllProducts(products.data)
+      }
     } catch (err) {
       console.log("like err")
     }
@@ -66,36 +79,80 @@ class MainCard extends React.Component {
         return u.product_id == this.props.details.product_id
       })[0].openOneModal
 
+    const likedarr = this.props.allProducts
+      .filter((u) => {
+        return u.product_id == this.props.details.product_id
+      })[0].liked_by
+
+    const liked = likedarr.some((u) => {
+      return u == this.props.myUser.user_id
+    })
+
     return (
-      <Card
-        hoverable
-        style={{ width: "100%", marginTop: "10px" }}
-        cover={
-          <img alt="example" src={this.state.imgPic} onClick={() => { this.props.handleOneModal(this.props.details.product_id) }} />
-        }
-        actions={[
-          <Icon type="heart" onClick={() => { this.handleLike(this.props.details.product_id) }} />,
-          <Icon type="message" />,
-          <Icon type="share-alt" />]}
-      >
+      <div>
+        {!liked &&
+          <Card
+            hoverable
+            style={{ width: "100%", marginTop: "10px" }}
+            cover={
+              <img alt="example" src={this.state.imgPic} onClick={() => { this.props.handleOneModal(this.props.details.product_id) }} />
+            }
+            actions={[
+              <Icon type="heart" onClick={() => { this.handleLike(this.props.details.product_id) }} />,
+              <Icon type="message" />,
+              <Icon type="share-alt" />]}
+          >
 
-        <Skeleton loading={this.state.loading} title paragraph active>
-          <Meta
-            title={this.props.name}
-            description={this.props.description}
-            avatar={<Avatar src={this.props.details.profile_picture} />}
-          />
-        </Skeleton>
+            <Skeleton loading={this.state.loading} title paragraph active>
+              <Meta
+                title={this.props.name}
+                description={this.props.description}
+                avatar={<Avatar src={this.props.details.profile_picture} />}
+              />
+            </Skeleton>
 
-        {openOneModal &&
-          <Popup open={true} closeOnDocumentClick onClose={() => { this.props.handleOneModal(this.props.details.product_id) }}>
-            <div style={content} >
-              <a style={popUpCloseTag} onClick={() => { this.props.handleOneModal(this.props.details.product_id) }}>&times;</a>
-              <ProductDetails details={this.props.details} />
-            </div>
-          </Popup>}
+            {openOneModal &&
+              <Popup open={true} closeOnDocumentClick onClose={() => { this.props.handleOneModal(this.props.details.product_id) }}>
+                <div style={content} >
+                  <a style={popUpCloseTag} onClick={() => { this.props.handleOneModal(this.props.details.product_id) }}>&times;</a>
+                  <ProductDetails details={this.props.details} />
+                </div>
+              </Popup>}
 
-      </Card>
+          </Card>}
+
+        {liked &&
+          <Card
+            hoverable
+            style={{ width: "100%", marginTop: "10px" }}
+            cover={
+              <img alt="example" src={this.state.imgPic} onClick={() => { this.props.handleOneModal(this.props.details.product_id) }} />
+            }
+            actions={[
+              <Icon type="heart" theme="twoTone" twoToneColor="#eb2f96" onClick={() => { this.handleLike(this.props.details.product_id) }} />,
+              <Icon type="message" />,
+              <Icon type="share-alt" />]}
+          >
+
+            <Skeleton loading={this.state.loading} title paragraph active>
+              <Meta
+                title={this.props.name}
+                description={this.props.description}
+                avatar={<Avatar src={this.props.details.profile_picture} />}
+              />
+            </Skeleton>
+
+            {openOneModal &&
+              <Popup open={true} closeOnDocumentClick onClose={() => { this.props.handleOneModal(this.props.details.product_id) }}>
+                <div style={content} >
+                  <a style={popUpCloseTag} onClick={() => { this.props.handleOneModal(this.props.details.product_id) }}>&times;</a>
+                  <ProductDetails details={this.props.details} />
+                </div>
+              </Popup>}
+
+          </Card>}
+      </div>
+
 
     )
   }
@@ -106,7 +163,8 @@ const mapStateToProps = (state) => {
   const user = state.userReducer
   return {
     allProducts: search.allProducts,
-    allUsers: user.allUsers
+    allUsers: user.allUsers,
+    myUser: user.myUser
   }
 }
 
@@ -114,6 +172,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     handleOneModal: (id) => {
       dispatch(actions_userPage.openOneModal(id))
+    },
+    storeAllProducts: (products) => {
+      dispatch(actions_search.storeAllProducts(products))
     }
   }
 }
