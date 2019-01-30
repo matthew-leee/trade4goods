@@ -1,6 +1,6 @@
 // Update with your config settings.
-'use strict';
-require('dotenv').config();
+const path = require('path')
+require('dotenv').config({path: path.join(__dirname, '..', '.env')});
 module.exports = {
 
   development: {
