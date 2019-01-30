@@ -74,16 +74,17 @@ class NormalLoginForm extends React.Component {
 
     responseFacebook = (res) => {
 
-        let id = res._profile.id
-        let accessToken = res._token.accessToken
-
-        if (accessToken) {
+        let facebook_id = res._profile.id
+        let access_token = res._token.accessToken
+        console.log(facebook_id)
+        console.log(access_token)
+        if (access_token) {
             axios(`https://localhost:8443/api/facebook_login`,
                 {
                     method: "post",
                     data: {
-                        id: res.id,
-                        access_token: res.accessToken
+                        facebook_id: facebook_id,
+                        access_token: access_token
                     },
                     withCredentials: true
                 }
@@ -101,20 +102,18 @@ class NormalLoginForm extends React.Component {
     }
     responseGoogle = (res) => {
 
-        let id = res._profile.id
-        let accessToken = res._token.accessToken
-        let idToken = res._token.idToken
-
-        //console.log(id)
-        if (accessToken) {
+        let google_id = res._profile.id
+        let access_token = res._token.accessToken
+        let id_token = res._token.idToken
+        console.log(res)
+        if (access_token) {
             axios(`https://localhost:8443/api/google_login`,
                 {
                     method: "post",
                     data: {
-                        id: id,
-                        access_token: accessToken,
-                        id_token: idToken
-                      
+                        google_id: google_id,
+                        access_token: access_token,
+                        id_token: id_token     
                     },
                     withCredentials: true
                 }

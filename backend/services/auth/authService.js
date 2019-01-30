@@ -219,9 +219,12 @@ module.exports = class {
                         suggestSolution: 'Open up your email permission or sign up locally, if you think it is a bug, please report to us'
                     }
                 }
+                data.facebook_id = data.id
+                delete data.id
                 this.signUp(data)
             }
         } catch (err) {
+            console.log(err)
             throw err
         }
     }
