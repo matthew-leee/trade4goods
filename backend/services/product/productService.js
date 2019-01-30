@@ -260,7 +260,6 @@ module.exports = class {
     async addComment(product_id, user_id, comment) {
         try {
             let product = await this.knex('products').where('product_id', product_id)
-            console.log ("products")
             product = product[0]
             if (!product) {
                 throw {
