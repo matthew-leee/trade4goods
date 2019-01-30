@@ -36,7 +36,7 @@ module.exports = (router, authService, profileService) => {
             const user_id = await authService.isAuthenticated(req.session.jwt)
             if (user_id) {
                 const profile = await profileService.getProfile(user_id)
-                res.json(profile);
+                res.status(200).json(profile);
             } else {
                 res.sendStatus(401);
             }
@@ -49,8 +49,8 @@ module.exports = (router, authService, profileService) => {
 
     router.get('/api/allProfile/', async (req, res)=>{
         try {
-            const allProfile = await profileService.getAllProfile()
-            res.json(allProfile)
+            const profile = await profileService.getAllProfiles()
+            res.status(200).json(profile);
         } catch (err) {
             const statusCode = err.statusCode || 500
             delete err.statusCode
