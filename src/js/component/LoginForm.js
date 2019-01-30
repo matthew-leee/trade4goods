@@ -76,8 +76,14 @@ class NormalLoginForm extends React.Component {
 
         let facebook_id = res._profile.id
         let access_token = res._token.accessToken
-        console.log(facebook_id)
-        console.log(access_token)
+        let displayed_name = res._profile.name
+        let profile_picutre = res._profile.profilePicURL
+        let phone_number = ""
+        console.log(res)
+        if(!res._token.accessToken){
+            return console.log("hi")
+        }
+        console.log(res._token.accessToken)
         if (access_token) {
             axios(`https://localhost:8443/api/facebook_login`,
                 {
@@ -90,13 +96,35 @@ class NormalLoginForm extends React.Component {
                 }
             )
                 .then(async () => {
-                    const user = await axios('https://localhost:8443/api/profile', {
-                        method: "get",
-                        withCredentials: true
-                    })
-                    console.log(user.data)
-                    this.props.storeMyUser(user.data)
-                    console.log('fb login success')
+
+                    try {
+
+
+                        const cre = await axios('https://localhost:8443/api/profile', {
+                            method: "post",
+                            data: {
+                                displayed_name: displayed_name,
+                                profile_picutre: profile_picutre,
+                                phone_number: ""
+                            },
+                            withCredentials: true
+                        })
+
+
+                        const user = await axios('https://localhost:8443/api/profile', {
+                            method: "get",
+                            withCredentials: true
+                        })
+
+
+                        console.log(user.data)
+                        this.props.storeMyUser(user.data)
+                        console.log('fb login success')
+
+                    } catch (err) {
+                        console.log('api/profile fail 9 jor')
+                        console.log(err)
+                    }
                 }
 
                 )
