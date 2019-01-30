@@ -1,1 +1,1 @@
-module.exports = redis => redis.createClient(6379, "localhost")
+module.exports = redis => redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST)

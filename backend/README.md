@@ -13,6 +13,7 @@ DB_PASSWORD=
 #URL
 HOST=localhost
 PORT=
+FRONTEND_URL=
 
 #Cookie
 COOKIE_SECRET=
@@ -61,6 +62,7 @@ Self sign the localhost certifcate and trust it on your local computer with [the
 
 ### Run Knex Database Migration
 ```
+$ cd knex
 $ knex migrate:rollback
 $ knex migrate:latest
 ```

@@ -111,7 +111,7 @@ class ConnectedMainGrid extends React.Component {
             }
 
 
-            const users = await Axios.get('https://localhost:8443/api/allProfiles/')
+            const users = await Axios.get('https://localhost:8443/api/allProfile/')
             this.props.storeAllUsers(users.data)
 
         } catch (err) {
