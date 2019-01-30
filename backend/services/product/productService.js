@@ -1,8 +1,9 @@
 module.exports = class {
-    constructor(knex, userProductService, commentService) {
+    constructor(knex, userProductService, commentService, nodemailer) {
         this.knex = knex
         this.toUser = userProductService
         this.comment = commentService
+        this.nodemailer = nodemailer
     }
 
     async uploadProduct(info, user_id) {
@@ -215,6 +216,7 @@ module.exports = class {
                 await this.knex('products').where('product_id', product_offered.product_id).update(product_offered)
                 product_offering.status = 2
                 await this.knex('products').where('product_id', product_offering.product_id).update(product_offering)
+                await this.nodemailer.sendOfferNotification(product_offered.product_id)
             }
         } catch (err) {
             throw err
@@ -260,7 +262,6 @@ module.exports = class {
     async addComment(product_id, user_id, comment) {
         try {
             let product = await this.knex('products').where('product_id', product_id)
-            console.log ("products")
             product = product[0]
             if (!product) {
                 throw {
@@ -355,6 +356,7 @@ module.exports = class {
                 await this.toUser.insertTradeHistory(trade_id, product_owner, product_offering.uploaded_by)
                 await this.knex('products').where('product_id', product_offered.product_id).update(product_offered)
                 await this.knex('products').where('product_id', product_offering.product_id).update(product_offering)
+                await this.nodemailer.sendAcceptOfferNotification(product_offering.product_id)
             }
         } catch (err) {
             throw err

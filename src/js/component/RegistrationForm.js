@@ -5,6 +5,7 @@ import { popUpCloseTag, content } from './compCSS/popupCss'
 import TermsAndConditions from './TermsAndCondition'
 import axios from 'axios'
 import SuccessfulReg from './HandleOKandError/SuccessfulReg'
+import SocialButton from './SocialButton'
 
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
@@ -18,7 +19,11 @@ class RegistrationFormgp extends React.Component {
             autoCompleteResult: [],
             open: true,
             terms: false,
-            finishReg: false
+            finishReg: false,
+            isLoggedIn: false,
+            userID: '',
+            name: '',
+            email: '',
 
         };
         this.closeModal = this.closeModal.bind(this)
@@ -47,7 +52,11 @@ class RegistrationFormgp extends React.Component {
                     email: values.email
                 }
                 // console.log('Received values of form: ', passingDB);
-                const res = await axios.post('https://localhost:8443/api/signup', passingDB)
+                const res = await axios('https://localhost:8443/api/signup', {
+                    method: "post",
+                    data: passingDB,
+                    withCredentials: true
+                } )
                 if (res) {
                     console.log("register good")
                     this.setState({ finishReg: true })
@@ -92,6 +101,73 @@ class RegistrationFormgp extends React.Component {
         }
         this.setState({ autoCompleteResult });
     }
+
+
+    handleSocialLoginFailure = (err) => {
+        console.log(err)
+    }
+
+
+    responseFacebook = (res) => {
+
+        let id = res._profile.id
+        let accessToken = res._token.accessToken
+
+        
+        if (accessToken) {
+            axios(`https://localhost:8443/api/signup`,
+                {
+                    method: "post",
+                    data: {
+                        id: res.id,
+                        access_token: res.accessToken
+                    },
+                    withCredentials: true
+                }
+            )
+                .then(() =>
+                    console.log('fb login success')
+                )
+                .catch(err => {
+                    console.log(err.response.status)
+                    console.log(err.response)
+                    console.log(err.response.data)
+                    console.log(err.response.data.message)
+                })
+        }
+    }
+
+    responseGoogle = (res) => {
+        
+        let id = res._profile.id
+        let accessToken = res._token.accessToken
+        let idToken = res._token.idToken
+
+        if (accessToken) {
+            axios(`https://localhost:8443/api/signup`,
+                {
+                    method: "post",
+                    data: {
+                        id: id,
+                        access_token: accessToken,
+                        id_token: idToken
+                    },
+                    withCredentials: true
+                }
+            )
+                .then(() =>
+                    console.log('fb login success')
+                )
+                .catch(err => {
+                    console.log(err.response.status)
+                    console.log(err.response)
+                    console.log(err.response.data)
+                    console.log(err.response.data.message)
+                })
+        }
+    }
+
+
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -203,6 +279,23 @@ class RegistrationFormgp extends React.Component {
                             <Button type="primary" htmlType="submit">Register</Button>
                         </Form.Item>
                     </Form>}
+                    <div><SocialButton
+                    provider='facebook'
+                    appId='372390923567171'
+                    onLoginSuccess={this.responseFacebook}
+                    onLoginFailure={this.handleSocialLoginFailure}
+                >
+                    Login with Facebook
+                    </SocialButton></div>
+                    <div><SocialButton
+                        provider='google'
+                        appId='980192618991-ntaogv3tkbg21ve3qhfjq8us1f1au1gb.apps.googleusercontent.com'
+                        onLoginSuccess={this.responseGoogle}
+                        onLoginFailure={this.handleSocialLoginFailure}
+                    >
+                        Login with Google
+                    </SocialButton></div>
+
                     {this.state.terms && <TermsAndConditions openTerms={this.openTerms} style={{ color: "black" }} />}
                     {this.state.finishReg && <div><SuccessfulReg /></div>}
                     {this.state.finishReg && <a onClick={this.props.handleRegToggle}>return</a>}
