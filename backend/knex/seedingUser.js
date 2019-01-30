@@ -53,7 +53,6 @@ const knex = require('knex')({
         let email_isVerifying = false
         let google_id = null
         let facebook_id = null
-        let access_token = null
 
 
         //users table
@@ -61,14 +60,14 @@ const knex = require('knex')({
         let displayed_name = user
         let phone_number = num
         let profile_picture = propic
-        let uploaded_products = null
-        let liked_products = null
-        let trade_history =null
-        let chat_basket =null
+        let uploaded_products = []
+        let liked_products = []
+        let trade_history = []
+        let chat_basket = []
 
 
 
-        userCreArr.push({ "username": username, "password": password, "email": email, "email_isVerifying": email_isVerifying, "google_id": google_id, "facebook_id": facebook_id, "access_token": access_token })
+        userCreArr.push({ "username": username, "password": password, "email": email, "email_isVerifying": email_isVerifying, "google_id": google_id, "facebook_id": facebook_id })
         usersArr.push({"displayed_name":displayed_name,"phone_number":phone_number,"profile_picture":profile_picture,"uploaded_products":uploaded_products,"liked_products":liked_products,"trade_history":trade_history,"chat_basket":chat_basket })
         console.log("id: ", username,'+ pw: ', realpw)
     }
