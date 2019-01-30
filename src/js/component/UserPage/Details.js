@@ -32,7 +32,17 @@ class ProductDetails extends Component {
                 <img src={src} alt="" />
             )
         })
-        const otherUser = this.props.users
+        const displayed_name = this.props.allUsers
+        .filter((a)=> {
+            return a.user_id == u.uploaded_by
+        })
+        .map((u)=> {
+            return u.displayed_name
+        })[0]
+
+        console.log (displayed_name)
+
+        const otherUser = this.props.allUsers
             .filter((u) => { return u.displayed_name == this.props.otherUser })
             .map((u) => {
                 return (
@@ -48,6 +58,7 @@ class ProductDetails extends Component {
                     </div>
                 )
             })
+            
         const details = [
             {
                 title: "Product Name",
@@ -59,11 +70,11 @@ class ProductDetails extends Component {
             },
             {
                 title: "Preferred Trade Location",
-                description: `${u.trade_location[0]}, ${u.trade_location[1]}`,
+                description: u.trade_location,
             },
             {
                 title: "Owner",
-                description: u.uploaded_by,
+                description: displayed_name
             },
             {
                 title: "Date of Upload",
@@ -81,7 +92,7 @@ class ProductDetails extends Component {
             }
         })
         return (
-            <div>
+            <div key={`details-${u.product_id}`}>
                 <Row gutter={100}>
                     <Col span={8}>
                         <div className="imageCarosel">
@@ -98,7 +109,7 @@ class ProductDetails extends Component {
                                 itemLayout="vertical"
                                 dataSource={details}
                                 renderItem={item => (
-                                    <List.Item key={u.product_id}>
+                                    <List.Item key={`list-${u.product_id}`}>
                                         {item.title != "Owner" &&
                                             <List.Item.Meta
                                                 title={<h5>{item.title}</h5>}
@@ -108,6 +119,7 @@ class ProductDetails extends Component {
                                             <List.Item.Meta
                                                 title={<h5>{item.title}</h5>}
                                                 description={item.description}
+                                                // this send the user id to server
                                                 onClick={() => { this.props.handleOtherUser(item.description) }}
                                             />}
                                     </List.Item>
@@ -157,7 +169,8 @@ const mapStateToProps = (state) => {
     return {
         otherUser: u.otherUser,
         users: u.users,
-        comment: u.comment
+        comment: u.comment,
+        allUsers: u.allUsers
     }
 }
 

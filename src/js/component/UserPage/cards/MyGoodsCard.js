@@ -8,11 +8,11 @@ import { popUpCloseTag, content } from '../../compCSS/popupCss'
 
 class MyGoodsCard extends Component {
     render() {
-        console.log (`this props : ${this.props.iconsArr}`)
+        console.log(`this props : ${this.props.iconsArr}`)
         const { name, image, id, description, tags, handleEdit, handleDelete, handleOneModal, openOneModal, allDetails } = this.props
         return (
             <Card
-                style={{width: "7vw"}}
+                style={{ width: "7vw" }}
                 cover={
                     <img
                         alt={name}
@@ -31,6 +31,7 @@ class MyGoodsCard extends Component {
                     title={name}
                     description={description}
                 />
+
                 <GeneralTags tags={tags} closable={false} />
 
                 {openOneModal && <Popup open={true} closeOnDocumentClick onClose={() => { handleOneModal(id) }}>

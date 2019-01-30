@@ -3,24 +3,17 @@ import { connect } from "react-redux"
 import { Progress } from "antd"
 
 class TradeHistory extends Component {
-    constructor(props) {
-        super(props)
-        this.user = "user1"
-    }
 
     render() {
-        const userCred = this.props.users
-            .filter((u) => {
-                return u.displayed_name == this.user
-            })
-            .map((u) => { return u.credibility })
+        const userCred = this.props.myUser.credibility
+        console.log (userCred)
         const credComment = () => {
             const style = { marginTop: "1vw", color: "red" }
-            if (userCred[0] < 5) {
+            if (userCred < 5 ) {
                 return (
                     <p style={style}>You liar</p>
                 )
-            } else if (userCred[0] == 5) {
+            } else if (userCred == 5) {
                 return (
                     <p style={style}>Not Bad</p>
                 )
@@ -35,7 +28,7 @@ class TradeHistory extends Component {
                 <h1>Trade History</h1>
                 <div className="credProgress">
                     <p>Your Trade Credibility</p>
-                    <Progress type="circle" percent={userCred[0] * 10} />
+                    <Progress type="circle" percent={userCred * 10} />
                     {credComment()}
                 </div>
                 <div className="tradeGrade">
@@ -51,7 +44,7 @@ class TradeHistory extends Component {
 const mapStateToProps = (state) => {
     const u = state.userReducer
     return {
-        users: u.users
+        myUser: u.myUser
     }
 }
 

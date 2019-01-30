@@ -127,5 +127,18 @@ module.exports = class {
         } else {
             return user
         }
-    }    
+    } 
+    
+    async getAllProfile() {
+        const users = await this.knex.select().table("users")
+        if (!users) {
+            throw {
+                statusCode: 401,
+                error: "Unauthorized",
+                message: "Unknown error, user has not been registered"
+            }
+        } else {
+            return users
+        }
+    }
 }

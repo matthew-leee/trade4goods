@@ -28,12 +28,6 @@ const actions_userPage = {
             type: "CLEAR_SEARCH"
         }
     },
-    storeUsers: (users) => {
-        return {
-            type: "STORE_USERS",
-            users: users
-        }
-    },
     openUploadModal: () => {
         return {
             type: "OPEN_UPLOADMODAL"
@@ -66,6 +60,12 @@ const actions_userPage = {
         return {
             type: "STORE_MYUSER",
             myUser: user
+        }
+    },
+    storeAllUsers: (allUsers) => {
+        return {
+            type: "STORE_ALLUSERS",
+            allUsers: allUsers
         }
     }
 }

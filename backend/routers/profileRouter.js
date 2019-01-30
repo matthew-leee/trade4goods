@@ -46,4 +46,15 @@ module.exports = (router, authService, profileService) => {
             res.status(statusCode).json(err)
         }
     })
+
+    router.get('/api/allProfile/', async (req, res)=>{
+        try {
+            const allProfile = await profileService.getAllProfile()
+            res.json(allProfile)
+        } catch (err) {
+            const statusCode = err.statusCode || 500
+            delete err.statusCode
+            res.status(statusCode).json(err)
+        }
+    })
 }

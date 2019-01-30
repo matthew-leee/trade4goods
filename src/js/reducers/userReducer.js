@@ -11,6 +11,7 @@ const userReducer = (state = {
     openUploadModal: false,
     otherUser: "",
     myUser: {},
+    allUsers: [],
 }, action) => {
     switch (action.type) {
         case "OPEN_MODAL":
@@ -43,19 +44,19 @@ const userReducer = (state = {
                 ...state,
                 products: action.products
             }
-        case "OPEN_ONE_MODAL":
-            const newProducts = state.products.map((u) => {
-                if (u.product_id == action.id) {
-                    u.openOneModal = !u.openOneModal
-                    return u
-                } else {
-                    return u
-                }
-            })
-            return {
-                ...state,
-                products: newProducts
-            }
+        // case "OPEN_ONE_MODAL":
+        //     const newProducts = state.products.map((u) => {
+        //         if (u.product_id == action.id) {
+        //             u.openOneModal = !u.openOneModal
+        //             return u
+        //         } else {
+        //             return u
+        //         }
+        //     })
+        //     return {
+        //         ...state,
+        //         products: newProducts
+        //     }
         case "SAVE_SEARCH":
             return {
                 ...state,
@@ -96,6 +97,11 @@ const userReducer = (state = {
             return {
                 ...state,
                 myUser: action.myUser
+            }
+        case "STORE_ALLUSERS":
+            return {
+                ...state,
+                allUsers: action.allUsers
             }
         default:
             return state

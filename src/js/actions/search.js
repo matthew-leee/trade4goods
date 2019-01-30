@@ -9,6 +9,12 @@ const actions_search = {
         return {
             type: "SUBMIT_SEARCH"
         }
+    },
+    storeAllProducts: (products) => {
+        return {
+            type: "STORE_ALL_PRODUCTS",
+            allProducts: products
+        }
     }
 }
 

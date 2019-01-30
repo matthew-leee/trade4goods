@@ -1,6 +1,7 @@
 const searchReducer = (state = {
     search: "",
-    submit: ""
+    submit: "",
+    allProducts: [],
 }, action) => {
     switch (action.type) {
         case "STORE_SEARCH":
@@ -20,6 +21,24 @@ const searchReducer = (state = {
                 ...state,
                 submit: "",
                 search: ""
+            }
+        case "STORE_ALL_PRODUCTS":
+            return {
+                ...state,
+                allProducts: [...action.allProducts]
+            }
+        case "OPEN_ONE_MODAL":
+            const newProducts = state.allProducts.map((u) => {
+                if (u.product_id == action.id) {
+                    u.openOneModal = !u.openOneModal
+                    return u
+                } else {
+                    return u
+                }
+            })
+            return {
+                ...state,
+                allProducts: newProducts
             }
         default:
             return state

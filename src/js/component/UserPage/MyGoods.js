@@ -11,19 +11,20 @@ import { popUpCloseTag, content } from '../compCSS/popupCss'
 class MyGoods extends Component {
 
     componentDidMount = () => {
-        //products.forEach((u) => {
-        //    u.openOneModal = false
-        //})
-        //this.props.handleProducts(products)
-        const products = this.props.productsArr
+        // const products = this.props.allProducts
+        // .filter((u)=> {
+        //     return u.uploaded_by == this.props.myUser.user_id
+        // })
+        // this.props.handleProducts(products)
+    }   
 
-    }
     rerouteSearch = () => {
         if (this.props.submit) {
             this.props.saveSearch(this.props.submit)
             this.props.clearSearch()
         }
     }
+
     handleEdit = (e) => {
         const boo = window.confirm("edit?")
         if (boo) {
@@ -49,7 +50,10 @@ class MyGoods extends Component {
     }
 
     render() {
-        const cards = this.props.products
+        const cards = this.props.allProducts
+            .filter((u)=> {
+                return u.uploaded_by == this.props.myUser.user_id
+            })
             .slice(0, 3)
             .map((u) => {
                 return (
@@ -69,7 +73,10 @@ class MyGoods extends Component {
                     </div>
                 )
             })
-        const allCards = this.props.products
+        const allCards = this.props.allProducts
+        .filter((u)=> {
+            return u.uploaded_by == this.props.myUser.user_id
+        })
             .map((u) => {
                 return (
                     <Col xs={24} sm={12} md={8} lg={6} xl={4} >
@@ -133,7 +140,9 @@ const mapStateToProps = (state) => {
         openMGModal: s.openMGModal,
         products: s.products,
         result: s.result,
+        myUser : s.myUser,
         submit: search.submit,
+        allProducts: search.allProducts,
         productsArr: rooot.productsArr
     }
 }
