@@ -57,6 +57,7 @@ request params
 
 ```
 {
+    facebook_id: int
     access_token: string
 }
 ```
@@ -91,6 +92,7 @@ request params
 
 ```
 {
+    google_int: long
     access_token: string
     id_token: string
 }

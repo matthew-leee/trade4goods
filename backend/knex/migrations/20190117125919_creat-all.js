@@ -9,7 +9,6 @@ exports.up = function (knex, Promise) {
             table.boolean('email_isVerifying').notNullable().defaultTo(true);
             table.integer('google_id', null).nullable();
             table.integer('facebook_id', null).nullable();
-            table.string('access_token').nullable();
         }),
 
         knex.schema.createTable('users', table => {
@@ -18,11 +17,11 @@ exports.up = function (knex, Promise) {
             table.string('displayed_name').notNullable();
             table.integer('phone_number').notNullable();
             table.string('profile_picture').nullable();
-            table.specificType('uploaded_products', 'INT[]').defaultTo('{}');
-            table.specificType('liked_products', 'INT[]').defaultTo('{}');
-            table.specificType('trade_history', 'INT[]').defaultTo('{}');
-            table.integer('credibility').unsigned().defaultTo(5)
-            table.specificType('chat_basket', 'INT[]').defaultTo('{}');
+            table.specificType('uploaded_products', 'INT[]').notNullable().defaultTo('{}');
+            table.specificType('liked_products', 'INT[]').notNullable().defaultTo('{}');
+            table.specificType('trade_history', 'INT[]').notNullable().defaultTo('{}');
+            table.integer('credibility').notNullable().unsigned().defaultTo(5)
+            table.specificType('chat_basket', 'INT[]').notNullable().defaultTo('{}');
         }),
 
         knex.schema.createTable('products', table => {

@@ -52,13 +52,14 @@ module.exports = class {
                     incomingInfo = {
                         facebook_id: incomingInfo.facebook_id,
                         email: incomingInfo.email,
-                        access_token: incomingInfo.access_token,
                         username: incomingInfo.username
                     }
                     let newId = await this.knex('users_credential').insert(incomingInfo).returning('user_id');
                     newId = newId[0]
                     await this.knex('users_credential').where('user_id', newId).update({ email_isVerifying: false })
-                    return this.loginFacebook(incomingInfo.access_token)
+                    const jwt = this.jwt.sign(newId, process.env.JWT_SECRET)
+                    this.redisClient.sadd('jwt', jwt)
+                    return jwt
                 }
 
                 // ======================================== Google Signup Handle ========================================
@@ -85,13 +86,14 @@ module.exports = class {
                     incomingInfo = {
                         google_id: incomingInfo.google_id,
                         email: incomingInfo.email,
-                        access_token: incomingInfo.access_token,
                         username: incomingInfo.username
                     }
                     let newId = await this.knex('users_credential').insert(incomingInfo).returning('user_id');
                     newId = newId[0]
                     await this.knex('users_credential').where('user_id', newId).update({ email_isVerifying: false })
-                    return this.loginGoogle(incomingInfo.access_token)
+                    const jwt = this.jwt.sign(newId, process.env.JWT_SECRET)
+                    this.redisClient.sadd('jwt', jwt)
+                    return jwt
                 }
                 // ======================================== Local SignUp Handle ========================================
                 default: {
@@ -170,7 +172,7 @@ module.exports = class {
             user = user[0]
             if (user && await this.bcrypt.checkPassword(password, user.password)) {
                 if (user.email_isVerifying) {
-                    throw {       
+                    throw {
                         statusCode: 403,
                         error: 'Unverified Email',
                         message: `email has not been verified, please check your mailbox for verification email`,
@@ -180,7 +182,7 @@ module.exports = class {
                 this.redisClient.sadd('jwt', jwt)
                 return jwt
             } else {
-                throw {       
+                throw {
                     statusCode: 401,
                     error: 'Incorrect Credential',
                     message: `username or password is not found`,
@@ -191,18 +193,24 @@ module.exports = class {
         }
     }
 
-    async loginFacebook(access_token) {
+    async loginFacebook(facebook_id, access_token) {
         try {
-            let user = await this.knex('users_credential').where('access_token', access_token);
+            const get = await this.axios.get(`https://graph.facebook.com/me?fields=email,name&access_token=${access_token}`)
+            const data = get.data
+            if(!data.id || facebook_id !== data.id) {
+                throw {
+                    statusCode: 400,
+                    error: 'Invalid Credential',
+                    message: 'Access Token doesn\'t belong to the facebook user ID'
+                }
+            }
+            let user = await this.knex('users_credential').where('facebook_id', facebook_id);
             user = user[0]
             if (user) {
                 const jwt = this.jwt.sign(user.user_id, process.env.JWT_SECRET)
                 this.redisClient.sadd('jwt', jwt)
                 return jwt
             } else {
-                const get = await this.axios.get(`https://graph.facebook.com/me?fields=email,name&access_token=${access_token}`)
-                const data = get.data
-                data.access_token = access_token
                 if (!data.email) {
                     throw {
                         statusCode: 400,
@@ -211,16 +219,25 @@ module.exports = class {
                         suggestSolution: 'Open up your email permission or sign up locally, if you think it is a bug, please report to us'
                     }
                 }
-                this.signUp(get.data)
+                this.signUp(data)
             }
         } catch (err) {
             throw err
         }
     }
 
-    async loginGoogle(access_token, id_token) {
+    async loginGoogle(google_id, access_token, id_token) {
         try {
-            let user = await this.knex('users_credential').where('access_token', access_token);
+            const verify = await this.axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${access_token}`)
+            const data = verify.data
+            if(!data.sub || google_id !== data.sub) {
+                throw {
+                    statusCode: 400,
+                    error: 'Invalid Credential',
+                    message: 'Access Token doesn\'t belong to the google user ID'
+                }
+            }
+            let user = await this.knex('users_credential').where('google_id', google_id);
             user = user[0]
             if (user) {
                 const jwt = this.jwt.sign(user.user_id, process.env.JWT_SECRET)
@@ -228,8 +245,7 @@ module.exports = class {
                 return jwt
             } else {
                 const get = await this.axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${id_token}`)
-                const data = get.data
-                data.access_token = access_token
+                const info = get.data
                 if (!data.email) {
                     throw {
                         statusCode: 400,
@@ -238,7 +254,7 @@ module.exports = class {
                         suggestSolution: 'Open up your email permission or sign up locally, if you think it is a bug, please report to us'
                     }
                 }
-                this.signUp(get.data)
+                this.signUp(info)
             }
         } catch (err) {
             throw err

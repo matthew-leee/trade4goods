@@ -394,3 +394,30 @@ status: 401 Unauthorized
 ```
 
 ---
+
+## POST
+
+- accept product offer
+
+    *POST: /api/acceptOffer/*
+
+request params
+```
+{
+    product_offered: int
+    product_offering: int
+}
+```
+
+response format
+
+*Success*
+
+```
+status: 200 OK
+```
+
+*Unauthorized*
+```
+status: 401 Unauthorized
+```
