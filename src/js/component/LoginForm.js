@@ -4,12 +4,18 @@ import Popup from 'reactjs-popup'   //npm Reactjs-Popup
 import { popUpCloseTag, content } from './compCSS/popupCss'
 import axios from 'axios'
 import actions_userPage from '../actions/userPage';
-import {connect} from "react-redux"
+import { connect } from "react-redux"
+import SocialButton from './SocialButton'
 
 class NormalLoginForm extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { open: true }
+        this.state = {
+            open: true,
+            userID: '',
+            name: '',
+            email: '',
+        }
         //this.openModal = this.openModal.bind(this)
         this.closeModal = this.closeModal.bind(this)
     }
@@ -40,13 +46,13 @@ class NormalLoginForm extends React.Component {
                         withCredentials: true
                     })
                     console.log(res)
-                    
+
                     // put userinfo in redux
                     const user = await axios('https://localhost:8443/api/profile', {
                         method: "get",
                         withCredentials: true
                     })
-                    console.log (user.data)
+                    console.log(user.data)
                     this.props.storeMyUser(user.data)
 
                 } catch (err) {
@@ -55,26 +61,81 @@ class NormalLoginForm extends React.Component {
                     console.log(err.response.data)
 
                 }
-
-
-
-                // if (res) {
-                //     console.log("login good")
-                //     console.log(res)
-
-                //     // this.setState({ finishReg: true })
-                //     //this.setState({ open: false }) // it will close the form immediately
-                // } else {
-                //     console.log("login no good")
-
-
-                //     window.alert("E-mail or Username exsisted, please try again")
-                // }
             }
         });
     }
 
+
+
+    handleSocialLoginFailure = (err) => {
+        console.log(err)
+    }
+
+
+    responseFacebook = (res) => {
+
+        let id = res._profile.id
+        let accessToken = res._token.accessToken
+
+        if (accessToken) {
+            axios(`https://localhost:8443/api/facebook_login`,
+                {
+                    method: "post",
+                    data: {
+                        id: res.id,
+                        access_token: res.accessToken
+                    },
+                    withCredentials: true
+                }
+            )
+                .then(() =>
+                    console.log('fb login success')
+                )
+                .catch(err => {
+                    console.log(err.response.status)
+                    console.log(err.response)
+                    console.log(err.response.data)
+                    console.log(err.response.data.message)
+                })
+        }
+    }
+    responseGoogle = (res) => {
+
+        let id = res._profile.id
+        let accessToken = res._token.accessToken
+        let idToken = res._token.idToken
+
+        //console.log(id)
+        if (accessToken) {
+            axios(`https://localhost:8443/api/google_login`,
+                {
+                    method: "post",
+                    data: {
+                        id: id,
+                        access_token: accessToken,
+                        id_token: idToken
+                      
+                    },
+                    withCredentials: true
+                }
+            )
+                .then(() =>
+                    console.log('fb login success')
+                )
+                .catch(err => {
+                    console.log(err.response.status)
+                    console.log(err.response)
+                    console.log(err.response.data)
+                    console.log(err.response.data.message)
+                })
+        }
+    }
+
     render() {
+     
+        
+
+
         const { getFieldDecorator } = this.props.form;
         return (
             <Popup open={this.state.open} closeOnDocumentClick onClose={this.props.handleLogin} className="bg-dark">
@@ -110,7 +171,24 @@ class NormalLoginForm extends React.Component {
                             <div className="d-inline">&nbsp; Or &nbsp;</div> <a href="">register now!</a>
                         </Form.Item>
                     </Form>
+                    <div><SocialButton
+                    provider='facebook'
+                    appId='372390923567171'
+                    onLoginSuccess={this.responseFacebook}
+                    onLoginFailure={this.handleSocialLoginFailure}
+                >
+                    Login with Facebook
+                    </SocialButton></div>
+                    <div><SocialButton
+                    provider='google'
+                    appId='980192618991-ntaogv3tkbg21ve3qhfjq8us1f1au1gb.apps.googleusercontent.com'
+                    onLoginSuccess={this.responseGoogle}
+                    onLoginFailure={this.handleSocialLoginFailure}
+                >
+                    Login with Google
+                    </SocialButton></div>
                 </div>
+
             </Popup>
         );
     }
