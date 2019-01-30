@@ -59,7 +59,6 @@ module.exports = class {
             tags: info.tags,
             uploaded_by: user_id
         }
-        console.log(injectingInfo)
         try {
             let product_id = await this.knex('products').insert(injectingInfo).returning('product_id');
             product_id = product_id[0]
@@ -258,7 +257,7 @@ module.exports = class {
         }
     }
 
-    async comment(product_id, user_id, comment) {
+    async addComment(product_id, user_id, comment) {
         try {
             let product = await this.knex('products').where('product_id', product_id)
             product = product[0]
