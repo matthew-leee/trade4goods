@@ -8,6 +8,7 @@ import Popup from 'reactjs-popup'   //npm Reactjs-Popup
 import { popUpCloseTag, content } from './compCSS/popupCss'
 
 import actions_userPage from "../actions/userPage"
+import Axios from 'axios';
 
 const { Meta } = Card;
 
@@ -23,9 +24,9 @@ class MainCard extends React.Component {
   }
   componentDidMount() {
     const img = new Image();
-    if(!this.props.imgUrl){
+    if (!this.props.imgUrl) {
       img.src = require('./asset/gif/replaceNoImg.gif')
-    }else{
+    } else {
 
       img.src = this.props.imgUrl;
     }
@@ -44,14 +45,27 @@ class MainCard extends React.Component {
     };
   }
 
-
+  handleLike = async (id) => {
+    try {
+      console.log ("clicked")
+      const res = await Axios(`https://localhost:8443/api/like/${id}`, {
+        method: "put",
+        withCredentials: true
+      })
+      console.log (res)
+    } catch (err) {
+      console.log("like err")
+    }
+  }
 
 
   render() {
+
     const openOneModal = this.props.allProducts
       .filter((u) => {
         return u.product_id == this.props.details.product_id
       })[0].openOneModal
+
     return (
       <Card
         hoverable
@@ -59,7 +73,11 @@ class MainCard extends React.Component {
         cover={
           <img alt="example" src={this.state.imgPic} onClick={() => { this.props.handleOneModal(this.props.details.product_id) }} />
         }
-        actions={[<Icon type="heart" />, <Icon type="message" />, <Icon type="share-alt" />]} >
+        actions={[
+          <Icon type="heart" onClick={() => { this.handleLike(this.props.details.product_id) }} />,
+          <Icon type="message" />,
+          <Icon type="share-alt" />]}
+      >
 
         <Skeleton loading={this.state.loading} title paragraph active>
           <Meta

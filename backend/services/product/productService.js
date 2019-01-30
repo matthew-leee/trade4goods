@@ -249,8 +249,10 @@ module.exports = class {
     }
 
     async comment(product_id, user_id, comment) {
+        console.log ("product service reached")
         try {
             let product = await this.knex('products').where('product_id', product_id)
+            console.log ("products")
             product = product[0]
             if (!product) {
                 throw {
@@ -291,6 +293,7 @@ module.exports = class {
     async likeUnlikeProduct(user_id, product_id) {
         try {
             let product = await this.knex('products').where('product_id', product_id)
+            
             product = product[0]
             if (!product) {
                 throw {
@@ -302,12 +305,16 @@ module.exports = class {
             if (product.liked_by.find(e => e === user_id)) {
                 const delIndex = product.liked_by.user_id.indexOf(user_id)
                 product.liked_by.splice(delIndex, 1)
-                await this.toUser.likeProduct(user_id, product_id)
+                console.log ('if')
+                await this.toUser.unlikeProduct(user_id, product_id)
+                console.log ('good?')
                 await this.knex('products').where('product_id', product_id).update(product)
                 return 'unliked'
             } else {
                 product.liked_by.push(user_id)
-                await this.toUser.unlikeProduct(user_id, product_id)
+                console.log ("else")
+                await this.toUser.likeProduct(user_id, product_id)
+                console.log ('await ')
                 await this.knex('products').where('product_id', product_id).update(product)
                 return 'liked'
             }

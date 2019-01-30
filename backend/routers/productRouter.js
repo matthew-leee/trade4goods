@@ -106,6 +106,7 @@ module.exports = (router, authService, productService) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
             if (user_id) {
+                console.log("enter productService")
                 await productService.comment(req.body.product_id, user_id, req.body.comment)
                 res.sendStatus(201)
             } else {

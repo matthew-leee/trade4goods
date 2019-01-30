@@ -8,22 +8,22 @@ import { popUpCloseTag, content } from '../compCSS/popupCss'
 import Axios from "axios";
 
 class ProductDetails extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
-        this.user="user1"
+        this.user = "user1"
     }
 
-    handleSubmitComment = async () => {
-        try {
-            const res = Axios.post("https://localhost:8443/api/comment", {
-                product_id: this.props.details.product_id,
-                comment: this.props.comment
-            })
-            this.props.handleSubmitComment()
-        } catch (err) {
-            console.log (err.response.data)
-        }
-    }
+    // handleSubmitComment = async () => {
+    //     try {
+    //         const res = Axios.post("https://localhost:8443/api/comment", {
+    //             product_id: this.props.details.product_id,
+    //             comment: this.props.comment
+    //         })
+    //         this.props.handleSubmitComment()
+    //     } catch (err) {
+    //         console.log(err.response.data)
+    //     }
+    // }
 
     render() {
         const u = this.props.details
@@ -33,14 +33,14 @@ class ProductDetails extends Component {
             )
         })
         const displayed_name = this.props.allUsers
-        .filter((a)=> {
-            return a.user_id == u.uploaded_by
-        })
-        .map((u)=> {
-            return u.displayed_name
-        })[0]
+            .filter((a) => {
+                return a.user_id == u.uploaded_by
+            })
+            .map((u) => {
+                return u.displayed_name
+            })[0]
 
-        console.log (displayed_name)
+        console.log(displayed_name)
 
         const otherUser = this.props.allUsers
             .filter((u) => { return u.displayed_name == this.props.otherUser })
@@ -50,7 +50,7 @@ class ProductDetails extends Component {
                         <div className="userBanner" style={{ borderRadius: "1vw", backgroundColor: "#c1fcc1", height: "5vh", display: "flex", justifyContent: "center", alignContent: "center", alignItems: "center" }}>
                             <p>this is a banner</p>
                         </div>
-                        <div style={{paddingLeft: "2vw", paddingRight: "2vw"}}>
+                        <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
                             <img src={u.profile_picture} style={{ marginTop: "2vh", marginBottom: "2vh", width: "10vw", borderRadius: "50%" }} />
                             <h4 style={{ paddingTop: "1vw", paddingBottom: "1vw" }}>{u.displayed_name}</h4>
                             <h4 style={{ paddingTop: "1vw", paddingBottom: "1vw" }}>Credibility: {u.credibility}</h4>
@@ -58,7 +58,7 @@ class ProductDetails extends Component {
                     </div>
                 )
             })
-            
+
         const details = [
             {
                 title: "Product Name",
@@ -146,8 +146,8 @@ class ProductDetails extends Component {
                             )}
                         >
                         </List>
-                        <input type="text" onChange={this.props.handleComment} value={this.props.comment} / >
-                        <button onClick={this.props.handleSubmitComment}>Submit Comment</button>
+                        <input type="text" onChange={this.props.handleComment} value={this.props.comment} />
+                        <button onClick={() => { this.props.handleSubmitComment(u.product_id, this.props.comment) }}>Submit Comment</button>
                     </Col>
                 </Row>
 
@@ -186,8 +186,18 @@ const mapDispatchToProps = (dispatch) => {
             const input = e.target.value
             dispatch(actions_userPage.setComment(input))
         },
-        handleSubmitComment: ()=>{
-            dispatch(actions_userPage.submitComment())
+        handleSubmitComment: async (id, comment) => {
+            try {
+                const res = await Axios("https://localhost:8443/api/comment", {
+                    method: "post",
+                    data: { product_id: id, comment: comment },
+                    withCredentials: true
+                })
+                console.log(res)
+            } catch (err) {
+                console.log(err)
+            }
+            // dispatch(actions_userPage.submitComment())
         }
     }
 }

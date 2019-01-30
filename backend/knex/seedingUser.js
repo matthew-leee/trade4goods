@@ -1,5 +1,6 @@
 const faker = require('faker');
-require('dotenv').config()
+const path = require('path')
+require('dotenv').config({path: path.join(__dirname, '..', '.env')});
 const knex = require('knex')({
     client: 'postgresql',
     connection: {
@@ -45,7 +46,7 @@ const knex = require('knex')({
         let realpw = '' + password
         const bcrypt = require('bcrypt')
         const promisify = require('util').promisify
-        let BCRYPT = require('./services/auth/bcrypt')
+        let BCRYPT = require('../services/auth/bcrypt')
         BCRYPT = new BCRYPT(bcrypt, promisify)
         password = await BCRYPT.hashPassword(password)
         let email = faker.internet.email()
