@@ -4,7 +4,7 @@ import LoginForm from './LoginForm'
 import { connect } from "react-redux";
 import { Link } from "react-router-dom"
 import {updateFilterArr,updateFilterKey} from '../actions/hello'
-import Search from "./Search/search"
+
 import { Select } from 'antd';
 const _ = require('lodash')
 const Option = Select.Option;

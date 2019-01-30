@@ -73,9 +73,9 @@ module.exports = (router, authService) => {
         }
     })
 
-    router.post('/api/verifyEmail', async (req, res) => {
+    router.post('/api/verifyEmail/:id', async (req, res) => {
         try {
-            await authService.verifyEmail(req.body.key)
+            await authService.verifyEmail(req.params.id)
             res.sendStatus(200)
         } catch(err) {
             const statusCode = err.statusCode || 500

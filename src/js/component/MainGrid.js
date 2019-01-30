@@ -5,6 +5,7 @@ import MainCard from './MainCard'
 import Axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroller';
 import { updateProducts } from '../actions/hello'
+require('dotenv').config()
 
 function mapDispatchToProps(dispatch) {
     return {
@@ -59,7 +60,7 @@ class ConnectedMainGrid extends React.Component {
     }
 
     componentDidMount() {
-        Axios.get('https://localhost:8443/api/allProducts/')
+        Axios.get(`https://localhost:8443/api/allProducts/`)
             .then(res => {
                 if (this.props.searchArr.length === 0) {
                     let shuffleArr = this.shuffleArray(res.data)
