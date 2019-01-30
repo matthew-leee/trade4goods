@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import Navvv from './js/component/Navvv'
 import MainGrid from './js/component/MainGrid'
+import NoMatch from './js/component/NoMatch'
+import VerifyEmail from './js/component/VerifyEmail'
 
 import AddPhotos from "./js/component/AddPhotos/AddPhotos"
 import UserPage from "./js/component/UserPage/main"
@@ -12,7 +14,8 @@ import "./App.css"
 
 import {
     BrowserRouter,
-    Route
+    Route,
+    Switch
 } from 'react-router-dom'
 
 class App extends Component {
@@ -22,9 +25,13 @@ class App extends Component {
                 <div>
                     <Navvv />
                     <div style={{marginTop: "7vh"}}>
+                    <Switch>
                         <Route exact path={"/"} component={MainGrid} />
                         <Route path={"/addPhotos"} component={AddPhotos} />
                         <Route path={"/userPage"} component={UserPage} />
+                        <Route path={"/verifyEmail/:id"} component={VerifyEmail} />
+                        <Route path="*" component={NoMatch}/>
+                    </Switch>
                     </div>
                 </div>
             </BrowserRouter>

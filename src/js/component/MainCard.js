@@ -23,9 +23,9 @@ class MainCard extends React.Component {
   }
   componentDidMount() {
     const img = new Image();
-    if (!this.props.imgUrl) {
+    if(!this.props.imgUrl){
       img.src = require('./asset/gif/replaceNoImg.gif')
-    } else {
+    }else{
 
       img.src = this.props.imgUrl;
     }

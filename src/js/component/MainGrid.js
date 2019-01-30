@@ -5,8 +5,12 @@ import MainCard from './MainCard'
 import Axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroller';
 import { updateProducts } from '../actions/hello'
+<<<<<<< HEAD
 import actions_search from '../actions/search';
 import actions_userPage from '../actions/userPage';
+=======
+require('dotenv').config()
+>>>>>>> 137edfcd9c0022098d2e2c23ea80d506a1638df6
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -50,62 +54,16 @@ class ConnectedMainGrid extends React.Component {
         return a;
     }
 
-    componentDidMount= async () => {
-        try{
-
-            const res = await Axios.get('https://localhost:8443/api/allProducts/')
-            res.data.forEach((u)=>{
-                u.openOneModal = false
-            })
-            this.props.storeAllProducts(res.data)
-
-            if (this.props.searchArr.length === 0) {
-                let shuffleArr = this.shuffleArray(res.data)
-                this.props.updateProducts(shuffleArr)
-                let remainShowingBatch = Math.floor(shuffleArr.length / 50)
-                let showArr = shuffleArr.slice(0, 50)
-                let copyState = { ...this.state }
-                copyState.productsArr = shuffleArr
-                copyState.showArr = showArr
-                copyState.remainShowingBatch = remainShowingBatch
-                this.setState(copyState)
-            } else {
-                let filterArr = this.props.searchArr
-                let remainShowingBatch = Math.floor(filterArr.length / 50)
-                let showArr = filterArr.slice(0, 50)
-                let copyState = { ...this.state }
-                copyState.productsArr = filterArr
-                copyState.showArr = showArr
-                copyState.remainShowingBatch = remainShowingBatch
-                this.setState(copyState)
-            }
-
-            const users = await Axios.get('https://localhost:8443/api/allProfile/')
-            this.props.storeAllUsers(users.data)
-        } catch (err) {
-            console.log (err)
-        }
-
-    }
+    
 
 
-    componentWillReceiveProps(nextProps) {
-        let filterArr = nextProps.searchArr
-        let remainShowingBatch = Math.floor(filterArr.length / 50)
-        let showArr = filterArr.slice(0, 50)
-        let copyState = { ...this.state }
-        copyState.productsArr = filterArr
-        copyState.showArr = showArr
-        copyState.remainShowingBatch = remainShowingBatch
-        this.setState(copyState)
-    }
-
-    showMoreItems(page) {
+    showMoreItems = (page) => {
         let copyState = { ...this.state }
         if (this.state.remainShowingBatch > this.state.showingBatch) {
             let newItemsArr = this.state.productsArr.slice(50 * this.state.showingBatch + 50, 50 * this.state.showingBatch + 100)
             copyState.showArr = [...this.state.showArr, ...newItemsArr]
             copyState.showingBatch = this.state.showingBatch + 1
+            copyState.hasmore = true
             this.setState(copyState)
         }
         if (this.state.remainShowingBatch == page) {
@@ -115,12 +73,79 @@ class ConnectedMainGrid extends React.Component {
     }
 
 
+    componentDidMount= async () => {
+        try{
+
+            const res = await Axios.get('https://localhost:8443/api/allProducts/')
+            res.data.forEach((u)=>{
+                u.openOneModal = false
+
+                if (this.props.searchArr.length === 0) {
+                    let shuffleArr = this.shuffleArray(res.data)
+                    this.props.updateProducts(shuffleArr)
+                    let remainShowingBatch = Math.floor(shuffleArr.length / 50)
+                    let showArr = shuffleArr.slice(0, 50)
+                    let copyState = { ...this.state }
+                    if (remainShowingBatch <= 1) {
+                        copyState.hasmore = false
+                    } else {
+                        copyState.hasmore = true
+                    }
+                    copyState.productsArr = shuffleArr
+                    copyState.showArr = showArr
+                    copyState.remainShowingBatch = remainShowingBatch
+                    this.setState(copyState)
+                    console.log(this.state.remainShowingBatch)
+                } else {
+                    let filterArr = this.props.searchArr
+                    let remainShowingBatch = Math.floor(filterArr.length / 50)
+                    let showArr = filterArr.slice(0, 50)
+                    let copyState = { ...this.state }
+                    if (remainShowingBatch <= 1) {
+                        copyState.hasmore = false
+                    } else {
+                        copyState.hasmore = true
+                    }
+                    copyState.productsArr = filterArr
+                    copyState.showArr = showArr
+                    copyState.remainShowingBatch = remainShowingBatch
+                    this.setState(copyState)
+                }
+            })
+
+            const users = await Axios.get('https://localhost:8443/api/allProfile/')
+            this.props.storeAllUsers(users.data)
+
+        } catch (err) {
+            console.log (err)
+        }
+    }
+
+
+    componentWillReceiveProps(nextProps) {
+        let filterArr = nextProps.searchArr
+        let remainShowingBatch = Math.floor(filterArr.length / 50)
+        let showArr = filterArr.slice(0, 50)
+        let copyState = { ...this.state }
+        if (remainShowingBatch <= 1) {
+            copyState.hasmore = false
+        } else {
+            copyState.hasmore = true
+        }
+        copyState.productsArr = filterArr
+        copyState.showArr = showArr
+        copyState.remainShowingBatch = remainShowingBatch
+        this.setState(copyState)
+    }
+
+
+
 
 
     render() {
 
         // infinite scrolling bottom div
-        const loader = <div className="loader" key={0}>Loading ...</div>;
+        const loader = <div style={{ width: "100%", textAlign: "center" }} key={0}><img alt="isLoading" src={require('./asset/gif/mainPageLoadingPic.gif')}></img></div>;
 
         // Seprate product into 6 rows
         let cards = this.state.showArr.map((el) => {
@@ -149,11 +174,17 @@ class ConnectedMainGrid extends React.Component {
 
 
 
-                    <Col xs={24} sm={12} md={8} lg={6} xl={4} > <InfiniteScroll
-                        pageStart={0}
-                        loadMore={this.showMoreItems.bind(this)}
-                        hasMore={this.state.hasmore}
-                        loader={loader} useWindow={true}>{c1}</InfiniteScroll></Col>
+                    <Col xs={24} sm={12} md={8} lg={6} xl={4}>
+                        <InfiniteScroll
+                            pageStart={0}
+                            loadMore={this.showMoreItems.bind(this)}
+                            hasMore={this.state.hasmore}
+                            loader={loader} useWindow={true}>
+
+                            {c1}
+
+                        </InfiniteScroll>
+                    </Col>
                     <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c2}</Col>
                     <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c3}</Col>
                     <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c4}</Col>

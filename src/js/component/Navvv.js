@@ -4,7 +4,7 @@ import LoginForm from './LoginForm'
 import { connect } from "react-redux";
 import { Link } from "react-router-dom"
 import {updateFilterArr,updateFilterKey} from '../actions/hello'
-import Search from "./Search/search"
+
 import { Select } from 'antd';
 const _ = require('lodash')
 const Option = Select.Option;
@@ -53,13 +53,25 @@ class ConnectedNavvv extends React.Component {
         let arr = [...value]
 
         let filterArr = this.props.productsArr.filter(el=>{
-            return arr.includes(el.name)
+            let nameAndTags = [el.name,...el.tags]
+            let isInclude =  nameAndTags.some(el => arr.includes(el));
+
+
+            return isInclude
         })
+
+
+
+        
+
+
+
         if (filterArr.length === 0) {
             filterArr = this.props.productsArr
         }
-        console.log(filterArr)
-       
+  
+
+
         //return the filter key word in array
        this.props.updateFilterKey(arr)
        //return filtered products list
@@ -70,30 +82,19 @@ class ConnectedNavvv extends React.Component {
       componentWillReceiveProps(nextProps){
         let children = []
         let prodctNameArr = _.chain(nextProps.productsArr)
-        .map(el => el.name)
+        .map(el => [el.name,el.tags])
+        .flattenDepth(2)
         .countBy(el => el)
         .toPairs()
         .sortBy(el => el[1])
         .reverse()
         .map(el => el[0])
         .value()
+
         for(let i =0; i < prodctNameArr.length; i++){
             children.push(<Option key={prodctNameArr[i] }>{prodctNameArr[i]}</Option>)
         }
-
-        let prodctTagsArr = _.chain(nextProps.productsArr)
-        .map(el => el.tags)
-        .flatten()
-        .countBy(el => el)
-        .toPairs()
-        .sortBy(el => el[1])
-        .reverse()
-        .map(el => el[0])
-        .value()
-        console.log(prodctTagsArr)
-        for(let i =0; i < prodctTagsArr.length; i++){
-            children.push(<Option key={prodctTagsArr[i]}>{prodctTagsArr[i]}</Option>)
-        }
+        
 
         this.setState({arr:children})
 
