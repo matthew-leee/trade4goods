@@ -211,7 +211,6 @@ module.exports = class {
                 this.redisClient.sadd('jwt', jwt)
                 return jwt
             } else {
-                console.log('else')
                 if (!data.email) {
                     throw {
                         statusCode: 400,
@@ -220,6 +219,8 @@ module.exports = class {
                         suggestSolution: 'Open up your email permission or sign up locally, if you think it is a bug, please report to us'
                     }
                 }
+                data.facebook_id = data.id
+                delete data.id
                 this.signUp(data)
             }
         } catch (err) {
