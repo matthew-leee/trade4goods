@@ -170,15 +170,9 @@ status: 201 Created
 
 - Verify Email
 
-    *POST: /api/verifyEmail*
+    *POST: /api/verifyEmail/:id*
 
-request params
-
-```
-{
-    key: string (from uri params)
-}
-```
+    *provide key in params*
 
 *Succes*
 ```
