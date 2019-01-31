@@ -18,8 +18,10 @@ module.exports = class {
         try {
             const reply = await this.smembersAsync('jwt')
             const match = reply.find(element => element === token)
+       
             return (match) ? Number.parseInt(await this.jwt.decode(match)) : false
         } catch (err) {
+        
             throw err
         }
     }
