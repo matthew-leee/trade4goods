@@ -4,6 +4,7 @@ import LoginForm from './LoginForm'
 import { connect } from "react-redux";
 import { Link } from "react-router-dom"
 import {updateFilterArr,updateFilterKey} from '../actions/hello'
+import { withRouter } from "react-router";
 
 import { Select } from 'antd';
 const _ = require('lodash')
@@ -37,6 +38,9 @@ class ConnectedNavvv extends React.Component {
         }
         this.handleLoginToggle = this.handleLoginToggle.bind(this)
         this.handleRegToggle = this.handleRegToggle.bind(this)
+        this.handleNavOnBlur = this.handleNavOnBlur.bind(this)
+        this.handleNavPressEnter = this.handleNavPressEnter.bind(this)
+    
     }
 
     handleLoginToggle = () => {
@@ -46,6 +50,19 @@ class ConnectedNavvv extends React.Component {
 
     handleRegToggle = () => {
         this.setState({ tryRegister: !this.state.tryRegister })
+    }
+
+    
+    handleNavOnBlur = () =>{
+
+        this.props.history.push('/');
+    }
+
+
+    handleNavPressEnter = (event) =>{
+        if(event.key == 'Enter'){
+            this.props.history.push('/');
+        }
     }
 
     handleChange = (value) => {
@@ -59,7 +76,6 @@ class ConnectedNavvv extends React.Component {
 
             return isInclude
         })
-
 
 
         
@@ -106,7 +122,7 @@ class ConnectedNavvv extends React.Component {
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style={{height: "7vh"}}>
     
                 <Link className="navbar-brand d-inline" to="/">Trade4Goods</Link>
-                <Select mode="multiple" style={{ width: '50%' }} defaultValue={[]}placeholder="Please select" onChange={this.handleChange} maxTagCount={3}>
+                <Select onInputKeyDown={this.handleNavPressEnter} onBlur={this.handleNavOnBlur} notFoundContent="Not Found" mode="multiple" style={{ width: '50%' }} defaultValue={[]} placeholder="Please select" onChange={this.handleChange} maxTagCount={3}>
                     {this.state.arr}
                 </Select>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -139,8 +155,8 @@ class ConnectedNavvv extends React.Component {
 }
 
 
-const Navv = connect(mapStateToProps,mapDispatchToProps)(ConnectedNavvv);
+const MappedNavv = connect(mapStateToProps,mapDispatchToProps)(ConnectedNavvv);
 
 
-
+const Navv = withRouter(MappedNavv);
 export default Navv;
