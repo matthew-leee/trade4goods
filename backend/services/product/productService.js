@@ -147,8 +147,11 @@ module.exports = class {
                     message: "Product has been sold out and cannot be deleted"
                 }
             } else {
+                console.log("else")
                 await this.knex('products').where('product_id', product_id).del()
+                console.log("1await")
                 await this.toUser.deleteProduct(product_id, user_id)
+                console.log("2await")
             }
         } catch (err) {
             throw err
