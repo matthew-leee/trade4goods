@@ -95,7 +95,8 @@ class NormalLoginForm extends React.Component {
                     method: "post",
                     data: {
                         facebook_id: facebook_id,
-                        access_token: access_token
+                        access_token: access_token,
+
                     },
                     withCredentials: true
                 }
@@ -103,24 +104,10 @@ class NormalLoginForm extends React.Component {
                 .then(async () => {
 
                     try {
-
-
-                        const cre = await axios('https://localhost:8443/api/profile', {
-                            method: "post",
-                            data: {
-                                displayed_name: displayed_name,
-                                profile_picutre: profile_picutre,
-                                phone_number: ""
-                            },
-                            withCredentials: true
-                        })
-
-
                         const user = await axios('https://localhost:8443/api/profile', {
                             method: "get",
                             withCredentials: true
                         })
-
 
                         console.log(user.data)
                         this.props.storeMyUser(user.data)
@@ -134,7 +121,6 @@ class NormalLoginForm extends React.Component {
                         }
                     }
                 }
-
                 )
                 .catch(err => {
                     console.log(err.response.status)
@@ -147,23 +133,35 @@ class NormalLoginForm extends React.Component {
     responseGoogle = (res) => {
 
         let google_id = res._profile.id
+        let name = res._profile.name
         let access_token = res._token.accessToken
         let id_token = res._token.idToken
+        
         console.log(res)
         if (access_token) {
+            console.log("try login google")
             axios(`https://localhost:8443/api/google_login`,
                 {
                     method: "post",
                     data: {
                         google_id: google_id,
                         access_token: access_token,
-                        id_token: id_token
+                        id_token: id_token,
+                        name: name
                     },
                     withCredentials: true
                 }
             )
-                .then(() =>
-                    console.log('fb login success')
+                .then(async () => {
+                    console.log('google login success')
+                    const user = await axios('https://localhost:8443/api/profile', {
+                        method: "get",
+                        withCredentials: true
+                    })
+
+                    console.log(user.data)
+                    this.props.storeMyUser(user.data)
+                }
                 )
                 .catch(err => {
                     console.log(err.response.status)
@@ -184,7 +182,7 @@ class NormalLoginForm extends React.Component {
             <Popup contentStyle={content} open={this.state.open} closeOnDocumentClick onClose={this.props.handleLogin} >
                 <div style={{ textAlign: "center", }}>
                     <a style={popUpCloseTag} onClick={this.props.handleLogin}>&times;</a>
-                    {!this.state.errMsg && <div style={{position: "absolute", left:"50%", top:"40%", transform: 'translate(-50%, -50%)'}}>
+                    {!this.state.errMsg && <div style={{ position: "absolute", left: "50%", top: "40%", transform: 'translate(-50%, -50%)' }}>
                         <Form onSubmit={this.handleSubmit} className="login-form ">
                             <div style={{ marginBottom: "10px" }}>
                                 <h1>Login</h1>
@@ -195,7 +193,7 @@ class NormalLoginForm extends React.Component {
                                 {getFieldDecorator('userName', {
                                     rules: [{ required: true, message: 'Please input your username or e-mail' }],
                                 })(
-                                    <Input size="large"  prefix={<Icon type="user" style={{ color: 'white' }} />} placeholder="Username / E-mail" />
+                                    <Input size="large" prefix={<Icon type="user" style={{ color: 'white' }} />} placeholder="Username / E-mail" />
                                 )}
                             </Form.Item>
                             <Form.Item>

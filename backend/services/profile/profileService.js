@@ -55,7 +55,11 @@ module.exports = class {
             if (info.profile_picture) {
                 injectingInfo.profile_picture = info.profile_picture
             }
+
+            console.log(injectingInfo)
             await this.knex('users').insert(injectingInfo)
+
+
         } catch (err) {
             throw (err)
         }

@@ -89,6 +89,7 @@ module.exports = class {
                     }
                     let newId = await this.knex('users_credential').insert(incomingInfo).returning('user_id');
                     newId = newId[0]
+                    
                     await this.knex('users_credential').where('user_id', newId).update({ email_isVerifying: false })
                     const jwt = this.jwt.sign(newId, process.env.JWT_SECRET)
                     this.redisClient.sadd('jwt', jwt)
@@ -159,14 +160,17 @@ module.exports = class {
                         password: hashedPassword,
                         email: incomingInfo.email
                     }
+
+                    console.log(credential)
                     let newId = await this.knex('users_credential').insert(credential).returning('user_id');
                     newId = newId[0]
+                   
                     const profile = {
                         displayed_name: incomingInfo.displayed_name,
                         phone_number: incomingInfo.phone_number,
                         profile_picture: incomingInfo.profile_picture
                     }
-                    await this.createProfile(profile, id) 
+                    await this.createProfile(profile, newId) 
                     return newId
                 }
             }
