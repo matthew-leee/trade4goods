@@ -3,7 +3,7 @@ import RegistrationForm from './RegistrationForm'
 import LoginForm from './LoginForm'
 import { connect } from "react-redux";
 import { Link } from "react-router-dom"
-import {updateFilterArr,updateFilterKey} from '../actions/hello'
+import {updateFilterArr,updateFilterKey,handleLoginToggle,handleRegToggle} from '../actions/hello'
 import { withRouter } from "react-router";
 
 import { Select } from 'antd';
@@ -13,7 +13,10 @@ const Option = Select.Option;
 function mapDispatchToProps(dispatch) {
     return {
         updateFilterArr: arr => dispatch(updateFilterArr(arr)),
-        updateFilterKey: arr=> dispatch(updateFilterKey(arr))
+        updateFilterKey: arr=> dispatch(updateFilterKey(arr)),
+        handleLoginToggle: a=> dispatch(handleLoginToggle(a)),
+        handleRegToggle: a=> dispatch(handleRegToggle(a))
+       
     };
   }
 
@@ -24,6 +27,8 @@ const mapStateToProps = state => {
     return { 
         productsArr: search.productsArr, 
         isLogin: search.isLogin,
+        tryLogin: search.tryLogin,
+        tryRegister: search.tryReg,
         myUser: user.myUser
     };
 };
@@ -32,25 +37,13 @@ class ConnectedNavvv extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tryLogin: false,
-            tryRegister: false,
             arr: []
         }
-        this.handleLoginToggle = this.handleLoginToggle.bind(this)
-        this.handleRegToggle = this.handleRegToggle.bind(this)
         this.handleNavOnBlur = this.handleNavOnBlur.bind(this)
         this.handleNavPressEnter = this.handleNavPressEnter.bind(this)
     
     }
 
-    handleLoginToggle = () => {
-        this.setState({ tryLogin: !this.state.tryLogin })
-    }
-
-
-    handleRegToggle = () => {
-        this.setState({ tryRegister: !this.state.tryRegister })
-    }
 
     
     handleNavOnBlur = () =>{
@@ -135,10 +128,10 @@ class ConnectedNavvv extends React.Component {
                         </li>}
 
                         {!this.props.myUser.displayed_name && <li className="nav-item">
-                            <a className="nav-link" onClick={this.handleLoginToggle}>Login</a>
+                            <a className="nav-link" onClick={this.props.handleLoginToggle}>Login</a>
                         </li>}
                         {!this.props.myUser.displayed_name && <li className="nav-item">
-                            <a className="nav-link" onClick={this.handleRegToggle} reg={this.handleFinToggle}>Register</a>
+                            <a className="nav-link" onClick={this.props.handleRegToggle} reg={this.handleFinToggle}>Register</a>
                         </li>}
                         {this.props.myUser.displayed_name && 
                         <li className="nav-item" style={{display: "flex", flexDirection:"row"}}>
@@ -147,8 +140,8 @@ class ConnectedNavvv extends React.Component {
                         </li>}
                     </ul>
                 </div>
-                {this.state.tryLogin && <LoginForm handleLogin={this.handleLoginToggle} />}
-                {this.state.tryRegister && <RegistrationForm handleRegToggle={this.handleRegToggle} />}
+                {this.props.tryLogin && <LoginForm handleLogin={this.props.handleLoginToggle} />}
+                {this.props.tryRegister && <RegistrationForm handleRegToggle={this.props.handleRegToggle} />}
             </nav>
         );
     }

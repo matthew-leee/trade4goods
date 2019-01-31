@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Carousel, List, Row, Col, Icon, Button } from "antd"
+import { Input, Carousel, List, Row, Col, Icon, Button } from "antd"
 import actions_userPage from "../../actions/userPage";
 import actions_search from '../../actions/search'
 import { connect } from "react-redux"
@@ -110,6 +110,7 @@ class ProductDetails extends Component {
                                 {images}
                             </Carousel>
                         </div>
+                        <Trade details={u} status={checkMyProduct()} />
                     </Col>
                     <Col span={8}>
                         <h4>Product Details</h4>
@@ -159,14 +160,11 @@ class ProductDetails extends Component {
                                     )}
                                 >
                                 </List>
-                                <input type="text" onChange={this.props.handleComment} value={this.props.comment} />
+                                <input style={{width:"220px", marginBottom:"20px", height:"42.74px"}} type="text" onChange={this.props.handleComment} value={this.props.comment} placeholder="Write a comment!"/>
+                                
                                 {/* <Icon type="upload" onClick={() => { this.props.handleSubmitComment(u.product_id, this.props.comment, this.props.allUsers) }} /> */}
-                                <button onClick={() => { this.props.handleSubmitComment(u.product_id, this.props.comment, this.props.allUsers) }}>Submit Comment</button>
+                                <button className="myCmBtn" onClick={() => { this.props.handleSubmitComment(u.product_id, this.props.comment, this.props.allUsers) }}>Submit Comment</button>
                             </div>
-
-                            <Trade details={u} status={checkMyProduct()} />
-
-
                         </div>
 
                     </Col>

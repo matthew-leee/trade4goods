@@ -179,7 +179,7 @@ class NormalLoginForm extends React.Component {
 
         const { getFieldDecorator } = this.props.form;
         return (
-            <Popup contentStyle={content} open={this.state.open} closeOnDocumentClick onClose={this.props.handleLogin} >
+            <Popup contentStyle={content} open={this.state.open} closeOnDocumentClick onClose={this.props.handleLogin}  >
                 <div style={{ textAlign: "center", }}>
                     <a style={popUpCloseTag} onClick={this.props.handleLogin}>&times;</a>
                     {!this.state.errMsg && <div style={{ position: "absolute", left: "50%", top: "40%", transform: 'translate(-50%, -50%)' }}>

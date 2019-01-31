@@ -6,11 +6,26 @@ import Axios from "axios";
 import { connect } from "react-redux"
 import actions_trade from "../../actions/trade"
 import MyGoodsCard from "./cards/MyGoodsCard"
+import LoginForm from '../LoginForm'
 import RegistrationForm from "../RegistrationForm";
 
-class Trade extends Component {
 
-    handlePlaceOffer= async () => {
+class Trade extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            tryLogin: false,
+        }
+
+        this.handleLoginToggle = this.handleLoginToggle.bind(this)
+    }
+
+
+
+    handleLoginToggle = () => {
+        this.setState({ tryLogin: !this.state.tryLogin })
+    }
+    handlePlaceOffer = async () => {
         const data = {
             product_offered: this.props.selected,
             product_offering: this.props.details.product_id
@@ -20,7 +35,7 @@ class Trade extends Component {
             data: data,
             withCredentials: true
         })
-        console.log (res)
+        console.log(res)
         // finished trading
         this.props.clearSelect()
 
@@ -78,8 +93,8 @@ class Trade extends Component {
                     </Col>
                 )
             })
-        
-        const openOGModal = this.props.allProducts.filter((u)=>{
+
+        const openOGModal = this.props.allProducts.filter((u) => {
             return u.product_id == details.product_id
         })[0].openOGModal
 
@@ -102,11 +117,11 @@ class Trade extends Component {
                 return (
                     <div className="trade" style={{}}>
                         <h4>Trade</h4>
-                        <Button onClick={()=>{this.props.openOGModal(details.product_id)}} style={{ marginBottom: "1vw" }} ghost type="danger">Make an Offer</Button>
+                        <Button onClick={() => { this.props.openOGModal(details.product_id) }} style={{ marginBottom: "1vw" }} ghost type="danger">Make an Offer</Button>
                         {openOGModal &&
-                            <Popup open={true} closeOnDocumentClick onClose={()=>{this.props.openOGModal(details.product_id)}}>
-                                <div style={{ display: "flex", flexDirection: "column",overflowY: "scroll", width: "50vw", height: "50vh" }}>
-                                <a style={popUpCloseTag} onClick={()=>{this.props.openOGModal(details.product_id)}}>&times;</a>
+                            <Popup open={true} closeOnDocumentClick onClose={() => { this.props.openOGModal(details.product_id) }}>
+                                <div style={{ display: "flex", flexDirection: "column", overflowY: "scroll", width: "50vw", height: "50vh" }}>
+                                    <a style={popUpCloseTag} onClick={() => { this.props.openOGModal(details.product_id) }}>&times;</a>
                                     <h1>Trading Panel</h1>
                                     <Row>
 
@@ -118,18 +133,19 @@ class Trade extends Component {
 
                                         <Col span={8}>
                                             <div className="tradeBox" style={{ display: "flex", flexDirection: "column" }}>
-                                                {this.props.selected && 
-                                                <div className="selectedCard">
-                                                    {selectedCard}
-                                                </div>}
-                                                {!this.props.selected && 
-                                                <div className="selectedCard" style={{width: "7vw", height: "7vw", backgroundColor: "yellow",
-                                                display: "flex", justifyContent: "center", alignItems: "center"
-                                                }}>
-                                                    <p style={{color: "red"}}>Select a product from Left Panel</p>
-                                                </div>}
+                                                {this.props.selected &&
+                                                    <div className="selectedCard">
+                                                        {selectedCard}
+                                                    </div>}
+                                                {!this.props.selected &&
+                                                    <div className="selectedCard" style={{
+                                                        width: "7vw", height: "7vw", backgroundColor: "yellow",
+                                                        display: "flex", justifyContent: "center", alignItems: "center"
+                                                    }}>
+                                                        <p style={{ color: "red" }}>Select a product from Left Panel</p>
+                                                    </div>}
                                                 <div className="confirmTrade">
-                                                    <Button onClick={this.handlePlaceOffer}  type="danger">Confirm Placing Offer</Button>
+                                                    <Button onClick={this.handlePlaceOffer} type="danger">Confirm Placing Offer</Button>
                                                 </div>
                                             </div>
                                         </Col>
@@ -142,9 +158,9 @@ class Trade extends Component {
                 )
             default:
                 return (
-                    <div className="trade" style={{}}>
-                        <h4>Trade</h4>
-                        <Button style={{ marginBottom: "1vw" }} ghost type="danger">Please Login</Button>
+                    <div className="trade" style={{ marginTop: "50px" }}>
+                        {this.state.tryLogin && <LoginForm handleLogin={this.handleLoginToggle} style={{zIndex:"100"}}/>}
+                        <Button  onClick={this.handleLoginToggle} className="myLgBtn" style={{ marginBottom: "1vw" }}>Login to make a deal!</Button>
                     </div>
                 )
         }
@@ -155,6 +171,7 @@ const mapStateToProps = (state) => {
     const user = state.userReducer
     const trade = state.tradeReducer
     const search = state.searchReducer
+    const rooot = state.rootReducer
     return {
         myUser: user.myUser,
         openMyGoodModal: trade.openMyGoodModal,
@@ -175,7 +192,7 @@ const mapDispatchToProps = (dispatch) => {
         handleSelect: (id) => {
             dispatch(actions_trade.selectMyGood(id))
         },
-        clearSelect: () =>{
+        clearSelect: () => {
             dispatch(actions_trade.clearSelect())
         }
     }

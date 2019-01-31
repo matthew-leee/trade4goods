@@ -120,8 +120,10 @@ class RegistrationFormgp extends React.Component {
         let email = res._profile.email
         let access_token = res._token.accessToken
         let name = res._profile.id
-        
-
+        let displayed_name = res._profile.name
+        let phone_number = ""
+        let profile_picture = ""
+    
         if (access_token) {
             axios(`https://localhost:8443/api/signup`,
                 {
@@ -130,13 +132,16 @@ class RegistrationFormgp extends React.Component {
                         facebook_id: facebook_id,
                         access_token: access_token,
                         name: name,
-                        email: email
+                        email: email,
+                        profile_picture: profile_picture,
+                        phone_number: phone_number,
+                        displayed_name: displayed_name
                     },
                     withCredentials: true
                 }
             )
                 .then(() =>
-                    console.log('fb login success')
+                    console.log('fb register success')
                 )
                 .catch(err => {
                     console.log(err.response.status)
@@ -170,7 +175,7 @@ class RegistrationFormgp extends React.Component {
                 }
             )
                 .then(() =>
-                    console.log('fb login success')
+                    console.log('google register success')
                 )
                 .catch(err => {
                     console.log(err.response.status)

@@ -54,8 +54,10 @@ module.exports = class {
                         email: incomingInfo.email,
                         username: incomingInfo.username
                     }
-                    let newId = await this.knex('users_credential').insert(incomingInfo).returning('user_id');
+                    let newId = await this.knex('users_credential').insert(incomingInfo).returning('user_id')  
                     newId = newId[0]
+
+
                     await this.knex('users_credential').where('user_id', newId).update({ email_isVerifying: false })
                     const jwt = this.jwt.sign(newId, process.env.JWT_SECRET)
                     this.redisClient.sadd('jwt', jwt)
@@ -82,14 +84,14 @@ module.exports = class {
                             }
                         }
                     }
-                    incomingInfo = {
+
+                    incomingInfo = { 
                         google_id: incomingInfo.google_id,
                         email: incomingInfo.email,
                         username: incomingInfo.username
                     }
                     let newId = await this.knex('users_credential').insert(incomingInfo).returning('user_id');
                     newId = newId[0]
-                    
                     await this.knex('users_credential').where('user_id', newId).update({ email_isVerifying: false })
                     const jwt = this.jwt.sign(newId, process.env.JWT_SECRET)
                     this.redisClient.sadd('jwt', jwt)
@@ -161,7 +163,7 @@ module.exports = class {
                         email: incomingInfo.email
                     }
 
-                    console.log(credential)
+               
                     let newId = await this.knex('users_credential').insert(credential).returning('user_id');
                     newId = newId[0]
                    
