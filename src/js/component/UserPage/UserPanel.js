@@ -12,7 +12,7 @@ class UserPanel extends Component {
     render() {
         const u = this.props.myUser
         return (
-            <div style={{ width: "15vw", height: "93vh", backgroundColor: "#eafeea", display: "flex", justifyContent: "center" }}>
+            <div style={{ width: "15vw", height: "100%", backgroundColor: "#eafeea", display: "flex", justifyContent: "center" }}>
                 {u && <div style={{ color: "#2d4b2d", display: "flex", alignItems: "center", flexDirection: "column", paddingTop: "5vh" }}>
                     <img src={u.profile_picture} style={{ width: "10vw", borderRadius: "50%" }} />
                     <h4 style={{ paddingTop: "1vw", paddingBottom: "1vw" }}>{u.displayed_name}</h4>

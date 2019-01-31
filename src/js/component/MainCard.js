@@ -79,6 +79,7 @@ class MainCard extends React.Component {
           withCredentials: true
         })
         this.props.storeMyUser(user.data)
+        console.log(this.props.details.profile_pictur)
 
       }
     } catch (err) {
@@ -114,15 +115,13 @@ class MainCard extends React.Component {
             }
             actions={[
               <Icon type="heart" onClick={() => { this.handleLike(this.props.details.product_id) }} />,
-              <Icon type="message" onClick={() => { this.props.handleOneModal(this.props.details.product_id) }} />,
-              <Icon type="share-alt" />]}
+              <Icon type="message" onClick={() => { this.props.handleOneModal(this.props.details.product_id) }} />]}
           >
 
             <Skeleton loading={this.state.loading} title paragraph active>
               <Meta
                 title={this.props.name}
                 description={this.props.description}
-                avatar={<Avatar src={this.props.details.profile_picture} />}
               />
             </Skeleton>
 
@@ -154,6 +153,7 @@ class MainCard extends React.Component {
                 title={this.props.name}
                 description={this.props.description}
                 avatar={<Avatar src={this.props.details.profile_picture} />}
+                
               />
             </Skeleton>
 

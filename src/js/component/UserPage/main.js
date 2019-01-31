@@ -12,32 +12,35 @@ import TradeHistory from "./TradeHistory"
 class UserPage extends Component {
     render() {
         return (
-            <div className="userPage" style={{display: "flex", flexDirection: "row"}}>
-               
-
-                    <UserPanel />
-
-                    <div style={{width: "70vw", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center", alignItems: "center"}}>
+            <div className="userPage">
+                <Row type="flex" justify="space-around">
+                    <Col xs={24} sm={24} md={3} >
+                        <UserPanel />
+                    </Col>
+                    <Col xs={24} sm={24} md={18}>
                         <Row>
-                            <Col span={12} >
+                            <Col xs={24} sm={24} md={12} >
                                 <MyGoods />
                             </Col>
-                            <Col span={12} >
+                            <Col xs={24} sm={24} md={12} >
                                 <FollowedPost />
                             </Col>
                         </Row>
                         <Row>
-                            <Col span={12}>
+                            <Col xs={24} sm={24} md={12}>
                                 <SentReq />
                             </Col>
-                            <Col span={12}>
+                            <Col xs={24} sm={24} md={12}>
                                 <ReceivedReq />
                             </Col>
                         </Row>
-                    </div>
+                    </Col>
+                    <Col xs={24} sm={24} md={3}>
+                        <TradeHistory />
+                    </Col>
+                </Row>
 
-                    <TradeHistory />
-                
+
             </div>
         )
     }
@@ -46,13 +49,13 @@ class UserPage extends Component {
 
 const mapStateToProps = (state) => {
     return {
-       
+
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        
+
     }
 }
 

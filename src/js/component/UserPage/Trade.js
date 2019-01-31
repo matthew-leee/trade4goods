@@ -9,9 +9,19 @@ import actions_userPage from "../../actions/userPage"
 import actions_search from "../../actions/search"
 import MyGoodsCard from "./cards/MyGoodsCard"
 
+import LoginForm from '../LoginForm'
+// import RegistrationForm from "../RegistrationForm";
+// import {handleLoginToggle} from '../../actions/hello'
+
 const err = require('../asset/gif/error404.gif')
 
 class Trade extends Component {
+
+    // whats that man there is no state in Trade component
+
+    // handleLoginToggle = () => {
+    //     this.setState({ tryLogin: !this.state.tryLogin })
+    // }
 
     handlePlaceOffer = async () => {
         const data = {
@@ -232,8 +242,8 @@ class Trade extends Component {
             case "otherP":
                 return (
                     <div className="trade" style={{}}>
-                        <h4>Trade</h4>
-                        <Button onClick={() => { this.props.openOGModal(details.product_id) }} style={{ marginBottom: "1vw" }} ghost type="danger">Make an Offer</Button>
+    
+                        <Button onClick={() => { this.props.openOGModal(details.product_id) }} style={{ marginTop:"40px",marginBottom: "1vw" }} className="myLgBtn">Make an Offer</Button>
                         {openOGModal &&
                             <Popup open={true} closeOnDocumentClick onClose={() => { this.props.openOGModal(details.product_id) }}>
                                 <div style={{ display: "flex", flexDirection: "column", overflowY: "scroll", width: "50vw", height: "50vh" }}>
@@ -274,9 +284,9 @@ class Trade extends Component {
                 )
             default:
                 return (
-                    <div className="trade" style={{}}>
-                        <h4>Trade</h4>
-                        <Button style={{ marginBottom: "1vw" }} ghost type="danger">Please Login</Button>
+                    <div className="trade" style={{ marginTop: "50px",textAlign: "center"}}>
+                        {this.props.tryLogin && <LoginForm handleLogin={this.props.handleLoginToggle} />}
+                        <Button  onClick={this.props.handleLoginToggle} className="myLgBtn">Login to make a deal!</Button>
                     </div>
                 )
         }
@@ -287,12 +297,14 @@ const mapStateToProps = (state) => {
     const user = state.userReducer
     const trade = state.tradeReducer
     const search = state.searchReducer
+    const rooot = state.roootReducer
     return {
         myUser: user.myUser,
         openMyGoodModal: trade.openMyGoodModal,
         openOGModal: trade.openOGModal,
         selected: trade.selected,
-        allProducts: search.allProducts
+        allProducts: search.allProducts,
+        tryLogin: rooot.tryLogin
     }
 }
 
@@ -321,7 +333,8 @@ const mapDispatchToProps = (dispatch) => {
         },
         storeMyUser: (user) => {
             dispatch(actions_userPage.storeMyUser(user))
-        }
+        },
+        // handleLoginToggle: a=> dispatch(handleLoginToggle(a)),
     }
 }
 

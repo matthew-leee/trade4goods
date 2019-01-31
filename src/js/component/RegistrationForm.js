@@ -54,9 +54,6 @@ class RegistrationFormgp extends React.Component {
                     profile_picutre: ""
                 }
 
-
-
-
                 try {
                     const res = await axios('https://localhost:8443/api/signup', {
                         method: "post",
@@ -119,23 +116,32 @@ class RegistrationFormgp extends React.Component {
 
     responseFacebook = (res) => {
 
-        let id = res._profile.id
-        let accessToken = res._token.accessToken
-
-
-        if (accessToken) {
+        let facebook_id = res._profile.id
+        let email = res._profile.email
+        let access_token = res._token.accessToken
+        let name = res._profile.id
+        let displayed_name = res._profile.name
+        let phone_number = ""
+        let profile_picture = ""
+    
+        if (access_token) {
             axios(`https://localhost:8443/api/signup`,
                 {
                     method: "post",
                     data: {
-                        id: res.id,
-                        access_token: res.accessToken
+                        facebook_id: facebook_id,
+                        access_token: access_token,
+                        name: name,
+                        email: email,
+                        profile_picture: profile_picture,
+                        phone_number: phone_number,
+                        displayed_name: displayed_name
                     },
                     withCredentials: true
                 }
             )
                 .then(() =>
-                    console.log('fb login success')
+                    console.log('fb register success')
                 )
                 .catch(err => {
                     console.log(err.response.status)
@@ -148,24 +154,28 @@ class RegistrationFormgp extends React.Component {
 
     responseGoogle = (res) => {
 
-        let id = res._profile.id
+        let google_id = res._profile.id
+        let email = res._profile.email
         let accessToken = res._token.accessToken
-        let idToken = res._token.idToken
-
+        let id_token = res._token.idToken
+        let name = res._profile.id
+   
         if (accessToken) {
             axios(`https://localhost:8443/api/signup`,
                 {
                     method: "post",
                     data: {
-                        id: id,
+                        google_id: google_id,
                         access_token: accessToken,
-                        id_token: idToken
+                        id_token: id_token,
+                        name: name,
+                        email: email
                     },
                     withCredentials: true
                 }
             )
                 .then(() =>
-                    console.log('fb login success')
+                    console.log('google register success')
                 )
                 .catch(err => {
                     console.log(err.response.status)
@@ -323,7 +333,7 @@ class RegistrationFormgp extends React.Component {
                                     className="myFbBtn"
                                     
                                 >
-                                    Login with Facebook
+                                    Register with Facebook
                                 </SocialButton>
                                 <SocialButton
                                     provider='google'
@@ -332,7 +342,7 @@ class RegistrationFormgp extends React.Component {
                                     onLoginFailure={this.handleSocialLoginFailure}
                                     className="myGoogleBtn"
                                 >
-                                    Login with Google
+                                    Register with Google
                                 </SocialButton>
                             </div>
                         </div>}
