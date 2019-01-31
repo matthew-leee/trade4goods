@@ -1,11 +1,12 @@
 import React, { Component } from "react"
-import { Carousel, List, Row, Col, Icon } from "antd"
+import { Carousel, List, Row, Col, Icon, Button } from "antd"
 import actions_userPage from "../../actions/userPage";
 import actions_search from '../../actions/search'
 import { connect } from "react-redux"
 import Popup from 'reactjs-popup'   //npm Reactjs-Popup
 import { popUpCloseTag, content } from '../compCSS/popupCss'
 import Axios from "axios";
+import Trade from "./Trade"
 
 class ProductDetails extends Component {
 
@@ -79,6 +80,26 @@ class ProductDetails extends Component {
             }
         ]
 
+        const checkMyProduct = () => {
+            if (this.props.myUser.user_id) {
+                const boo = this.props.myUser.uploaded_products.some((a) => {
+                    return a == u.product_id
+                })
+                const offered = u.offered_by.some((a) => {
+                    return a == this.props.myUser.user_id
+                })
+                if (boo == true && offered == false) {
+                    return "myP"
+                } else if (boo == false && offered == true) {
+                    return "offered"
+                } else if (boo == false && offered == false) {
+                    return "otherP"
+                }
+            } else {
+                return "login"
+            }
+        }
+        console.log(this.props.myUser)
         return (
             <div key={`details-${u.product_id}`}>
                 <Row gutter={100}>
@@ -120,24 +141,34 @@ class ProductDetails extends Component {
 
 
                     <Col span={8}>
-                        <h4>Comments</h4>
-                        <List
-                            itemLayout="horizontal"
-                            dataSource={comments}
-                            renderItem={item => (
-                                <List.Item key={`${u.product_id}comment`}>
-                                    <List.Item.Meta
-                                        title={<h6>{item.title}</h6>}
-                                        description={item.description}
-                                    />
-                                    {item.content}
-                                </List.Item>
-                            )}
-                        >
-                        </List>
-                        <input type="text" onChange={this.props.handleComment} value={this.props.comment} />
-                        {/* <Icon type="upload" onClick={() => { this.props.handleSubmitComment(u.product_id, this.props.comment, this.props.allUsers) }} /> */}
-                        <button onClick={() => { this.props.handleSubmitComment(u.product_id, this.props.comment, this.props.allUsers) }}>Submit Comment</button>
+                        <div stlye={{ display: "flex", flexDirection: "column", position: "relative" }}>
+
+                            <div className="comments" style={{ marginBottom: "2vh" }}>
+                                <h4>Comments</h4>
+                                <List
+                                    itemLayout="horizontal"
+                                    dataSource={comments}
+                                    renderItem={item => (
+                                        <List.Item key={`${u.product_id}comment`}>
+                                            <List.Item.Meta
+                                                title={<h6>{item.title}</h6>}
+                                                description={item.description}
+                                            />
+                                            {item.content}
+                                        </List.Item>
+                                    )}
+                                >
+                                </List>
+                                <input type="text" onChange={this.props.handleComment} value={this.props.comment} />
+                                {/* <Icon type="upload" onClick={() => { this.props.handleSubmitComment(u.product_id, this.props.comment, this.props.allUsers) }} /> */}
+                                <button onClick={() => { this.props.handleSubmitComment(u.product_id, this.props.comment, this.props.allUsers) }}>Submit Comment</button>
+                            </div>
+
+                            <Trade details={u} status={checkMyProduct()} />
+
+
+                        </div>
+
                     </Col>
                 </Row>
 
@@ -161,7 +192,8 @@ const mapStateToProps = (state) => {
         users: u.users,
         comment: u.comment,
         allUsers: u.allUsers,
-        allComments: u.allComments
+        allComments: u.allComments,
+        myUser: u.myUser
     }
 }
 
@@ -177,7 +209,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             const input = e.target.value
             dispatch(actions_userPage.setComment(input))
         },
-        handleSubmitComment: async ( id, comment, allUsers) => {
+        handleSubmitComment: async (id, comment, allUsers) => {
             try {
                 const res = await Axios("https://localhost:8443/api/comment", {
                     method: "post",
@@ -192,6 +224,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
                     products.data.forEach((u) => {
                         u.openOneModal = false
+                        u.openOGModal = false
+                        u.openMyGoodModal = false
                     })
                     dispatch(actions_search.storeAllProducts(products.data))
                     const ids = res.data[0].map((u) => { return u[0] })

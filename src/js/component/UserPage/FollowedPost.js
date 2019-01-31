@@ -5,8 +5,10 @@ import actions_userPage from "../../actions/userPage"
 import products from "../../../FakeData/products"
 import FollowedPostCard from "./cards/FollowedPostCards"
 
-import Popup from 'reactjs-popup' 
+import Popup from 'reactjs-popup'
 import { popUpCloseTag, content } from '../compCSS/popupCss'
+
+const err = require('../asset/gif/error404.gif')
 
 class FollowedPost extends Component {
     componentDidMount() {
@@ -33,16 +35,21 @@ class FollowedPost extends Component {
     }
 
     render() {
-        const cards = this.props.products
+        const cards = this.props.allProducts
+            .filter((u) => {
+                return this.props.myUser.liked_products.some((a) => {
+                    return a == u.product_id
+                })
+            })
             .slice(0, 3)
             .map((u) => {
                 return (
                     <div>
                         <FollowedPostCard
                             name={u.name}
-                            image={u.image[0]}
+                            image={u.image[0] ? u.image[0] : err}
                             id={u.product_id}
-                            description={u.description}
+                            description={u.description.length < 30 ? u.description : `${u.description.slice(0, 30)}...`}
                             tags={u.tags}
                             handleDelete={this.handleDelete}
                             handleOneModal={this.props.handleOneModal}
@@ -52,15 +59,20 @@ class FollowedPost extends Component {
                     </div>
                 )
             })
-        const allCards = this.props.products
+        const allCards = this.props.allProducts
+            .filter((u) => {
+                return this.props.myUser.liked_products.some((a) => {
+                    return a == u.product_id
+                })
+            })
             .map((u) => {
                 return (
                     <Col xs={24} sm={12} md={8} lg={6} xl={4} >
                         <FollowedPostCard
                             name={u.name}
-                            image={u.image[0]}
+                            image={u.image[0] ? u.image[0] : err}
                             id={u.product_id}
-                            description={u.description}
+                            description={u.description.length < 30 ? u.description : `${u.description.slice(0, 30)}...`}
                             tags={u.tags}
                             handleDelete={this.handleDelete}
                             handleOneModal={this.props.handleOneModal}
@@ -71,7 +83,7 @@ class FollowedPost extends Component {
                 )
             })
         return (
-            <div className="followedPost" style={{marginRight: "2vw", marginLeft: "2vw"}}>
+            <div className="followedPost" style={{ marginRight: "2vw", marginLeft: "2vw" }}>
                 {this.rerouteSearch()}
                 <Card
                     title="Followed Goods"
@@ -80,22 +92,22 @@ class FollowedPost extends Component {
                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                         {cards}
                         <div className="addPhotoBox" style={{ width: 180, height: 180, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", paddingLeft: 10 }}>
-                            <Button onClick={()=>{this.props.handleModal("FP")}}>
+                            <Button onClick={() => { this.props.handleModal("FP") }}>
                                 click me bastard
                             </Button>
 
-                            {this.props.openFPModal && 
-                            <Popup open={true} closeOnDocumentClick onClose={()=>{this.props.handleModal("FP")}}>
-                                <div style={content} >
-                                    <a style={popUpCloseTag} onClick={()=>{this.props.handleModal("FP")}}>&times;</a>
-                                    <div>
-                                        <h1>Followed Post</h1>
-                                        <Row gutter={{ xs: 4, sm: 8, md: 16, lg: 16 }}>
-                                            {allCards}
-                                        </Row>
+                            {this.props.openFPModal &&
+                                <Popup open={true} closeOnDocumentClick onClose={() => { this.props.handleModal("FP") }}>
+                                    <div style={content} >
+                                        <a style={popUpCloseTag} onClick={() => { this.props.handleModal("FP") }}>&times;</a>
+                                        <div style={{display:"flex",flexDirection: 'column', overflowY: "scroll", width: "50vw", height: "50vh"}}>
+                                            <h1>Followed Post</h1>
+                                            <Row gutter={{ xs: 4, sm: 8, md: 16, lg: 16 }}>
+                                                {allCards}
+                                            </Row>
+                                        </div>
                                     </div>
-                                </div>
-                            </Popup>}
+                                </Popup>}
 
                         </div>
                     </div>
@@ -112,11 +124,13 @@ const mapStateToProps = (state) => {
     const search = state.searchReducer
     const rooot = state.roootReducer
     return {
+        myUser: s.myUser,
         openFPModal: s.openFPModal,
         products: s.products,
         result: s.result,
         submit: search.submit,
-        productsArr: rooot.productsArr
+        productsArr: rooot.productsArr,
+        allProducts: search.allProducts,
     }
 }
 

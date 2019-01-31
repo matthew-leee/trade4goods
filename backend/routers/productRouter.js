@@ -68,9 +68,12 @@ module.exports = (router, authService, productService) => {
         }
     })
 
-    router.post('/api/offer/product', async (req, res) => {
+    // router.post('/api/offer/product', async (req, res) => {
+    router.post('/api/offerProduct', async (req, res) => {
+        console.log("fun")
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
+            console.log(user_id)
             if (user_id) {
                 await productService.offerProduct(req.body.product_offered, user_id, req.body.product_offering)
                 res.sendStatus(200)
@@ -78,6 +81,7 @@ module.exports = (router, authService, productService) => {
                 res.sendStatus(401);
             }
         } catch (err) {
+            console.log(err)
             const statusCode = err.statusCode || 500
             delete err.statusCode
             res.status(statusCode).json(err)
