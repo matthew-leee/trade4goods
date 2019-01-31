@@ -40,6 +40,7 @@ UserProductService = require('./services/product/userProductService'),
 MailNotifyService = require('./services/product/mailNotify'),
 CommentService = require('./services/product/commentService'),
 ProductService = require('./services/product/productService'),
+ChatService = require('./services/chat/chatService'),
 Bcrypt = new BcryptService(bcrypt, promisify),
 Nodemailer = new NodemailerService(nodemailer),
 authService = new AuthService(axios, Bcrypt, jwt, promisify, redisClient, knexClient, Nodemailer, randomstring),
@@ -48,7 +49,8 @@ userProductService = new UserProductService(knexClient),
 mailNotifyService = new MailNotifyService(nodemailer, knexClient),
 commentService = new CommentService(knexClient),
 productService = new ProductService(knexClient, userProductService, commentService, mailNotifyService),
-router = require('./routers/router')(express, authService, profileService, productService, path)
+chatService = new ChatService(knexClient),
+router = require('./routers/router')(express, authService, profileService, productService, chatService, path)
 require('./init/init-session')(app, redisClient, expressSession, RedisStore)
 require('./init/init-app')(app, express, bodyParser, cors, router, path)
 

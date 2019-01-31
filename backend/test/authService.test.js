@@ -330,7 +330,7 @@ describe('AuthService', () => {
             expect(err).toEqual({
                 statusCode: 401,
                 error: 'Incorrect Credential',
-                message: `username or password is not found`,
+                message: `Username or Password is not found`,
             })
             await knex('users_credential').where('user_id', id).del();
             done()
@@ -352,7 +352,7 @@ describe('AuthService', () => {
             expect(err).toEqual({
                 statusCode: 401,
                 error: 'Incorrect Credential',
-                message: `username or password is not found`,
+                message: `Username or Password is not found`,
             })
         }
         await knex('users_credential').where('user_id', id).del();
@@ -374,7 +374,7 @@ describe('AuthService', () => {
             expect(err).toEqual({
                 statusCode: 401,
                 error: 'Incorrect Credential',
-                message: `username or password is not found`,
+                message: `Username or Password is not found`,
             })
         }
         await knex('users_credential').where('user_id', id).del();

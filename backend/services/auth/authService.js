@@ -171,13 +171,13 @@ module.exports = class {
             let user = await this.knex('users_credential').where('username', username).orWhere('email', username)
             user = user[0]
             if (user && await this.bcrypt.checkPassword(password, user.password)) {
-                if (user.email_isVerifying) {
-                    throw {
-                        statusCode: 403,
-                        error: 'Unverified Email',
-                        message: `email has not been verified, please check your mailbox for verification email`,
-                    }
-                }
+                // if (user.email_isVerifying) {
+                //     throw {
+                //         statusCode: 403,
+                //         error: 'Unverified Email',
+                //         message: `email has not been verified, please check your mailbox for verification email`,
+                //     }
+                // }
                 const jwt = this.jwt.sign(user.user_id, process.env.JWT_SECRET)
                 this.redisClient.sadd('jwt', jwt)
                 return jwt
@@ -185,7 +185,7 @@ module.exports = class {
                 throw {
                     statusCode: 401,
                     error: 'Incorrect Credential',
-                    message: `username or password is not found`,
+                    message: `Username or Password is not found`,
                 }
             }
         } catch (err) {

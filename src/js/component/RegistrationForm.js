@@ -51,21 +51,51 @@ class RegistrationFormgp extends React.Component {
                     confirmed_password: values.confirmed_password,
                     email: values.email
                 }
-                // console.log('Received values of form: ', passingDB);
-                const res = await axios('https://localhost:8443/api/signup', {
-                    method: "post",
-                    data: passingDB,
-                    withCredentials: true
-                } )
-                if (res) {
-                    console.log("register good")
-                    this.setState({ finishReg: true })
-                    //this.setState({ open: false }) // it will close the form immediately
-                } else {
+
+                const passingUsersDB = {
+                    displayed_name: values.displayed_name,
+                    phone_number: values.phone_number,
+                    profile_picutre: ""
+                }
+
+                let passingLoginDB = {
+                    username_or_email: values.username,
+                    password: values.password,
+                }
+
+
+                try{
+                    const res = await axios('https://localhost:8443/api/signup', {
+                        method: "post",
+                        data: passingDB,
+                        withCredentials: true
+                    } )
+
+                    let log = await axios('https://localhost:8443/api/login', {
+                        method: "post",
+                        data: passingLoginDB,
+                        withCredentials: true
+                    })
+
+                    const cre = await axios('https://localhost:8443/api/profile', {
+                        method: "post",
+                        data: passingUsersDB,
+                        withCredentials: true
+                    } )
+
+
+                    if(res && cre && log){
+                        console.log("register good")
+                        this.setState({ finishReg: true })
+                    }
+              
+
+
+
+                }catch(err){
                     console.log("register no good")
                     window.alert("E-mail or Username exsisted, please try again")
                 }
-
             }
         });
     }
@@ -211,9 +241,29 @@ class RegistrationFormgp extends React.Component {
                             label="Username"
                         >
                             {getFieldDecorator('username', {
-                                rules: [{ required: true, message: 'Please input your Username!', whitespace: true }, { max: 15, min: 5, message: 'Username must be 5 to 15 characters long!' }],
+                                rules: [{ required: true, message: 'Please input your Username!', whitespace: false }, { max: 15, min: 5, message: 'Username must be 5 to 15 characters long!' }],
                             })(
                                 <Input placeholder="Username must be 5 to 15 characters long" />
+                            )}
+                        </Form.Item>
+                        <Form.Item
+                            {...formItemLayout}
+                            label="Display Name"
+                        >
+                            {getFieldDecorator('displayed_name', {
+                                rules: [{ required: true, message: 'Please input your display name!', whitespace: true }, { max: 15, min: 3, message: 'Display Name must be 3 to 15 characters long!' }],
+                            })(
+                                <Input placeholder="Display Name must be 3 to 15 characters long" />
+                            )}
+                        </Form.Item>
+                        <Form.Item
+                            {...formItemLayout}
+                            label="Phone Number"
+                        >
+                            {getFieldDecorator('phone_number', {
+                                rules: [{ required: true, message: 'Please input your Phone Number!', whitespace: false }, {len: 8, message: 'Input must be number and Phone number 8 characters long!' }],
+                            })(
+                                <Input type='number' placeholder="Phone number must 8 characters long" />
                             )}
                         </Form.Item>
                         <Form.Item
@@ -279,15 +329,15 @@ class RegistrationFormgp extends React.Component {
                             <Button type="primary" htmlType="submit">Register</Button>
                         </Form.Item>
                     </Form>}
-                    <div><SocialButton
+                    {!this.state.finishReg && <div><SocialButton
                     provider='facebook'
                     appId='372390923567171'
                     onLoginSuccess={this.responseFacebook}
                     onLoginFailure={this.handleSocialLoginFailure}
                 >
                     Login with Facebook
-                    </SocialButton></div>
-                    <div><SocialButton
+                    </SocialButton></div>}
+                    {!this.state.finishReg && <div><SocialButton
                         provider='google'
                         appId='980192618991-ntaogv3tkbg21ve3qhfjq8us1f1au1gb.apps.googleusercontent.com'
                         onLoginSuccess={this.responseGoogle}
@@ -295,7 +345,7 @@ class RegistrationFormgp extends React.Component {
                     >
                         Login with Google
                     </SocialButton></div>
-
+}
                     {this.state.terms && <TermsAndConditions openTerms={this.openTerms} style={{ color: "black" }} />}
                     {this.state.finishReg && <div><SuccessfulReg /></div>}
                     {this.state.finishReg && <a onClick={this.props.handleRegToggle}>return</a>}

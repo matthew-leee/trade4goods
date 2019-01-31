@@ -2,6 +2,7 @@ module.exports = (router, authService, profileService) => {
     router.post('/api/profile/', async (req, res) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
+            console.log(req.session) //is undefine now
             if (user_id) {
                 await profileService.createProfile(req.body, user_id)
                 res.sendStatus(201)

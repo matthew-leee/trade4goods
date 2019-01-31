@@ -32,21 +32,21 @@ module.exports = class {
                     suggestSolution: "Rename the displayed name"
                 }
             }
-            if (isNaN(Number(info.phone_number))) {
+            if (info.phone_number && isNaN(Number(info.phone_number))) {
                 throw {
                     statusCode: 422,
                     error: "Invalid Phone Number",
                     message: "Phone number can contain numbers only",
                 }
             }
-            if (info.profile_picture && !/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/.test(info.profile_picture)) {
-                throw {
-                    statusCode: 415,
-                    error: "Invalid Image Format",
-                    message: "Image has to be base64 encoded, this is probably an error at processing the image",
-                    suggestSolution: "Please skip uploading profile picture for now, contact us for help"
-                }
-            }
+            // if (info.profile_picture && !/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/.test(info.profile_picture)) {
+            //     throw {
+            //         statusCode: 415,
+            //         error: "Invalid Image Format",
+            //         message: "Image has to be base64 encoded, this is probably an error at processing the image",
+            //         suggestSolution: "Please skip uploading profile picture for now, contact us for help"
+            //     }
+            // }
             const injectingInfo = {
                 user_id: id
             }
