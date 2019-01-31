@@ -76,6 +76,7 @@ class ConnectedMainGrid extends React.Component {
             res.data.forEach((u) => {
                 u.openOneModal = false
                 u.openOGModal = false
+                u.openDELModal = false
                 u.openMyGoodModal = false
             })
             this.props.storeAllProducts(res.data)

@@ -68,31 +68,34 @@ module.exports = (router, authService, productService) => {
         }
     })
 
-    // router.post('/api/offer/product', async (req, res) => {
-    router.post('/api/offerProduct', async (req, res) => {
-        console.log("fun")
+    router.post('/api/offer_product', async (req, res) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
-            console.log(user_id)
+            
             if (user_id) {
-                await productService.offerProduct(req.body.product_offered, user_id, req.body.product_offering)
+                await productService.offerProduct(
+                    // other product
+                    req.body.product_offered, 
+                    user_id, 
+                    // my product
+                    req.body.product_offering)
                 res.sendStatus(200)
             } else {
                 res.sendStatus(401);
             }
         } catch (err) {
-            console.log(err)
             const statusCode = err.statusCode || 500
             delete err.statusCode
             res.status(statusCode).json(err)
         }
     })
 
-    router.delete('/api/offer/product', async (req, res) => {
+    router.delete('/api/offer_product', async (req, res) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
             if (user_id) {
-                await productService.offerProduct(req.query.product_offered, user_id, req.query.product_offering)
+                // await productService.offerProduct(req.query.product_offered, user_id, req.query.product_offering)
+                await productService.cancelOfferProduct(req.body.product_offered, user_id, req.body.product_offering)
                 res.sendStatus(200)
             } else {
                 res.sendStatus(401);

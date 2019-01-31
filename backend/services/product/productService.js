@@ -183,10 +183,10 @@ module.exports = class {
 
     async offerProduct(product_offered, user_offering, product_offering) {
         try {
-            console.log ("offerproduct")
             product_offered = await this.knex('products').where('product_id', product_offered)
             product_offered = product_offered[0]
-            product_offering = await this.knex('products').where('product_id', product_offering).andWhere('uploaded_by', user_offering)
+            // product_offering = await this.knex('products').where('product_id', product_offering).andWhere('uploaded_by', user_offering)
+            product_offering = await this.knex('products').where('product_id', product_offering)
             product_offering = product_offering[0]
             if (!product_offering) {
                 throw {
@@ -217,7 +217,7 @@ module.exports = class {
                 await this.knex('products').where('product_id', product_offered.product_id).update(product_offered)
                 product_offering.status = 2
                 await this.knex('products').where('product_id', product_offering.product_id).update(product_offering)
-                await this.nodemailer.sendOfferNotification(product_offered.product_id)
+                // await this.nodemailer.sendOfferNotification(product_offered.product_id)
             }
         } catch (err) {
             console.log (err)
@@ -253,7 +253,7 @@ module.exports = class {
                 const deleteIndex = product_offered.offered_by.indexOf(product_offering.product_id)
                 product_offered.offered_by.splice(deleteIndex, 1)
                 await this.knex('products').where('product_id', product_offered.product_id).update(product_offered)
-                product_offering.status = 3
+                product_offering.status = 1
                 await this.knex('products').where('product_id', product_offering.product_id).update(product_offering)
             }
         } catch (err) {

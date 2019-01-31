@@ -13,13 +13,13 @@ class MyGoodsCard extends Component {
         if (trade) {
             return (
                 <Card
-                    style={{ width: "7vw" }}
+                    style={{ width: "5vw" }}
                     cover={
                         <img
                             alt={name}
                             src={image}
                             onClick={() => { handleSelect(id) }}
-                            style={{ width: "7vw", height: "7vw" }}
+                            style={{ width: "5vw", height: "5vw" }}
                         />
                     }
                     key={id}
@@ -27,7 +27,6 @@ class MyGoodsCard extends Component {
                 >
                     <Card.Meta
                         title={name}
-                        description={description}
                     />
 
                 </Card>

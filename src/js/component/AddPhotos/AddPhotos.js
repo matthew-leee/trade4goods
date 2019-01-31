@@ -121,6 +121,7 @@ class AddPhotoForm extends React.Component {
             u.openOneModal = false
             u.openOGModal = false
             u.openMyGoodModal = false
+            u.openDELModal = false
           })
           this.props.storeAllProducts(res.data)
 

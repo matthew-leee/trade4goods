@@ -10,6 +10,12 @@ const actions_trade = {
             ogID: id
         }
     },
+    openDELModal: (id) => {
+        return {
+            type: "OPEN_DEL_MODAL",
+            delID: id
+        }
+    },
     selectMyGood: (id) => {
         return {
             type: "SELECT_MYGOOD",
