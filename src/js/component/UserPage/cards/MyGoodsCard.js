@@ -45,7 +45,7 @@ class MyGoodsCard extends Component {
                     }
                     actions={[
                         <Icon type="edit" onClick={handleEdit} />,
-                        <Icon type="delete" onClick={handleDelete} />,
+                        <Icon type="delete" onClick={()=>{handleDelete(id)}} />,
                     ]}
                     key={id}
                     id={id}

@@ -2,11 +2,13 @@ import { Card, Icon, Popconfirm, message, Button, Modal, Row, Col } from "antd"
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import actions_userPage from "../../actions/userPage"
-// import products from "../../../FakeData/products"
+import actions_search from "../../actions/search"
+
 import MyGoodsCard from "./cards/MyGoodsCard"
 
 import Popup from 'reactjs-popup'   //npm Reactjs-Popup
 import { popUpCloseTag, content } from '../compCSS/popupCss'
+import Axios from "axios";
 
 const err = require('../asset/gif/error404.gif')
 
@@ -41,11 +43,40 @@ class MyGoods extends Component {
         }
     }
 
-    handleDelete = (e) => {
+    handleDelete = async (id) => {
         const boo = window.confirm("delete?")
         if (boo) {
+            try {
+                const res = await Axios(`https://localhost:8443/api/product/${id}`, {
+                    method: "delete",
+                    withCredentials: true
+                })
+                console.log(res)
+
+                const pres = await Axios.get('https://localhost:8443/api/allProducts/')
+                pres.data.forEach((u) => {
+                    u.openOneModal = false
+                    u.openOGModal = false
+                    u.openMyGoodModal = false
+                    u.openDELModal = false
+                })
+                this.props.storeAllProducts(pres.data)
+
+                // fetch allUsers
+                const users = await Axios.get('https://localhost:8443/api/allProfile/')
+                this.props.storeAllUsers(users.data)
+
+                // fetch myUser
+                const user = await Axios('https://localhost:8443/api/profile', {
+                    method: "get",
+                    withCredentials: true
+                })
+                this.props.storeMyUser(user.data)
+
+            } catch (err) {
+                console.log(err)
+            }
             message.success("deleted")
-            e.target.parentNode.parentNode.parentNode.parentNode.parentNode.style.display = "none"
         } else {
             message.error("no delete")
         }
@@ -101,7 +132,7 @@ class MyGoods extends Component {
             })
         return (
             <div className="myGoods" style={{ marginRight: "2vw", marginLeft: "2vw" }}>
-                
+
                 <Card
                     title="My Goods"
                     style={{ width: "30vw" }}
@@ -167,7 +198,16 @@ const mapDispatchToProps = (dispatch) => {
         },
         clearSearch: () => {
             dispatch(actions_userPage.clearSearch())
-        }
+        },
+        storeAllProducts: (products) => {
+            dispatch(actions_search.storeAllProducts(products))
+        },
+        storeAllUsers: (allUsers) => {
+            dispatch(actions_userPage.storeAllUsers(allUsers))
+        },
+        storeMyUser: (user) => {
+            dispatch(actions_userPage.storeMyUser(user))
+        },
     }
 }
 

@@ -53,9 +53,11 @@ module.exports = (router, authService, productService) => {
     })
 
     router.delete('/api/product/:id', async (req, res) => {
+    //router.delete('/api/product/', async (req, res) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
             if (user_id) {
+                console.log (user_id)
                 await productService.deleteProduct(req.params.id, user_id)
                 res.sendStatus(200)
             } else {
@@ -186,11 +188,9 @@ module.exports = (router, authService, productService) => {
     })
 
     router.post('/api/acceptOffer/', async (req, res) => {
-        console.log ("server reached")
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
             if (user_id) {
-                console.log (user_id)
                 await productService.acceptOffer(req.body.product_offered, user_id, req.body.product_offering)
                 res.sendStatus(200)
             } else {
