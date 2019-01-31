@@ -104,8 +104,8 @@ class ProductDetails extends Component {
             <div key={`details-${u.product_id}`}>
                 <Row gutter={100}>
                     <Col span={8}>
-                        <div className="imageCarosel">
-                            <h2>{u.name}</h2>
+                        <div style={{paddingTop:"15px"}}className="imageCarosel">
+                            <h5 style={{color:"#000000" , opacity:"850%", marginBottom:"40px"}}>{u.name}</h5>
                             <Carousel autoplay>
                                 {images}
                             </Carousel>
@@ -113,7 +113,6 @@ class ProductDetails extends Component {
                         <Trade details={u} status={checkMyProduct()} />
                     </Col>
                     <Col span={8}>
-                        <h4>Product Details</h4>
                         <div className="detailsList">
                             <List
                                 itemLayout="vertical"
@@ -143,9 +142,9 @@ class ProductDetails extends Component {
 
                     <Col span={8}>
                         <div stlye={{ display: "flex", flexDirection: "column", position: "relative" }}>
-
-                            <div className="comments" style={{ marginBottom: "2vh" }}>
-                                <h4>Comments</h4>
+                      
+                            <div className="comments" style={{ marginBottom: "16px",paddingTop:"15px" }}>
+                                <h5 style={{color:"#000000" , opacity:"850%", marginBottom:"40px"}}>Comments</h5>
                                 <List
                                     itemLayout="horizontal"
                                     dataSource={comments}

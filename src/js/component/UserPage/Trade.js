@@ -109,8 +109,8 @@ class Trade extends Component {
             case "otherP":
                 return (
                     <div className="trade" style={{}}>
-                        <h4>Trade</h4>
-                        <Button onClick={() => { this.props.openOGModal(details.product_id) }} style={{ marginBottom: "1vw" }} ghost type="danger">Make an Offer</Button>
+    
+                        <Button onClick={() => { this.props.openOGModal(details.product_id) }} style={{ marginTop:"40px",marginBottom: "1vw" }} className="myLgBtn">Make an Offer</Button>
                         {openOGModal &&
                             <Popup open={true} closeOnDocumentClick onClose={() => { this.props.openOGModal(details.product_id) }}>
                                 <div style={{ display: "flex", flexDirection: "column", overflowY: "scroll", width: "50vw", height: "50vh" }}>
