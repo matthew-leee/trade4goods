@@ -222,21 +222,6 @@ class AddPhotoForm extends React.Component {
 
           <Form.Item
             {...formItemLayout}
-            label="Product Genuineness"
-          >
-            {getFieldDecorator('genuineness', {
-              rules: [{ required: true, message: 'Choose a genuineness rating' }],
-            })(
-              <Select defaultValue="100">
-                <Option value="100">100% Genuine</Option>
-                <Option value="50">Not Sure</Option>
-                <Option value="1">No Brand or N/A</Option>
-              </Select>
-            )}
-          </Form.Item>
-
-          <Form.Item
-            {...formItemLayout}
             label="Product Description"
           >
             {getFieldDecorator('productDescription', {

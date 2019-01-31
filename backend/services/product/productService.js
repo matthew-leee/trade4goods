@@ -217,7 +217,7 @@ module.exports = class {
                 await this.knex('products').where('product_id', product_offered.product_id).update(product_offered)
                 product_offering.status = 2
                 await this.knex('products').where('product_id', product_offering.product_id).update(product_offering)
-                // await this.nodemailer.sendOfferNotification(product_offered.product_id)
+                await this.nodemailer.sendOfferNotification(product_offered.product_id)
             }
         } catch (err) {
             console.log (err)
@@ -356,7 +356,6 @@ module.exports = class {
             
             product_offered = product_offered[0]
             product_offering = await this.knex('products').where('product_id', product_offering)
-            console.log ("donor")
             product_offering = product_offering[0]
             if (!product_offered) {
                 throw {
@@ -371,7 +370,6 @@ module.exports = class {
                     message: `product ${product_offering.product_id} did not offer on ${product_offered.product_id}`
                 }
             } else {
-                console.log ("else")
                 product_offered.status = 3
                 product_offered.sold_to = product_offering.uploaded_by
                 product_offering.status = 3
@@ -380,15 +378,10 @@ module.exports = class {
                     product_id2: product_offering.product_id
                 }
                 const trade_id = await this.knex('trade_history').insert(trade).returning('trade_id')
-                console.log (trade_id)
                 await this.toUser.insertTradeHistory(trade_id, product_owner, product_offering.uploaded_by)
-                console.log ("1await")
                 await this.knex('products').where('product_id', product_offered.product_id).update(product_offered)
-                console.log ("2await")
                 await this.knex('products').where('product_id', product_offering.product_id).update(product_offering)
-                console.log ("3await")
-                // await this.nodemailer.sendAcceptOfferNotification(product_offering.product_id)
-                // console.log ("4await")
+                await this.nodemailer.sendAcceptOfferNotification(product_offering.product_id)
             }
         } catch (err) {
             throw err
