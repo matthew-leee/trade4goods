@@ -11,11 +11,11 @@ import { popUpCloseTag, content } from '../../compCSS/popupCss'
 class SentReqCard extends Component {
     render() {
         console.log(`this props : ${this.props.iconsArr}`)
-        const { name, image, id, description, tags, handleContact, handleDelete, handleOneModal, openOneModal, allDetails, accepted, rejected } = this.props
+        const { name, image, id, handleDelete, handleOneModal, openOneModal, allDetails, accepted, rejected } = this.props
         if (accepted) {
             return (
                 <Card
-                    style={{ width: "7vw" , backgroundColor: "red"}}
+                    style={{ width: "7vw" , color: "red"}}
                     cover={
                         <img
                             alt={name}
@@ -23,17 +23,14 @@ class SentReqCard extends Component {
                             onClick={() => { handleOneModal(id) }}
                         />
                     }
-                    actions={[
-                        <Icon type="phone" onClick={handleContact} />
-                    ]}
                     key={id}
                     id={id}
                 >
                     <Card.Meta
                         title={name}
-                        description={description}
                     />
-                    {/* <GeneralTags tags={tags} closable={false} /> */}
+
+                    <p style={{marginTop: "0.5vw", marginBottom: 0}}><strong>Accepted</strong></p>
 
                     {openOneModal && <Popup open={true} closeOnDocumentClick onClose={() => { handleOneModal(id) }}>
                         <div style={content} >
@@ -47,7 +44,7 @@ class SentReqCard extends Component {
         } else if (rejected) {
             return (
                 <Card
-                    style={{ width: "7vw", backgroundColor: "blue" }}
+                    style={{ width: "7vw", color: "blue" }}
                     cover={
                         <img
                             alt={name}
@@ -56,16 +53,15 @@ class SentReqCard extends Component {
                         />
                     }
                     actions={[
-                        <Icon type="delete" onClick={handleDelete} />
+                        <Icon type="delete" onClick={()=>{handleDelete(id)}} />
                     ]}
                     key={id}
                     id={id}
                 >
                     <Card.Meta
                         title={name}
-                        description={description}
                     />
-                    {/* <GeneralTags tags={tags} closable={false} /> */}
+                    <p style={{marginTop: "0.5vw", marginBottom: 0}}><strong>Rejected</strong></p>
 
                     {openOneModal && <Popup open={true} closeOnDocumentClick onClose={() => { handleOneModal(id) }}>
                         <div style={content} >
@@ -79,7 +75,7 @@ class SentReqCard extends Component {
         } else {
             return (
                 <Card
-                    style={{ width: "7vw", backgroundColor: "green" }}
+                    style={{ width: "7vw", color: "green" }}
                     cover={
                         <img
                             alt={name}
@@ -88,16 +84,15 @@ class SentReqCard extends Component {
                         />
                     }
                     actions={[
-                        <Icon type="delete" onClick={handleDelete} />
+                        <Icon type="delete" onClick={()=>{handleDelete(id)}}  />
                     ]}
                     key={id}
                     id={id}
                 >
                     <Card.Meta
                         title={name}
-                        description={description}
                     />
-                    {/* <GeneralTags tags={tags} closable={false} /> */}
+                    <p style={{marginTop: "0.5vw", marginBottom: 0}}><strong>Trading in Progress</strong></p>
 
                     {openOneModal && <Popup open={true} closeOnDocumentClick onClose={() => { handleOneModal(id) }}>
                         <div style={content} >

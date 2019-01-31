@@ -145,7 +145,7 @@ class Trade extends Component {
             this.props.storeMyUser(user.data)
 
         } catch (err) {
-
+            console.log (err)
         }
     }
 
