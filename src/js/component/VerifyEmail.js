@@ -1,7 +1,7 @@
 import React from 'react'
 import Axios from 'axios';
 import { Link } from "react-router-dom";
-
+import { popUpCloseTag, content } from './compCSS/popupCss'
 class VerifyEmail extends React.Component {
     constructor(props) {
         super(props)
@@ -38,7 +38,7 @@ class VerifyEmail extends React.Component {
 
     render() {
         return (
-            <div>
+            <div style={content}>
 
                 {!this.state.isVerify && !this.state.isError &&<div>
                     <img src={require('./asset/gif/loadingpic.gif')}></img>
@@ -47,7 +47,7 @@ class VerifyEmail extends React.Component {
 
                 {this.state.isVerify && <div>
 
-                    <h1>Success</h1>
+                    <div>You have successfully verified the email!</div>
                     <Link to="/">Return</Link>
                 </div>}
 

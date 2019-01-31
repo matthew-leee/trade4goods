@@ -123,7 +123,7 @@ class RegistrationFormgp extends React.Component {
         let displayed_name = res._profile.name
         let phone_number = ""
         let profile_picture = ""
-    
+
         if (access_token) {
             axios(`https://localhost:8443/api/signup`,
                 {
@@ -140,10 +140,31 @@ class RegistrationFormgp extends React.Component {
                     withCredentials: true
                 }
             )
-                .then(() =>
-                    console.log('fb register success')
+                .then(() => {
+                    axios(`https://localhost:8443/api/profile/`,
+                        {
+                            method: "post",
+                            data: {
+                                profile_picture: profile_picture,
+                                phone_number: phone_number,
+                                displayed_name: displayed_name
+                            },
+                            withCredentials: true
+                        }
+                    )
+                        .then(() => console.log('fb register success'))
+                        .catch((err) => {
+                            console.log("api profile create fail")
+                            console.log(err.response.status)
+                            console.log(err.response)
+                            console.log(err.response.data)
+                            console.log(err.response.data.message)
+                        })
+                }
+
                 )
                 .catch(err => {
+                    console.log("api sign up create fail")
                     console.log(err.response.status)
                     console.log(err.response)
                     console.log(err.response.data)
@@ -159,7 +180,7 @@ class RegistrationFormgp extends React.Component {
         let accessToken = res._token.accessToken
         let id_token = res._token.idToken
         let name = res._profile.id
-   
+
         if (accessToken) {
             axios(`https://localhost:8443/api/signup`,
                 {
@@ -227,13 +248,13 @@ class RegistrationFormgp extends React.Component {
 
                             <Form onSubmit={this.handleSubmit}>
 
-                      
+
 
                                 <div style={{ marginBottom: "20px" }}>
                                     <h1>Register</h1>
                                     <span>Fill in the register details</span>
                                 </div>
-                     
+
                                 <Form.Item
                                     {...formItemLayout}
                                     label="Username"
@@ -324,14 +345,14 @@ class RegistrationFormgp extends React.Component {
                                 </Form.Item>
                             </Form>
 
-                            <div style={{marginLeft:"222px"}}>
+                            <div style={{ marginLeft: "222px" }}>
                                 <SocialButton
                                     provider='facebook'
                                     appId='372390923567171'
                                     onLoginSuccess={this.responseFacebook}
                                     onLoginFailure={this.handleSocialLoginFailure}
                                     className="myFbBtn"
-                                    
+
                                 >
                                     Register with Facebook
                                 </SocialButton>
