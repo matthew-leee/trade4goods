@@ -1,30 +1,13 @@
 import React, { Component } from "react"
-import { Carousel, List, Row, Col } from "antd"
+import { Carousel, List, Row, Col, Icon } from "antd"
 import actions_userPage from "../../actions/userPage";
 import actions_search from '../../actions/search'
 import { connect } from "react-redux"
-import users from "../../../FakeData/users"
 import Popup from 'reactjs-popup'   //npm Reactjs-Popup
 import { popUpCloseTag, content } from '../compCSS/popupCss'
 import Axios from "axios";
 
 class ProductDetails extends Component {
-    constructor(props) {
-        super(props)
-        this.user = "user1"
-    }
-
-    // handleSubmitComment = async () => {
-    //     try {
-    //         const res = Axios.post("https://localhost:8443/api/comment", {
-    //             product_id: this.props.details.product_id,
-    //             comment: this.props.comment
-    //         })
-    //         this.props.handleSubmitComment()
-    //     } catch (err) {
-    //         console.log(err.response.data)
-    //     }
-    // }
 
     render() {
         const u = this.props.details
@@ -41,7 +24,16 @@ class ProductDetails extends Component {
                 return u.displayed_name
             })[0]
 
-        console.log(displayed_name)
+        console.log(this.props)
+
+        const comments = this.props.allComments
+            .some((a) => {
+                return a.product_id == u.product_id
+            }) ?
+            this.props.allComments
+                .filter((a) => {
+                    return a.product_id == u.product_id
+                })[0].comments : []
 
         const otherUser = this.props.allUsers
             .filter((u) => { return u.displayed_name == this.props.otherUser })
@@ -86,17 +78,7 @@ class ProductDetails extends Component {
                 description: u.status == 1 ? "Trading" : "Traded",
             }
         ]
-        const comments = u.comments.map(async (comment_id) => {
-            const res = await Axios(`https://localhost:8443/api/comment/${comment_id}`, {
-                method: "get",
-                withCredentials: true
-            })
-            const comment = res.data
-            return {
-                title: comment.commentator,
-                description: comment.comment
-            }
-        })
+
         return (
             <div key={`details-${u.product_id}`}>
                 <Row gutter={100}>
@@ -145,15 +127,17 @@ class ProductDetails extends Component {
                             renderItem={item => (
                                 <List.Item key={`${u.product_id}comment`}>
                                     <List.Item.Meta
-                                        title={<h5>{item.title}</h5>}
+                                        title={<h6>{item.title}</h6>}
                                         description={item.description}
                                     />
+                                    {item.content}
                                 </List.Item>
                             )}
                         >
                         </List>
                         <input type="text" onChange={this.props.handleComment} value={this.props.comment} />
-                        <button onClick={() => { this.props.handleSubmitComment(u.product_id, this.props.comment) }}>Submit Comment</button>
+                        {/* <Icon type="upload" onClick={() => { this.props.handleSubmitComment(u.product_id, this.props.comment, this.props.allUsers) }} /> */}
+                        <button onClick={() => { this.props.handleSubmitComment(u.product_id, this.props.comment, this.props.allUsers) }}>Submit Comment</button>
                     </Col>
                 </Row>
 
@@ -176,11 +160,12 @@ const mapStateToProps = (state) => {
         otherUser: u.otherUser,
         users: u.users,
         comment: u.comment,
-        allUsers: u.allUsers
+        allUsers: u.allUsers,
+        allComments: u.allComments
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         handleOtherUser: (user) => {
             dispatch(actions_userPage.showOtherUser(user))
@@ -192,31 +177,51 @@ const mapDispatchToProps = (dispatch) => {
             const input = e.target.value
             dispatch(actions_userPage.setComment(input))
         },
-        handleSubmitComment: async (id, comment) => {
+        handleSubmitComment: async ( id, comment, allUsers) => {
             try {
                 const res = await Axios("https://localhost:8443/api/comment", {
                     method: "post",
                     data: { product_id: id, comment: comment },
                     withCredentials: true
                 })
-                console.log(res)
                 if (res.status == 201) {
-                    console.log('res')
                     const products = await Axios('https://localhost:8443/api/allProducts/', {
-                      method: "get",
-                      withCredentials: true
+                        method: "get",
+                        withCredentials: true
                     })
-            
+
                     products.data.forEach((u) => {
-                      u.openOneModal = false
+                        u.openOneModal = false
                     })
-                    console.log(products)
                     dispatch(actions_search.storeAllProducts(products.data))
-                  }
+                    const ids = res.data[0].map((u) => { return u[0] })
+                    console.log(ownProps.allUsers)
+                    const comments = ids.map(async (comment_id) => {
+                        const sth = await Axios(`https://localhost:8443/api/comment/${comment_id}`, {
+                            method: "get",
+                            withCredentials: true
+                        })
+                        const comment = sth.data[0]
+                        const user = allUsers.filter((u) => {
+                            return u.user_id == comment.commentator
+                        })[0].displayed_name
+                        return {
+                            // product_id: id,
+                            title: user,
+                            content: comment.comment,
+                            description: comment.comment_at
+                        }
+                    })
+
+                    Promise.all(comments)
+                        .then((results) => {
+                            console.log(results)
+                            dispatch(actions_userPage.storeAllComments(results, id))
+                        })
+                }
             } catch (err) {
                 console.log(err)
             }
-            // dispatch(actions_userPage.submitComment())
         }
     }
 }

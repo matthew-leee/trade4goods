@@ -17,6 +17,12 @@ const actions_userPage = {
             id: id
         }
     },
+    FORCEopenOneModal: (id) =>{
+        return {
+            type: "FORCE_OPEN_ONE_MODAL",
+            id: id
+        }
+    },
     saveSearch: (result)=>{
         return {
             type: "SAVE_SEARCH",
@@ -66,6 +72,13 @@ const actions_userPage = {
         return {
             type: "STORE_ALLUSERS",
             allUsers: allUsers
+        }
+    },
+    storeAllComments: (comments, id) => {
+        return {
+            type: "STORE_ALLCOMMENTS", 
+            comments: comments,
+            product_id: id
         }
     }
 }

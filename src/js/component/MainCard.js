@@ -99,7 +99,7 @@ class MainCard extends React.Component {
             }
             actions={[
               <Icon type="heart" onClick={() => { this.handleLike(this.props.details.product_id) }} />,
-              <Icon type="message" />,
+              <Icon type="message" onClick={() => { this.props.handleOneModal(this.props.details.product_id) }} />,
               <Icon type="share-alt" />]}
           >
 
@@ -112,7 +112,7 @@ class MainCard extends React.Component {
             </Skeleton>
 
             {openOneModal &&
-              <Popup open={true} closeOnDocumentClick onClose={() => { this.props.handleOneModal(this.props.details.product_id) }}>
+              <Popup open={true} onClose={() => { this.props.handleOneModal(this.props.details.product_id) }}>
                 <div style={content} >
                   <a style={popUpCloseTag} onClick={() => { this.props.handleOneModal(this.props.details.product_id) }}>&times;</a>
                   <ProductDetails details={this.props.details} />
@@ -130,7 +130,7 @@ class MainCard extends React.Component {
             }
             actions={[
               <Icon type="heart" theme="twoTone" twoToneColor="#eb2f96" onClick={() => { this.handleLike(this.props.details.product_id) }} />,
-              <Icon type="message" />,
+              <Icon type="message" onClick={() => { this.props.handleOneModal(this.props.details.product_id) }} />,
               <Icon type="share-alt" />]}
           >
 
@@ -143,7 +143,7 @@ class MainCard extends React.Component {
             </Skeleton>
 
             {openOneModal &&
-              <Popup open={true} closeOnDocumentClick onClose={() => { this.props.handleOneModal(this.props.details.product_id) }}>
+              <Popup open={true} onClose={() => { this.props.handleOneModal(this.props.details.product_id) }}>
                 <div style={content} >
                   <a style={popUpCloseTag} onClick={() => { this.props.handleOneModal(this.props.details.product_id) }}>&times;</a>
                   <ProductDetails details={this.props.details} />

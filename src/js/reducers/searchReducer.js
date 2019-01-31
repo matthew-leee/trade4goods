@@ -40,6 +40,19 @@ const searchReducer = (state = {
                 ...state,
                 allProducts: newProducts
             }
+        case "FORCE_OPEN_ONE_MODAL":
+            const forceProducts = state.allProducts.map((u) => {
+                if (u.product_id == action.id) {
+                    u.openOneModal = true
+                    return u
+                } else {
+                    return u
+                }
+            })
+            return {
+                ...state,
+                products: forceProducts
+            }
         default:
             return state
     }

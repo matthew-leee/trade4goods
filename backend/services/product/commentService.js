@@ -11,7 +11,6 @@ module.exports = class {
                 comment,
                 comment_in_product: product_id
             }
-            console.log ('fuck u')
             return await this.knex('product_comments').insert(commentInfo).returning('comment_id');
         } catch (err) {
             throw err

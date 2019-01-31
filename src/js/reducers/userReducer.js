@@ -12,6 +12,7 @@ const userReducer = (state = {
     otherUser: "",
     myUser: {},
     allUsers: [],
+    allComments: []
 }, action) => {
     switch (action.type) {
         case "OPEN_MODAL":
@@ -44,19 +45,6 @@ const userReducer = (state = {
                 ...state,
                 products: action.products
             }
-        // case "OPEN_ONE_MODAL":
-        //     const newProducts = state.products.map((u) => {
-        //         if (u.product_id == action.id) {
-        //             u.openOneModal = !u.openOneModal
-        //             return u
-        //         } else {
-        //             return u
-        //         }
-        //     })
-        //     return {
-        //         ...state,
-        //         products: newProducts
-        //     }
         case "SAVE_SEARCH":
             return {
                 ...state,
@@ -102,6 +90,30 @@ const userReducer = (state = {
             return {
                 ...state,
                 allUsers: action.allUsers
+            }
+        case "STORE_ALLCOMMENTS":
+            const present = state.allComments
+                .some((u) => { return u.product_id == action.product_id })
+
+            if (present) {
+                const amendComments = state.allComments
+                    .filter((u) => { return u.product_id == action.product_id }).map((u) => {
+                        u.comments = action.comments
+                        return u
+                    })
+                return {
+                    ...state,
+                    allComments: [...amendComments]
+                }
+            } else {
+                const newComments = {
+                    product_id: action.product_id,
+                    comments: action.comments
+                }
+                return {
+                    ...state,
+                    allComments: [...state.allComments, newComments]
+                }
             }
         default:
             return state

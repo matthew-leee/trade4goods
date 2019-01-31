@@ -104,8 +104,9 @@ module.exports = (router, authService, productService) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
             if (user_id) {
-                await productService.addComment(req.body.product_id, user_id, req.body.comment)
-                res.sendStatus(201)
+                const ids = await productService.addComment(req.body.product_id, user_id, req.body.comment)
+                // res.sendStatus(201)
+                res.status(201).json(ids)
             } else {
                 res.sendStatus(401);
             }
@@ -118,8 +119,10 @@ module.exports = (router, authService, productService) => {
 
     router.get('/api/comment/:id', async (req, res) => {
         try {
-            const comments = await productService.getComment(req.params.id)
-            res.status(200).json(comments)
+            // const comments = await productService.getComment(req.params.id)
+            const comment = await productService.getComment(req.params.id)
+            // res.status(200).json(comments)
+            res.status(200).json(comment)
         } catch (err) {
             const statusCode = err.statusCode || 500
             delete err.statusCode

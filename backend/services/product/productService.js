@@ -262,7 +262,6 @@ module.exports = class {
     async addComment(product_id, user_id, comment) {
         try {
             let product = await this.knex('products').where('product_id', product_id)
-            
             product = product[0]
             if (!product) {
                 throw {
@@ -271,29 +270,31 @@ module.exports = class {
                     message: `product ${product_offered.product_id} does not exists`
                 }
             }
-
             let comment_id = await this.commentService.addComment(user_id, comment, product_id);
             product.comments.push(comment_id)
-            await this.knex('products').where('product_id', product.product_id).update(product)
+            const ids = await this.knex('products').where('product_id', product.product_id).update(product).returning("comments")
+            return ids
         } catch (err) {
-            console.log(err)
             throw err
         }
     }
 
-    async getComment(product_id) {
+    // async getComment(product_id) {
+        async getComment(comment_id) {
         try {
-            let product = await this.knex('products').where('product_id', product_id)
-            product = product[0]
-            if (!product) {
+            // let product = await this.knex('products').where('product_id', product_id)
+            let comment = await this.knex('product_comments').where('comment_id', comment_id)
+            // product = product[0]
+            if (!comment) {
                 throw {
                     statusCode: 404,
                     error: "Product not found",
                     message: `product ${product_offered.product_id} does not exists`
                 }
             }
-            return await commentService.getComment(product.comments)
-        } catch(err) {
+            // return await commentService.getComment(product.comments)
+            return comment
+        } catch (err) {
             throw err
         }
     }
