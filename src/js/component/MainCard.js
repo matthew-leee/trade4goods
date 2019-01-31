@@ -145,16 +145,15 @@ class MainCard extends React.Component {
             actions={[
               <Icon type="heart" theme="twoTone" twoToneColor="#eb2f96" onClick={() => { this.handleLike(this.props.details.product_id) }} />,
               <Icon type="message" onClick={() => { this.props.handleOneModal(this.props.details.product_id) }} />,
-              <Icon type="share-alt" />]}
+              ]}
           >
 
             <Skeleton loading={this.state.loading} title paragraph active>
               <Meta
                 title={this.props.name}
-                description={this.props.description}
-                avatar={<Avatar src={this.props.details.profile_picture} />}
+                description={this.props.description} />
                 
-              />
+              
             </Skeleton>
 
             {openOneModal &&

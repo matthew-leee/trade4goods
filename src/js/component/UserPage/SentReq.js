@@ -18,14 +18,15 @@ const err = require('../asset/gif/error404.gif')
 class SentReq extends Component {
 
     handleDelete = async (id) => {
-        const boo = window.confirm("Rollback request?")
-        if (boo) {
-            const otherID = this.props.allProducts
+        const other = this.props.allProducts
             .filter((u)=>{
                 return u.offered_by.some((u)=>{
                     return u == id
                 })
-            })[0].product_id
+            })[0]
+        const boo = window.confirm(`Rollback request to ${other.name}?`)
+        if (boo) {
+            const otherID = other.product_id
             const data = {
                 product_offered: otherID,
                 product_offering: id
@@ -62,10 +63,11 @@ class SentReq extends Component {
             } catch (err) {
                 console.log (err)
             }
+
             message.success("deleted")
             
         } else {
-            message.error("Rolback canceled")
+            message.error("Rollback canceled")
         }
     }
 
