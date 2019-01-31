@@ -185,7 +185,7 @@ module.exports = class {
                 throw {
                     statusCode: 401,
                     error: 'Incorrect Credential',
-                    message: `username or password is not found`,
+                    message: `Username or Password is not found`,
                 }
             }
         } catch (err) {

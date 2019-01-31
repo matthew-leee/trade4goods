@@ -6,6 +6,7 @@ import axios from 'axios'
 import actions_userPage from '../actions/userPage';
 import { connect } from "react-redux"
 import SocialButton from './SocialButton'
+import ErrAllInOne from './HandleOKandError/ErrAllInOne'
 
 class NormalLoginForm extends React.Component {
     constructor(props) {
@@ -15,6 +16,7 @@ class NormalLoginForm extends React.Component {
             userID: '',
             name: '',
             email: '',
+            errMsg: ""
         }
         //this.openModal = this.openModal.bind(this)
         this.closeModal = this.closeModal.bind(this)
@@ -52,13 +54,16 @@ class NormalLoginForm extends React.Component {
                         method: "get",
                         withCredentials: true
                     })
-                    console.log(user.data)
                     this.props.storeMyUser(user.data)
+                    this.setState({ open: false })
 
                 } catch (err) {
-                    console.log(err.response.status)
-                    console.log(err.response)
                     console.log(err.response.data)
+                    if (err.response.data.message) {
+                        this.setState({ errMsg: err.response.data.message })
+                    } else {
+                        this.setState({ errMsg: "Connection fail, please try again later" })
+                    }
 
                 }
             }
@@ -80,7 +85,7 @@ class NormalLoginForm extends React.Component {
         let profile_picutre = res._profile.profilePicURL
         let phone_number = ""
         console.log(res)
-        if(!res._token.accessToken){
+        if (!res._token.accessToken) {
             return console.log("hi")
         }
         console.log(res._token.accessToken)
@@ -122,8 +127,11 @@ class NormalLoginForm extends React.Component {
                         console.log('fb login success')
 
                     } catch (err) {
-                        console.log('api/profile fail 9 jor')
-                        console.log(err)
+                        if (err.response.data.message) {
+                            this.setState({ errMsg: err.response.data.message })
+                        } else {
+                            this.setState({ errMsg: "Connection fail, please try again later" })
+                        }
                     }
                 }
 
@@ -173,57 +181,70 @@ class NormalLoginForm extends React.Component {
 
         const { getFieldDecorator } = this.props.form;
         return (
-            <Popup open={this.state.open} closeOnDocumentClick onClose={this.props.handleLogin} className="bg-dark">
-                <div style={content} >
+            <Popup contentStyle={content} open={this.state.open} closeOnDocumentClick onClose={this.props.handleLogin} >
+                <div style={{ textAlign: "center", }}>
                     <a style={popUpCloseTag} onClick={this.props.handleLogin}>&times;</a>
-                    <Form onSubmit={this.handleSubmit} className="login-form ">
-                        <Form.Item>
-                            {getFieldDecorator('userName', {
-                                rules: [{ required: true, message: 'Please input your username or e-mail' }],
-                            })(
-                                <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username / E-mail" />
-                            )}
-                        </Form.Item>
-                        <Form.Item>
-                            {getFieldDecorator('password', {
-                                rules: [{ required: true, message: 'Please input your Password!' }],
-                            })(
-                                <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
-                            )}
-                        </Form.Item>
-                        <Form.Item>
-                            {getFieldDecorator('remember', {
-                                valuePropName: 'checked',
-                                initialValue: false,
-                            })(
-                                <Checkbox style={{ color: 'white' }}>Remember me</Checkbox>
-                            )}
-                            <a className="login-form-forgot" href="">Forgot password</a>
-                            <br />
-                            <Button type="default" htmlType="submit" className="btn btn-success" style={{ fontSize: "10px" }} >
-                                Log in
-                            </Button>
-                            <div className="d-inline">&nbsp; Or &nbsp;</div> <a href="">register now!</a>
-                        </Form.Item>
-                    </Form>
-                    <div><SocialButton
-                        provider='facebook'
-                        appId='372390923567171'
-                        onLoginSuccess={this.responseFacebook}
-                        onLoginFailure={this.handleSocialLoginFailure}
-                    >
-                        Login with Facebook
-                    </SocialButton></div>
-                    <div><SocialButton
-                        provider='google'
-                        appId='980192618991-ntaogv3tkbg21ve3qhfjq8us1f1au1gb.apps.googleusercontent.com'
-                        onLoginSuccess={this.responseGoogle}
-                        onLoginFailure={this.handleSocialLoginFailure}
-                    >
-                        Login with Google
-                    </SocialButton></div>
-                </div>
+                    {!this.state.errMsg && <div style={{position: "absolute", left:"50%", top:"40%", transform: 'translate(-50%, -50%)'}}>
+                        <Form onSubmit={this.handleSubmit} className="login-form ">
+                            <div style={{ marginBottom: "10px" }}>
+                                <h1>Login</h1>
+                                <span>Enter your login details</span>
+                            </div>
 
+                            <Form.Item>
+                                {getFieldDecorator('userName', {
+                                    rules: [{ required: true, message: 'Please input your username or e-mail' }],
+                                })(
+                                    <Input size="large" className="inputfield" prefix={<Icon type="user" style={{ color: 'white' }} />} placeholder="Username / E-mail" />
+                                )}
+                            </Form.Item>
+                            <Form.Item>
+                                {getFieldDecorator('password', {
+                                    rules: [{ required: true, message: 'Please input your Password!' }],
+                                })(
+                                    <Input size="large" prefix={<Icon type="lock" style={{ color: 'white' }} />} type="password" placeholder="Password" />
+                                )}
+                            </Form.Item>
+                            <Form.Item>
+                                {getFieldDecorator('remember', {
+                                    valuePropName: 'checked',
+                                    initialValue: false,
+                                })(
+                                    <Checkbox >Remember me</Checkbox>
+                                )}
+                                <a className="login-form-forgot" href="">Forgot password?</a>
+                                <br />
+                                <Button type="default" htmlType="submit" className="myBtn" >
+                                    Log in
+                            </Button>
+                                <Button type="default" className="myRegBtn" >
+                                    Register now!
+                            </Button>
+
+                            </Form.Item>
+                        </Form>
+                        <div>
+                            <SocialButton className="myFbBtn"
+                                provider='facebook'
+                                appId='372390923567171'
+                                onLoginSuccess={this.responseFacebook}
+                                onLoginFailure={this.handleSocialLoginFailure}
+                            >
+                                Login with Facebook
+                            </SocialButton>
+
+                            <SocialButton className="myGoogleBtn"
+                                provider='google'
+                                appId='980192618991-ntaogv3tkbg21ve3qhfjq8us1f1au1gb.apps.googleusercontent.com'
+                                onLoginSuccess={this.responseGoogle}
+                                onLoginFailure={this.handleSocialLoginFailure}
+                            >
+                                Login with Google
+                            </SocialButton>
+                        </div>
+                    </div>}
+                    {this.state.errMsg && <ErrAllInOne err={this.state.errMsg} rubyClose={this.closeModal} />}
+                </div>
             </Popup>
         );
     }

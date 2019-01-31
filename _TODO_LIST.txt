@@ -1,0 +1,4 @@
+1. register button on login not linking
+2. rember me funciton in login
+3. forgot password function in login
+4. resend verify
