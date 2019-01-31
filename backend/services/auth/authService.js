@@ -1,6 +1,6 @@
 /* eslint-disable no-throw-literal */
 module.exports = class {
-    constructor(axios, bcrypt, jwt, promisify, redisClient, knex, nodemailer, randomstring) {
+    constructor(axios, bcrypt, jwt, promisify, redisClient, knex, nodemailer, randomstring, profileService) {
         this.axios = axios
         this.jwt = jwt
         this.bcrypt = bcrypt
@@ -11,6 +11,7 @@ module.exports = class {
         this.knex = knex
         this.nodemailer = nodemailer
         this.randomstring = randomstring
+        this.createProfile = profileService.createProfile
     }
 
     async isAuthenticated(token) {
@@ -148,19 +149,33 @@ module.exports = class {
                             suggestSolution: 'check typo on email'
                         }
                     }
-                    delete incomingInfo.confirmed_password
+
                     const hashedPassword = await this.bcrypt.hashPassword(incomingInfo.password);
-                    incomingInfo.password = hashedPassword;
                     const key = this.randomstring.generate();
                     this.redisClient.setex(key, 60 * 60 * 24, incomingInfo.email)
                     this.nodemailer.sendVerificationMail(incomingInfo.email, key)
-                    let newId = await this.knex('users_credential').insert(incomingInfo).returning('user_id');
+                    const credential = {
+                        username: incomingInfo.username,
+                        password: hashedPassword,
+                        email: incomingInfo.email
+                    }
+                    let newId = await this.knex('users_credential').insert(credential).returning('user_id');
                     newId = newId[0]
+                    const profile = {
+                        displayed_name: incomingInfo.displayed_name,
+                        phone_number: incomingInfo.phone_number,
+                        profile_picture: incomingInfo.profile_picture
+                    }
+                    await this.createProfile(profile, id) 
                     return newId
                 }
             }
         } catch (err) {
-            throw err
+            try{ 
+            await this.knex('users_credential').where('email', incomingInfo.email).del();
+            } catch(err) {
+                throw err
+            }
         }
     }
 
@@ -222,7 +237,6 @@ module.exports = class {
                 await this.signUp(data)
             }
         } catch (err) {
-            console.log(err)
             throw err
         }
     }
@@ -266,7 +280,6 @@ module.exports = class {
                 await this.signUp(data)
             }
         } catch (err) {
-            console.log(err)
             throw err
         }
     }

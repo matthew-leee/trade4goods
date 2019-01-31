@@ -147,6 +147,9 @@ request params
     password: string
     confirmed_password: string
     email: string
+    displayed_name: string
+    phone_number: int
+    profile_picture: string[]
 }
 ```
 
