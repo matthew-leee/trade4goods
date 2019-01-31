@@ -34,8 +34,7 @@ module.exports = class {
                         throw {
                             statusCode: 400,
                             error: 'Duplicated Email',
-                            message: `${incomingInfo.email} duplicates with account ${emailExist.username}`,
-                            suggestSolution: `Merge Facebook account with ${emailExist.username}`
+                            message: `${incomingInfo.email} duplicates with account ${emailExist.username}, you are not allowed to login with this facebook account since email is duplicated`,
                         }
                     }
                     incomingInfo.username = 'facebook_user_' + incomingInfo.name
@@ -68,8 +67,7 @@ module.exports = class {
                         throw {
                             statusCode: 400,
                             error: 'Duplicated Email',
-                            message: `${incomingInfo.email} duplicates with account ${emailExist.username}`,
-                            suggestSolution: `Merge Google account with ${emailExist.username}`
+                            message: `${incomingInfo.email} duplicates with account ${emailExist.username}, you are not allowed to login with this google account since email is duplicated`,
                         }
                     }
                     incomingInfo.username = 'google_user_' + incomingInfo.name
@@ -221,7 +219,7 @@ module.exports = class {
                 }
                 data.facebook_id = data.id
                 delete data.id
-                this.signUp(data)
+                await this.signUp(data)
             }
         } catch (err) {
             console.log(err)
@@ -265,9 +263,10 @@ module.exports = class {
                     email: id_token_data.email,
                     name: id_token_data.name
                 }
-                this.signUp(data)
+                await this.signUp(data)
             }
         } catch (err) {
+            console.log(err)
             throw err
         }
     }
