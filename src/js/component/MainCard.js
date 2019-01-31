@@ -62,9 +62,23 @@ class MainCard extends React.Component {
 
         products.data.forEach((u) => {
           u.openOneModal = false
+          u.openOGModal = false
+          u.openMyGoodModal = false
         })
         console.log(products)
         this.props.storeAllProducts(products.data)
+
+        // fetch allUsers
+        const users = await Axios.get('https://localhost:8443/api/allProfile/')
+        this.props.storeAllUsers(users.data)
+
+        // fetch myUser
+        const user = await Axios('https://localhost:8443/api/profile', {
+          method: "get",
+          withCredentials: true
+        })
+        this.props.storeMyUser(user.data)
+
       }
     } catch (err) {
       console.log("like err")
@@ -175,6 +189,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     storeAllProducts: (products) => {
       dispatch(actions_search.storeAllProducts(products))
+    },
+    storeAllUsers: (allUsers) => {
+      dispatch(actions_userPage.storeAllUsers(allUsers))
+    },
+    storeMyUser: (user) => {
+      dispatch(actions_userPage.storeMyUser(user))
     }
   }
 }

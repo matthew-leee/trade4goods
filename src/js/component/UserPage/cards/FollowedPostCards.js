@@ -18,6 +18,7 @@ class FollowedPostCard extends Component {
                         alt={name}
                         src={image}
                         onClick={() => { handleOneModal(id) }}
+                        style={{ width: "7vw", height: "7vw" }}
                     />
                 }
                 actions={[

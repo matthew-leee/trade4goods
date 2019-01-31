@@ -183,6 +183,7 @@ module.exports = class {
 
     async offerProduct(product_offered, user_offering, product_offering) {
         try {
+            console.log ("offerproduct")
             product_offered = await this.knex('products').where('product_id', product_offered)
             product_offered = product_offered[0]
             product_offering = await this.knex('products').where('product_id', product_offering).andWhere('uploaded_by', user_offering)
@@ -219,6 +220,7 @@ module.exports = class {
                 await this.nodemailer.sendOfferNotification(product_offered.product_id)
             }
         } catch (err) {
+            console.log (err)
             throw err
         }
     }

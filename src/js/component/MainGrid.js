@@ -73,9 +73,10 @@ class ConnectedMainGrid extends React.Component {
         try {
 
             const res = await Axios.get('https://localhost:8443/api/allProducts/')
-            console.log(res.data)
             res.data.forEach((u) => {
                 u.openOneModal = false
+                u.openOGModal = false
+                u.openMyGoodModal = false
             })
             this.props.storeAllProducts(res.data)
             if (this.props.searchArr.length === 0) {

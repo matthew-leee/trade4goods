@@ -6,6 +6,8 @@ import {
 } from 'antd';
 import TextArea from "antd/lib/input/TextArea";
 import actions_addPhotos from "../../actions/addPhotos"
+import actions_userPage from "../../actions/userPage"
+import actions_search from "../../actions/search"
 import { connect } from "react-redux"
 import GeneralTags from "./tags_antd"
 import uuidv1 from "uuid/v1"
@@ -110,7 +112,31 @@ class AddPhotoForm extends React.Component {
             expectation: "",
             location: ['HK', 'central']
           })
+
+          // to update redux after one product is uploaded
+
+          // fetch allProducts
+          const res = await Axios.get('https://localhost:8443/api/allProducts/')
+          res.data.forEach((u) => {
+            u.openOneModal = false
+            u.openOGModal = false
+            u.openMyGoodModal = false
+          })
+          this.props.storeAllProducts(res.data)
+
+          // fetch allUsers
+          const users = await Axios.get('https://localhost:8443/api/allProfile/')
+          this.props.storeAllUsers(users.data)
+
+          // fetch myUser
+          const user = await Axios('https://localhost:8443/api/profile', {
+            method: "get",
+            withCredentials: true
+          })
+          this.props.storeMyUser(user.data)
+
           this.props.handleSubmitForm()
+
           document.querySelector("#clearImageField").setAttribute("value", "")
         } catch (err) {
           console.log(err.response.data)
@@ -309,8 +335,17 @@ const mapDispatchToProps = (dispatch) => {
         }
       })
     },
-    handleSubmitForm: ()=> {
+    handleSubmitForm: () => {
       dispatch(actions_addPhotos.clearForm())
+    },
+    storeAllProducts: (products) => {
+      dispatch(actions_search.storeAllProducts(products))
+    },
+    storeAllUsers: (allUsers) => {
+      dispatch(actions_userPage.storeAllUsers(allUsers))
+    },
+    storeMyUser: (user) => {
+      dispatch(actions_userPage.storeMyUser(user))
     }
   }
 }

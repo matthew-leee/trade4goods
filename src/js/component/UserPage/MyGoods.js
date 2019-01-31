@@ -8,6 +8,8 @@ import MyGoodsCard from "./cards/MyGoodsCard"
 import Popup from 'reactjs-popup'   //npm Reactjs-Popup
 import { popUpCloseTag, content } from '../compCSS/popupCss'
 
+const err = require('../asset/gif/error404.gif')
+
 class MyGoods extends Component {
 
     componentDidMount = () => {
@@ -60,15 +62,16 @@ class MyGoods extends Component {
                     <div>
                         <MyGoodsCard
                             name={u.name}
-                            image={u.image[0]}
+                            image={u.image[0]?u.image[0]:err}
                             id={u.product_id}
-                            description={u.description}
+                            description={u.description.length<30?u.description:`${u.description.slice(0,30)}...`}
                             tags={u.tags}
                             handleEdit={this.handleEdit}
                             handleDelete={this.handleDelete}
                             handleOneModal={this.props.handleOneModal}
                             openOneModal={u.openOneModal}
                             allDetails={u}
+                            trade={false}
                         />
                     </div>
                 )
@@ -82,15 +85,16 @@ class MyGoods extends Component {
                     <Col xs={24} sm={12} md={8} lg={6} xl={4} >
                         <MyGoodsCard
                             name={u.name}
-                            image={u.image[0]}
+                            image={u.image[0]?u.image[0]:err}
                             id={u.product_id}
-                            description={u.description}
+                            description={u.description.length<30?u.description:`${u.description.slice(0,30)}...`}
                             tags={u.tags}
                             handleEdit={this.handleEdit}
                             handleDelete={this.handleDelete}
                             handleOneModal={this.props.handleOneModal}
                             openOneModal={u.openOneModal}
                             allDetails={u}
+                            trade={false}
                         />
                     </Col>
                 )
@@ -113,7 +117,7 @@ class MyGoods extends Component {
                             <Popup open={true} closeOnDocumentClick onClose={()=>{this.props.handleModal("MG")}}>
                                 <div style={content} >
                                     <a style={popUpCloseTag}  onClick={()=>{this.props.handleModal("MG")}}>&times;</a>
-                                    <div>
+                                    <div style={{display:"flex",flexDirection: 'column', overflowY: "scroll", width: "50vw", height: "50vh"}}>
                                         <h1>My Goods</h1>
                                         <Row gutter={{ xs: 4, sm: 8, md: 16, lg: 16 }}>
                                             {allCards}
