@@ -62,6 +62,7 @@ class MainCard extends React.Component {
 
         products.data.forEach((u) => {
           u.openOneModal = false
+          u.openDELModal = false
           u.openOGModal = false
           u.openMyGoodModal = false
         })

@@ -30,10 +30,11 @@ const searchReducer = (state = {
         case "OPEN_ONE_MODAL":
             const newProducts = state.allProducts.map((u) => {
                 if (u.product_id == action.id) {
-                    if (u.openOneModal == true){
+                    if (u.openOneModal == true) {
                         u.openOneModal = false
                         u.openOGModal = false
                         u.openMyGoodModal = false
+                        u.openDELModal = false
                     } else {
                         u.openOneModal = true
                     }
@@ -47,8 +48,8 @@ const searchReducer = (state = {
                 allProducts: newProducts
             }
         case "OPEN_OG_MODAL":
-            const ogProducts = state.allProducts.map((u)=>{
-                if (u.product_id == action.ogID){
+            const ogProducts = state.allProducts.map((u) => {
+                if (u.product_id == action.ogID) {
                     u.openOGModal = !u.openOGModal
                     return u
                 } else {
@@ -58,6 +59,19 @@ const searchReducer = (state = {
             return {
                 ...state,
                 allProducts: ogProducts
+            }
+        case "OPEN_DEL_MODAL":
+            const delProducts = state.allProducts.map((u) => {
+                if (u.product_id == action.delID) {
+                    u.openDELModal = !u.openDELModal
+                    return u
+                } else {
+                    return u
+                }
+            })
+            return {
+                ...state,
+                allProducts: delProducts
             }
         default:
             return state

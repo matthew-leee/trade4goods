@@ -76,7 +76,7 @@ class ProductDetails extends Component {
             },
             {
                 title: "Status of Trade",
-                description: u.status == 1 ? "Trading" : "Traded",
+                description: u.status == 1 ? "Available" : "Trading"
             }
         ]
 
@@ -85,21 +85,31 @@ class ProductDetails extends Component {
                 const boo = this.props.myUser.uploaded_products.some((a) => {
                     return a == u.product_id
                 })
-                const offered = u.offered_by.some((a) => {
-                    return a == this.props.myUser.user_id
+
+                const myProductArr = this.props.myUser.uploaded_products
+
+                const offered = u.offered_by.some((offer) => {
+                    return myProductArr.some((a) => {
+                        return a == offer
+                    })
                 })
-                if (boo == true && offered == false) {
-                    return "myP"
-                } else if (boo == false && offered == true) {
-                    return "offered"
-                } else if (boo == false && offered == false) {
-                    return "otherP"
+
+                if (u.status == 1) {
+                    if (boo == true && offered == false) {
+                        return "myP"
+                    } else if (boo == false && offered == true) {
+                        return "offered"
+                    } else if (boo == false && offered == false) {
+                        return "otherP"
+                    }
+                } else {
+                    return "na"
                 }
             } else {
                 return "login"
             }
         }
-        console.log(this.props.myUser)
+
         return (
             <div key={`details-${u.product_id}`}>
                 <Row gutter={100}>
@@ -184,13 +194,15 @@ class ProductDetails extends Component {
 
 const mapStateToProps = (state) => {
     const u = state.userReducer
+    const search = state.searchReducer
     return {
         otherUser: u.otherUser,
         users: u.users,
         comment: u.comment,
         allUsers: u.allUsers,
         allComments: u.allComments,
-        myUser: u.myUser
+        myUser: u.myUser,
+        allProducts: search.allProducts
     }
 }
 
@@ -223,6 +235,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                         u.openOneModal = false
                         u.openOGModal = false
                         u.openMyGoodModal = false
+                        u.openDELModal = false
                     })
                     dispatch(actions_search.storeAllProducts(products.data))
                     const ids = res.data[0].map((u) => { return u[0] })
@@ -237,7 +250,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                             return u.user_id == comment.commentator
                         })[0].displayed_name
                         return {
-                            // product_id: id,
                             title: user,
                             content: comment.comment,
                             description: comment.comment_at
