@@ -41,7 +41,6 @@ class ConnectedNavvv extends React.Component {
         }
         this.handleNavOnBlur = this.handleNavOnBlur.bind(this)
         this.handleNavPressEnter = this.handleNavPressEnter.bind(this)
-    
     }
 
 

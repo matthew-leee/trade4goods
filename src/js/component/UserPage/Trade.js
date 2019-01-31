@@ -8,17 +8,10 @@ import actions_trade from "../../actions/trade"
 import MyGoodsCard from "./cards/MyGoodsCard"
 import LoginForm from '../LoginForm'
 import RegistrationForm from "../RegistrationForm";
+import {handleLoginToggle} from '../../actions/hello'
 
 
 class Trade extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            tryLogin: false,
-        }
-
-        this.handleLoginToggle = this.handleLoginToggle.bind(this)
-    }
 
 
 
@@ -159,8 +152,8 @@ class Trade extends Component {
             default:
                 return (
                     <div className="trade" style={{ marginTop: "50px" }}>
-                        {this.state.tryLogin && <LoginForm handleLogin={this.handleLoginToggle} style={{zIndex:"100"}}/>}
-                        <Button  onClick={this.handleLoginToggle} className="myLgBtn" style={{ marginBottom: "1vw" }}>Login to make a deal!</Button>
+                        {this.props.tryLogin && <LoginForm handleLogin={this.props.handleLoginToggle} style={{zIndex:"100"}}/>}
+                        <Button  onClick={this.props.handleLoginToggle} className="myLgBtn" style={{ marginBottom: "1vw" }}>Login to make a deal!</Button>
                     </div>
                 )
         }
@@ -171,13 +164,14 @@ const mapStateToProps = (state) => {
     const user = state.userReducer
     const trade = state.tradeReducer
     const search = state.searchReducer
-    const rooot = state.rootReducer
+    const rooot = state.roootReducer
     return {
         myUser: user.myUser,
         openMyGoodModal: trade.openMyGoodModal,
         openOGModal: trade.openOGModal,
         selected: trade.selected,
-        allProducts: search.allProducts
+        allProducts: search.allProducts,
+        tryLogin: rooot.tryLogin
     }
 }
 
@@ -194,7 +188,8 @@ const mapDispatchToProps = (dispatch) => {
         },
         clearSelect: () => {
             dispatch(actions_trade.clearSelect())
-        }
+        },
+        handleLoginToggle: a=> dispatch(handleLoginToggle(a)),
     }
 }
 
