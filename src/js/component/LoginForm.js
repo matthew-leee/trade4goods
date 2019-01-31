@@ -195,7 +195,7 @@ class NormalLoginForm extends React.Component {
                                 {getFieldDecorator('userName', {
                                     rules: [{ required: true, message: 'Please input your username or e-mail' }],
                                 })(
-                                    <Input size="large" className="inputfield" prefix={<Icon type="user" style={{ color: 'white' }} />} placeholder="Username / E-mail" />
+                                    <Input size="large"  prefix={<Icon type="user" style={{ color: 'white' }} />} placeholder="Username / E-mail" />
                                 )}
                             </Form.Item>
                             <Form.Item>

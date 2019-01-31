@@ -49,8 +49,14 @@
 }
 
 
+.ant-form-item-control{
+  max-width: 440px !important;
+}
 
+.ant-form-item-control-wrapper{
 
+  max-width: 440px !important;
+}
 
 
 .myBtn {
@@ -395,5 +401,6 @@
 	border-bottom-left-radius: 0px;
 	border-bottom-right-radius: 0px;
 }
+
 
 

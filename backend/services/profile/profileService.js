@@ -98,16 +98,16 @@ module.exports = class {
                 }
             }
             if (info.profile_picture) {
-                if (!/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/.test(info.profile_picture)) {
-                    throw {
-                        statusCode: 415,
-                        error: "Invalid Image Format",
-                        message: "Image has to be base64 encoded, this is probably an error at processing the image",
-                        suggestSolution: "Please do not upload profile picture for now, contact us for help"
-                    }
-                } else {
+                // if (!/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/.test(info.profile_picture)) {
+                //     throw {
+                //         statusCode: 415,
+                //         error: "Invalid Image Format",
+                //         message: "Image has to be base64 encoded, this is probably an error at processing the image",
+                //         suggestSolution: "Please do not upload profile picture for now, contact us for help"
+                //     }
+                // } else {
                     updatedInfo.profile_picture = info.profile_picture
-                }
+                // }
             }
             await this.knex('users').where('user_id', id).update(updatedInfo)
         } catch (err) {
