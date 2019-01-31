@@ -149,7 +149,7 @@ request params
     email: string
     displayed_name: string
     phone_number: int
-    profile_picture: string[]
+    profile_picture: string
 }
 ```
 

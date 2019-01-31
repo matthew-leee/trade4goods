@@ -48,19 +48,13 @@ class RegistrationFormgp extends React.Component {
                     username: values.username,
                     password: values.password,
                     confirmed_password: values.confirmed_password,
-                    email: values.email
-                }
-
-                const passingUsersDB = {
+                    email: values.email,
                     displayed_name: values.displayed_name,
                     phone_number: values.phone_number,
                     profile_picutre: ""
                 }
 
-                let passingLoginDB = {
-                    username_or_email: values.username,
-                    password: values.password,
-                }
+
 
 
                 try {
@@ -70,20 +64,8 @@ class RegistrationFormgp extends React.Component {
                         withCredentials: true
                     })
 
-                    let log = await axios('https://localhost:8443/api/login', {
-                        method: "post",
-                        data: passingLoginDB,
-                        withCredentials: true
-                    })
 
-                    const cre = await axios('https://localhost:8443/api/profile', {
-                        method: "post",
-                        data: passingUsersDB,
-                        withCredentials: true
-                    })
-
-
-                    if (res && cre && log) {
+                    if (res) {
                         console.log("register good")
                         this.setState({ finishReg: true })
                     }
