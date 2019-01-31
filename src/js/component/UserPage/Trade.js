@@ -151,9 +151,9 @@ class Trade extends Component {
                 )
             default:
                 return (
-                    <div className="trade" style={{ marginTop: "50px" }}>
-                        {this.props.tryLogin && <LoginForm handleLogin={this.props.handleLoginToggle} style={{zIndex:"100"}}/>}
-                        <Button  onClick={this.props.handleLoginToggle} className="myLgBtn" style={{ marginBottom: "1vw" }}>Login to make a deal!</Button>
+                    <div className="trade" style={{ marginTop: "50px",textAlign: "center"}}>
+                        {this.props.tryLogin && <LoginForm handleLogin={this.props.handleLoginToggle} />}
+                        <Button  onClick={this.props.handleLoginToggle} className="myLgBtn">Login to make a deal!</Button>
                     </div>
                 )
         }
