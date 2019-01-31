@@ -102,8 +102,10 @@ class ProductDetails extends Component {
                     } else if (boo == false && offered == false) {
                         return "otherP"
                     }
+                } else if (u.status == 2) {
+                    return "trading"
                 } else {
-                    return "na"
+                    return "traded"
                 }
             } else {
                 return "login"

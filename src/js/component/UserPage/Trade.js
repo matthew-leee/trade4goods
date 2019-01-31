@@ -64,6 +64,50 @@ class Trade extends Component {
         }
     }
 
+    handleAcceptOffer = async () => {
+        const data = {
+            product_offered: this.props.details.product_id,
+            product_offering: this.props.selected
+        }
+        console.log(data)
+        try {
+            const res = await Axios("https://localhost:8443/api/acceptOffer/", {
+                method: 'post',
+                data: data,
+                withCredentials: true
+            })
+
+            console.log(res)
+
+            // fetch allProducts
+            const pres = await Axios.get('https://localhost:8443/api/allProducts/')
+            pres.data.forEach((u) => {
+                u.openOneModal = false
+                u.openOGModal = false
+                u.openMyGoodModal = false
+                u.openDELModal = false
+            })
+            this.props.storeAllProducts(pres.data)
+
+            // fetch allUsers
+            const users = await Axios.get('https://localhost:8443/api/allProfile/')
+            this.props.storeAllUsers(users.data)
+
+            // fetch myUser
+            const user = await Axios('https://localhost:8443/api/profile', {
+                method: "get",
+                withCredentials: true
+            })
+            this.props.storeMyUser(user.data)
+
+            // finished trading
+            this.props.clearSelect()
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     handleDeleteOffer = async (currentOfferID) => {
         const id = currentOfferID[0].product_id
         const data = {
@@ -165,6 +209,10 @@ class Trade extends Component {
             return u.product_id == details.product_id
         })[0].openDELModal
 
+        const openMyGoodModal = this.props.allProducts.filter((u) => {
+            return u.product_id == details.product_id
+        })[0].openMyGoodModal
+
         const currentOfferID = this.props.allProducts
             .filter((u) => {
                 const id = details.offered_by.find((offer) => {
@@ -174,8 +222,6 @@ class Trade extends Component {
                 })
                 return u.product_id == id
             })
-
-        console.log(currentOfferID)
 
         const currentOffer = currentOfferID
             .map((u) => {
@@ -198,19 +244,91 @@ class Trade extends Component {
                 )
             })
 
+
+
+        const receivedOffer = this.props.allProducts
+            .filter((u) => {
+                return details.offered_by.some((a) => {
+                    return a == u.product_id
+                })
+            })
+            .map((u) => {
+                return (
+                    <Col xs={24} sm={12} md={8} lg={6} xl={4} >
+                        <MyGoodsCard
+                            name={u.name}
+                            image={u.image[0] ? u.image[0] : err}
+                            id={u.product_id}
+                            tags={u.tags}
+                            handleEdit={this.handleEdit}
+                            handleDelete={this.handleDelete}
+                            handleOneModal={this.props.handleOneModal}
+                            openOneModal={u.openOneModal}
+                            allDetails={u}
+                            trade={true}
+                            handleSelect={this.props.handleSelect}
+                        />
+                    </Col>
+                )
+            })
+
+
         switch (status) {
             case "myP":
                 return (
                     <div className="trade" style={{}}>
                         <h4>Trade</h4>
-                        <Button style={{ marginBottom: "1vw" }} ghost type="primary">Check Received Offer</Button>
+                        <Button onClick={() => { this.props.openMyGoodModal(details.product_id) }} style={{ marginBottom: "1vw" }} ghost type="primary">Check Received Offer</Button>
+                        {openMyGoodModal &&
+                            <Popup open={true} closeOnDocumentClick onClose={() => { this.props.openMyGoodModal(details.product_id) }}>
+                                <div style={{ display: "flex", flexDirection: "column", overflowY: "scroll", width: "50vw", height: "50vh" }}>
+                                    <a style={popUpCloseTag} onClick={() => { this.props.openDELModal(details.product_id) }}>&times;</a>
+                                    <div style={{ width: "50vw", height: '50vh', display: "flex" }}>
+                                        <Row>
+
+                                            <Col span={16}>
+                                                <div style={{ overflowY: "scroll" }}>
+                                                    {receivedOffer}
+                                                </div>
+                                            </Col>
+
+                                            <Col span={8}>
+                                                <div className="tradeBox" style={{ display: "flex", flexDirection: "column" }}>
+                                                    {this.props.selected &&
+                                                        <div className="selectedCard">
+                                                            {selectedCard}
+                                                        </div>}
+                                                    {!this.props.selected &&
+                                                        <div className="selectedCard" style={{
+                                                            width: "7vw", height: "7vw", backgroundColor: "yellow",
+                                                            display: "flex", justifyContent: "center", alignItems: "center"
+                                                        }}>
+                                                            <p style={{ color: "red" }}>Select a Offer from Left Panel</p>
+                                                        </div>}
+                                                    <div className="confirmTrade">
+                                                        <Button onClick={this.handleAcceptOffer} type="danger">Confirm Accepting Offer</Button>
+                                                    </div>
+                                                </div>
+                                            </Col>
+
+                                        </Row>
+                                    </div>
+                                </div>
+                            </Popup>}
                     </div>
                 )
-            case "na":
+            case "trading":
                 return (
                     <div className="trade" style={{}}>
                         <h4>Trade</h4>
-                        <Button style={{ marginBottom: "1vw" }} ghost type="dashed">Not Available</Button>
+                        <Button style={{ marginBottom: "1vw" }} ghost type="dashed">Trading in Progress</Button>
+                    </div>
+                )
+            case "traded":
+                return (
+                    <div className="trade" style={{}}>
+                        <h4>Trade</h4>
+                        <Button style={{ marginBottom: "1vw" }} ghost type="dashed">Traded</Button>
                     </div>
                 )
             case "offered":
@@ -242,8 +360,8 @@ class Trade extends Component {
             case "otherP":
                 return (
                     <div className="trade" style={{}}>
-    
-                        <Button onClick={() => { this.props.openOGModal(details.product_id) }} style={{ marginTop:"40px",marginBottom: "1vw" }} className="myLgBtn">Make an Offer</Button>
+
+                        <Button onClick={() => { this.props.openOGModal(details.product_id) }} style={{ marginTop: "40px", marginBottom: "1vw" }} className="myLgBtn">Make an Offer</Button>
                         {openOGModal &&
                             <Popup open={true} closeOnDocumentClick onClose={() => { this.props.openOGModal(details.product_id) }}>
                                 <div style={{ display: "flex", flexDirection: "column", overflowY: "scroll", width: "50vw", height: "50vh" }}>
@@ -284,9 +402,9 @@ class Trade extends Component {
                 )
             default:
                 return (
-                    <div className="trade" style={{ marginTop: "50px",textAlign: "center"}}>
+                    <div className="trade" style={{ marginTop: "50px", textAlign: "center" }}>
                         {this.props.tryLogin && <LoginForm handleLogin={this.props.handleLoginToggle} />}
-                        <Button  onClick={this.props.handleLoginToggle} className="myLgBtn">Login to make a deal!</Button>
+                        <Button onClick={this.props.handleLoginToggle} className="myLgBtn">Login to make a deal!</Button>
                     </div>
                 )
         }
@@ -310,14 +428,17 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        openMyGoodModal: () => {
-            dispatch(actions_trade.openMyGoodModal())
+        openMyGoodModal: (id) => {
+            dispatch(actions_trade.openMyGoodModal(id))
+            dispatch(actions_trade.clearSelect())
         },
         openOGModal: (id) => {
             dispatch(actions_trade.openOGModal(id))
+            dispatch(actions_trade.clearSelect())
         },
         openDELModal: (id) => {
             dispatch(actions_trade.openDELModal(id))
+            dispatch(actions_trade.clearSelect())
         },
         handleSelect: (id) => {
             dispatch(actions_trade.selectMyGood(id))

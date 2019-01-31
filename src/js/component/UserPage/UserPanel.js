@@ -17,7 +17,7 @@ class UserPanel extends Component {
                     <img src={u.profile_picture} style={{ width: "10vw", borderRadius: "50%" }} />
                     <h4 style={{ paddingTop: "1vw", paddingBottom: "1vw" }}>{u.displayed_name}</h4>
                     <h6 style={{ paddingBottom: "1vw" }}>Uploaded Products: {u.uploaded_products.length}</h6>
-                    <Button style={{ marginBottom: "1vw" }} ghost type="primary">Edit Profile</Button>
+                    {/* <Button style={{ marginBottom: "1vw" }} ghost type="primary">Edit Profile</Button> */}
 
                     <Button ghost type="primary" onClick={this.props.handleUploadModal}>Upload New Products</Button>
                     {this.props.openUploadModal &&

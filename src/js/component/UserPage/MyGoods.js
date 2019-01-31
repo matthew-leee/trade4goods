@@ -18,7 +18,7 @@ class MyGoods extends Component {
         //     return u.uploaded_by == this.props.myUser.user_id
         // })
         // this.props.handleProducts(products)
-    }   
+    }
 
     rerouteSearch = () => {
         if (this.props.submit) {
@@ -53,7 +53,7 @@ class MyGoods extends Component {
 
     render() {
         const cards = this.props.allProducts
-            .filter((u)=> {
+            .filter((u) => {
                 return u.uploaded_by == this.props.myUser.user_id
             })
             .slice(0, 3)
@@ -62,9 +62,9 @@ class MyGoods extends Component {
                     <div>
                         <MyGoodsCard
                             name={u.name}
-                            image={u.image[0]?u.image[0]:err}
+                            image={u.image[0] ? u.image[0] : err}
                             id={u.product_id}
-                            description={u.description.length<30?u.description:`${u.description.slice(0,30)}...`}
+                            description={u.description.length < 30 ? u.description : `${u.description.slice(0, 30)}...`}
                             tags={u.tags}
                             handleEdit={this.handleEdit}
                             handleDelete={this.handleDelete}
@@ -77,17 +77,17 @@ class MyGoods extends Component {
                 )
             })
         const allCards = this.props.allProducts
-        .filter((u)=> {
-            return u.uploaded_by == this.props.myUser.user_id
-        })
+            .filter((u) => {
+                return u.uploaded_by == this.props.myUser.user_id
+            })
             .map((u) => {
                 return (
                     <Col xs={24} sm={12} md={8} lg={6} xl={4} >
                         <MyGoodsCard
                             name={u.name}
-                            image={u.image[0]?u.image[0]:err}
+                            image={u.image[0] ? u.image[0] : err}
                             id={u.product_id}
-                            description={u.description.length<30?u.description:`${u.description.slice(0,30)}...`}
+                            description={u.description.length < 30 ? u.description : `${u.description.slice(0, 30)}...`}
                             tags={u.tags}
                             handleEdit={this.handleEdit}
                             handleDelete={this.handleDelete}
@@ -100,8 +100,8 @@ class MyGoods extends Component {
                 )
             })
         return (
-            <div className="myGoods" style={{marginRight: "2vw", marginLeft: "2vw"}}>
-                {this.rerouteSearch()}
+            <div className="myGoods" style={{ marginRight: "2vw", marginLeft: "2vw" }}>
+                
                 <Card
                     title="My Goods"
                     style={{ width: "30vw" }}
@@ -109,22 +109,22 @@ class MyGoods extends Component {
                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                         {cards}
                         <div className="addPhotoBox" style={{ width: 180, height: 180, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", paddingLeft: 10 }}>
-                            <Button onClick={()=>{this.props.handleModal("MG")}}>
-                                click me bastard
+                            <Button onClick={() => { this.props.handleModal("MG") }}>
+                                More
                             </Button>
 
-                            {this.props.openMGModal && 
-                            <Popup open={true} closeOnDocumentClick onClose={()=>{this.props.handleModal("MG")}}>
-                                <div style={content} >
-                                    <a style={popUpCloseTag}  onClick={()=>{this.props.handleModal("MG")}}>&times;</a>
-                                    <div style={{display:"flex",flexDirection: 'column', overflowY: "scroll", width: "50vw", height: "50vh"}}>
-                                        <h1>My Goods</h1>
-                                        <Row gutter={{ xs: 4, sm: 8, md: 16, lg: 16 }}>
-                                            {allCards}
-                                        </Row>
+                            {this.props.openMGModal &&
+                                <Popup open={true} closeOnDocumentClick onClose={() => { this.props.handleModal("MG") }}>
+                                    <div style={content} >
+                                        <a style={popUpCloseTag} onClick={() => { this.props.handleModal("MG") }}>&times;</a>
+                                        <div style={{ display: "flex", flexDirection: 'column', overflowY: "scroll", width: "50vw", height: "50vh" }}>
+                                            <h1>My Goods</h1>
+                                            <Row gutter={{ xs: 4, sm: 8, md: 16, lg: 16 }}>
+                                                {allCards}
+                                            </Row>
+                                        </div>
                                     </div>
-                                </div>
-                            </Popup>}
+                                </Popup>}
 
                         </div>
                     </div>
@@ -144,7 +144,7 @@ const mapStateToProps = (state) => {
         openMGModal: s.openMGModal,
         products: s.products,
         result: s.result,
-        myUser : s.myUser,
+        myUser: s.myUser,
         submit: search.submit,
         allProducts: search.allProducts,
         productsArr: rooot.productsArr

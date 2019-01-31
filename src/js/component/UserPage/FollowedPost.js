@@ -93,7 +93,7 @@ class FollowedPost extends Component {
                         {cards}
                         <div className="addPhotoBox" style={{ width: 180, height: 180, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", paddingLeft: 10 }}>
                             <Button onClick={() => { this.props.handleModal("FP") }}>
-                                click me bastard
+                                More
                             </Button>
 
                             {this.props.openFPModal &&

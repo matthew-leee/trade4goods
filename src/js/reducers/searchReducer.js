@@ -73,6 +73,19 @@ const searchReducer = (state = {
                 ...state,
                 allProducts: delProducts
             }
+        case "OPEN_MYGOOD_MODAL":
+            const mgProducts = state.allProducts.map((u) => {
+                if (u.product_id == action.mgID) {
+                    u.openMyGoodModal = !u.openMyGoodModal
+                    return u
+                } else {
+                    return u
+                }
+            })
+            return {
+                ...state,
+                allProducts: mgProducts,
+            }
         default:
             return state
     }

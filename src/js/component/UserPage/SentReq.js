@@ -10,21 +10,6 @@ import { popUpCloseTag, content } from '../compCSS/popupCss'
 
 class SentReq extends Component {
 
-    componentDidMount() {
-        products.forEach((u) => {
-            u.openOneModal = false
-        })
-        this.props.handleProducts(products)
-        this.username = "user1"
-    }
-
-    rerouteSearch = () => {
-        if (this.props.submit) {
-            this.props.saveSearch(this.props.submit)
-            this.props.clearSearch()
-        }
-    }
-
     handleDelete = (e) => {
         const boo = window.confirm("delete request?")
         if (boo) {
@@ -90,7 +75,7 @@ class SentReq extends Component {
             })
         return (
             <div className="sentReq" style={{marginRight: "2vw", marginLeft: "2vw"}}>
-                {this.rerouteSearch()}
+               
                 <Card
                     title="Sent Request"
                     style={{ width: "30vw" }}
@@ -99,7 +84,7 @@ class SentReq extends Component {
                         {cards}
                         <div className="addPhotoBox" style={{ width: 180, height: 180, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", paddingLeft: 10 }}>
                             <Button onClick={()=>{this.props.handleModal("SQ")}}>
-                                click me bastard
+                                More
                             </Button>
 
                             {this.props.openSQModal && 
@@ -118,7 +103,7 @@ class SentReq extends Component {
                         </div>
                     </div>
                 </Card>
-                <h1>{this.props.result}</h1>
+                
             </div>
         )
     }

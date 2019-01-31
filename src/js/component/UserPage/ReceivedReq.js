@@ -8,22 +8,9 @@ import ReceivedReqCard from "./cards/ReceivedReqCard"
 import Popup from 'reactjs-popup'   //npm Reactjs-Popup
 import { popUpCloseTag, content } from '../compCSS/popupCss'
 
+const err = require('../asset/gif/error404.gif')
+
 class ReceivedReq extends Component {
-
-    componentDidMount() {
-        products.forEach((u) => {
-            u.openOneModal = false
-        })
-        this.props.handleProducts(products)
-        this.username = "user1"
-    }
-
-    rerouteSearch = () => {
-        if (this.props.submit) {
-            this.props.saveSearch(this.props.submit)
-            this.props.clearSearch()
-        }
-    }
 
     handleDecline = (e) => {
         const boo = window.confirm("decline request?")
@@ -35,7 +22,7 @@ class ReceivedReq extends Component {
         }
     }
 
-    handleAccept = (e) =>{
+    handleAccept = (e) => {
         const boo = window.confirm("Accept request?")
         if (boo) {
             message.success("Accepted!")
@@ -45,17 +32,17 @@ class ReceivedReq extends Component {
     }
 
     render() {
-        const cards = this.props.products
-        .filter(u=>{return u.uploaded_by == this.username})
+        const cards = this.props.allProducts
+        .filter(u => { return u.offered_by.length > 0 && u.uploaded_by == this.props.myUser.user_id })
             .slice(0, 3)
             .map((u) => {
                 return (
                     <div>
                         <ReceivedReqCard
                             name={u.name}
-                            image={u.image[0]}
+                            image={u.image[0] ? u.image[0] : err}
                             id={u.product_id}
-                            description={u.description}
+                            description={u.description.length < 30 ? u.description : `${u.description.slice(0, 30)}...`}
                             tags={u.tags}
                             handleAccept={this.handleAccept}
                             handleDecline={this.handleDecline}
@@ -66,15 +53,16 @@ class ReceivedReq extends Component {
                     </div>
                 )
             })
-        const allCards = this.props.products
+        const allCards = this.props.allProducts
+            .filter(u => { return u.offered_by.length > 0 && u.uploaded_by == this.props.myUser.user_id })
             .map((u) => {
                 return (
                     <Col xs={24} sm={12} md={8} lg={6} xl={4} >
                         <ReceivedReqCard
                             name={u.name}
-                            image={u.image[0]}
+                            image={u.image[0] ? u.image[0] : err}
                             id={u.product_id}
-                            description={u.description}
+                            description={u.description.length < 30 ? u.description : `${u.description.slice(0, 30)}...`}
                             tags={u.tags}
                             handleAccept={this.handleAccept}
                             handleDecline={this.handleDecline}
@@ -86,36 +74,35 @@ class ReceivedReq extends Component {
                 )
             })
         return (
-            <div className="receivedReq" style={{marginRight: "2vw", marginLeft: "2vw"}}>
-                {this.rerouteSearch()}
+            <div className="receivedReq" style={{ marginRight: "2vw", marginLeft: "2vw" }}>
+               
                 <Card
-                    title="Received Request"
+                    title="Goods With Request"
                     style={{ width: "30vw" }}
                 >
                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                         {cards}
                         <div className="addPhotoBox" style={{ width: 180, height: 180, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", paddingLeft: 10 }}>
-                            <Button onClick={()=>{this.props.handleModal("RQ")}}>
-                                click me bastard
+                            <Button onClick={() => { this.props.handleModal("RQ") }}>
+                                More
                             </Button>
 
-                            {this.props.openRQModal && 
-                            <Popup open={true} closeOnDocumentClick onClose={()=>{this.props.handleModal("RQ")}}>
-                                <div style={content} >
-                                    <a style={popUpCloseTag} onClick={()=>{this.props.handleModal("RQ")}}>&times;</a>
-                                    <div>
-                                        <h1>My Goods</h1>
-                                        <Row gutter={{ xs: 4, sm: 8, md: 16, lg: 16 }}>
-                                            {allCards}
-                                        </Row>
+                            {this.props.openRQModal &&
+                                <Popup open={true} closeOnDocumentClick onClose={() => { this.props.handleModal("RQ") }}>
+                                    <div style={content} >
+                                        <a style={popUpCloseTag} onClick={() => { this.props.handleModal("RQ") }}>&times;</a>
+                                        <div style={{display:"flex",flexDirection: 'column', overflowY: "scroll", width: "50vw", height: "50vh"}}>
+                                            <h1>My Goods</h1>
+                                            <Row gutter={{ xs: 4, sm: 8, md: 16, lg: 16 }}>
+                                                {allCards}
+                                            </Row>
+                                        </div>
                                     </div>
-                                </div>
-                            </Popup>}
+                                </Popup>}
 
                         </div>
                     </div>
                 </Card>
-                <h1>{this.props.result}</h1>
             </div>
         )
     }
@@ -127,11 +114,13 @@ const mapStateToProps = (state) => {
     const search = state.searchReducer
     const rooot = state.roootReducer
     return {
+        myUser: s.myUser,
         openRQModal: s.openRQModal,
         products: s.products,
         result: s.result,
         submit: search.submit,
-        productsArr: rooot.productsArr
+        productsArr: rooot.productsArr,
+        allProducts: search.allProducts,
     }
 }
 

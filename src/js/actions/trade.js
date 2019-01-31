@@ -1,7 +1,8 @@
 const actions_trade = {
-    openMyGoodModal: () => {
+    openMyGoodModal: (id) => {
         return {
-            type: "OPEN_MYGOOD_MODAL"
+            type: "OPEN_MYGOOD_MODAL",
+            mgID: id
         }
     },
     openOGModal: (id) => {
