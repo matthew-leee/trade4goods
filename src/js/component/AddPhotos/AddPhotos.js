@@ -99,7 +99,7 @@ class AddPhotoForm extends React.Component {
           image: values.photos
         }
         try {
-          const addPhotosRes = await Axios("https://localhost:8080/api/product", {
+          const addPhotosRes = await Axios("https://trade4goods.xyz/api/product", {
             method: "post",
             data: newValues,
             withCredentials: true
@@ -116,7 +116,7 @@ class AddPhotoForm extends React.Component {
           // to update redux after one product is uploaded
 
           // fetch allProducts
-          const res = await Axios.get('https://localhost:8080/api/allProducts/')
+          const res = await Axios.get('https://trade4goods.xyz/api/allProducts/')
           res.data.forEach((u) => {
             u.openOneModal = false
             u.openOGModal = false
@@ -126,11 +126,11 @@ class AddPhotoForm extends React.Component {
           this.props.storeAllProducts(res.data)
 
           // fetch allUsers
-          const users = await Axios.get('https://localhost:8080/api/allProfile/')
+          const users = await Axios.get('https://trade4goods.xyz/api/allProfile/')
           this.props.storeAllUsers(users.data)
 
           // fetch myUser
-          const user = await Axios('https://localhost:8080/api/profile', {
+          const user = await Axios('https://trade4goods.xyz/api/profile', {
             method: "get",
             withCredentials: true
           })

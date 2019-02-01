@@ -32,7 +32,7 @@ class SentReq extends Component {
                 product_offering: id
             }
             try {
-                const res = await Axios("https://localhost:8080/api/offer_product", {
+                const res = await Axios("https://trade4goods.xyz/api/offer_product", {
                     method: 'delete',
                     data: data,
                     withCredentials: true
@@ -40,7 +40,7 @@ class SentReq extends Component {
                 console.log(res)
     
                 // fetch allProducts
-                const pres = await Axios.get('https://localhost:8080/api/allProducts/')
+                const pres = await Axios.get('https://trade4goods.xyz/api/allProducts/')
                 pres.data.forEach((u) => {
                     u.openOneModal = false
                     u.openOGModal = false
@@ -50,11 +50,11 @@ class SentReq extends Component {
                 this.props.storeAllProducts(pres.data)
     
                 // fetch allUsers
-                const users = await Axios.get('https://localhost:8080/api/allProfile/')
+                const users = await Axios.get('https://trade4goods.xyz/api/allProfile/')
                 this.props.storeAllUsers(users.data)
     
                 // fetch myUser
-                const user = await Axios('https://localhost:8080/api/profile', {
+                const user = await Axios('https://trade4goods.xyz/api/profile', {
                     method: "get",
                     withCredentials: true
                 })
