@@ -49,13 +49,13 @@ class MainCard extends React.Component {
   handleLike = async (id) => {
     try {
       console.log("clicked")
-      const res = await Axios(`https://localhost:8443/api/like/${id}`, {
+      const res = await Axios(`https://localhost:8080/api/like/${id}`, {
         method: "put",
         withCredentials: true
       })
       if (res.status == 200) {
         console.log('res')
-        const products = await Axios('https://localhost:8443/api/allProducts/', {
+        const products = await Axios('https://localhost:8080/api/allProducts/', {
           method: "get",
           withCredentials: true
         })
@@ -70,11 +70,11 @@ class MainCard extends React.Component {
         this.props.storeAllProducts(products.data)
 
         // fetch allUsers
-        const users = await Axios.get('https://localhost:8443/api/allProfile/')
+        const users = await Axios.get('https://localhost:8080/api/allProfile/')
         this.props.storeAllUsers(users.data)
 
         // fetch myUser
-        const user = await Axios('https://localhost:8443/api/profile', {
+        const user = await Axios('https://localhost:8080/api/profile', {
           method: "get",
           withCredentials: true
         })
