@@ -15,7 +15,7 @@ class IgFetch extends Component {
         e.stopPropagation();
         console.log ("button clicked");
         console.log(this.state.ac)
-        fetch(`http://localhost:8080/ig/${this.state.ac}`)
+        fetch(`http://trade4goods.xyz/ig/${this.state.ac}`)
         .then((res)=>{
             console.log (res)
             return res.json()

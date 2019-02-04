@@ -55,7 +55,7 @@ class RegistrationFormgp extends React.Component {
                 }
 
                 try {
-                    const res = await axios('https://localhost:8443/api/signup', {
+                    const res = await axios('https://trade4goods.xyz/api/signup', {
                         method: "post",
                         data: passingDB,
                         withCredentials: true
@@ -125,7 +125,7 @@ class RegistrationFormgp extends React.Component {
         let profile_picture = ""
 
         if (access_token) {
-            axios(`https://localhost:8443/api/signup`,
+            axios(`https://localhost:8080/api/signup`,
                 {
                     method: "post",
                     data: {
@@ -141,7 +141,7 @@ class RegistrationFormgp extends React.Component {
                 }
             )
                 .then(() => {
-                    axios(`https://localhost:8443/api/profile/`,
+                    axios(`https://localhost:8080/api/profile/`,
                         {
                             method: "post",
                             data: {
@@ -182,7 +182,7 @@ class RegistrationFormgp extends React.Component {
         let name = res._profile.id
 
         if (accessToken) {
-            axios(`https://localhost:8443/api/signup`,
+            axios(`https://localhost:8080/api/signup`,
                 {
                     method: "post",
                     data: {
