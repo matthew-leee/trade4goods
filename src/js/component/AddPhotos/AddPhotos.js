@@ -2,7 +2,7 @@
 import React, { Component } from "react"
 
 import {
-  Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, message
+  Form, Input, Upload, Icon, Modal, Cascader, Select, Button,
 } from 'antd';
 import TextArea from "antd/lib/input/TextArea";
 import actions_addPhotos from "../../actions/addPhotos"
@@ -196,6 +196,8 @@ class AddPhotoForm extends React.Component {
         )
       }
     })
+
+    
 
     return (
 
