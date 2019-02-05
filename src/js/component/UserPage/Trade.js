@@ -29,14 +29,14 @@ class Trade extends Component {
             product_offering: this.props.selected
         }
         try {
-            const res = await Axios("https://trade4goods.xyz/api/offer_product", {
+            const res = await Axios("https://localhost:8443/api/offer_product", {
                 method: 'post',
                 data: data,
                 withCredentials: true
             })
 
             // fetch allProducts
-            const pres = await Axios.get('https://trade4goods.xyz/api/allProducts/')
+            const pres = await Axios.get('https://localhost:8443/api/allProducts/')
             pres.data.forEach((u) => {
                 u.openOneModal = false
                 u.openOGModal = false
@@ -46,11 +46,11 @@ class Trade extends Component {
             this.props.storeAllProducts(pres.data)
 
             // fetch allUsers
-            const users = await Axios.get('https://trade4goods.xyz/api/allProfile/')
+            const users = await Axios.get('https://localhost:8443/api/allProfile/')
             this.props.storeAllUsers(users.data)
 
             // fetch myUser
-            const user = await Axios('https://trade4goods.xyz/api/profile', {
+            const user = await Axios('https://localhost:8443/api/profile', {
                 method: "get",
                 withCredentials: true
             })
@@ -71,7 +71,7 @@ class Trade extends Component {
         }
         console.log(data)
         try {
-            const res = await Axios("https://trade4goods.xyz/api/acceptOffer/", {
+            const res = await Axios("https://localhost:8443/api/acceptOffer/", {
                 method: 'post',
                 data: data,
                 withCredentials: true
@@ -80,7 +80,7 @@ class Trade extends Component {
             console.log(res)
 
             // fetch allProducts
-            const pres = await Axios.get('https://trade4goods.xyz/api/allProducts/')
+            const pres = await Axios.get('https://localhost:8443/api/allProducts/')
             pres.data.forEach((u) => {
                 u.openOneModal = false
                 u.openOGModal = false
@@ -90,11 +90,11 @@ class Trade extends Component {
             this.props.storeAllProducts(pres.data)
 
             // fetch allUsers
-            const users = await Axios.get('https://trade4goods.xyz/api/allProfile/')
+            const users = await Axios.get('https://localhost:8443/api/allProfile/')
             this.props.storeAllUsers(users.data)
 
             // fetch myUser
-            const user = await Axios('https://trade4goods.xyz/api/profile', {
+            const user = await Axios('https://localhost:8443/api/profile', {
                 method: "get",
                 withCredentials: true
             })
@@ -116,7 +116,7 @@ class Trade extends Component {
         }
         console.log(data)
         try {
-            const res = await Axios("https://trade4goods.xyz/api/offer_product", {
+            const res = await Axios("https://localhost:8443/api/offer_product", {
                 method: 'delete',
                 data: data,
                 withCredentials: true
@@ -124,7 +124,7 @@ class Trade extends Component {
             console.log(res)
 
             // fetch allProducts
-            const pres = await Axios.get('https://trade4goods.xyz/api/allProducts/')
+            const pres = await Axios.get('https://localhost:8443/api/allProducts/')
             pres.data.forEach((u) => {
                 u.openOneModal = false
                 u.openOGModal = false
@@ -134,11 +134,11 @@ class Trade extends Component {
             this.props.storeAllProducts(pres.data)
 
             // fetch allUsers
-            const users = await Axios.get('https://trade4goods.xyz/api/allProfile/')
+            const users = await Axios.get('https://localhost:8443/api/allProfile/')
             this.props.storeAllUsers(users.data)
 
             // fetch myUser
-            const user = await Axios('https://trade4goods.xyz/api/profile', {
+            const user = await Axios('https://localhost:8443/api/profile', {
                 method: "get",
                 withCredentials: true
             })

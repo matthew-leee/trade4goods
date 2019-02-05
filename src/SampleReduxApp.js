@@ -10,6 +10,7 @@ import VerifyEmail from './js/component/VerifyEmail'
 
 import AddPhotos from "./js/component/AddPhotos/AddPhotos"
 import UserPage from "./js/component/UserPage/main"
+import NewMain from "./js/component/newUserPage/NewMain"
 import "./App.css"
 
 import {
@@ -28,7 +29,8 @@ class App extends Component {
                     <Switch>
                         <Route exact path={"/"} component={MainGrid} />
                         <Route path={"/addPhotos"} component={AddPhotos} />
-                        <Route path={"/userPage"} component={UserPage} />
+                        {/* <Route path={"/userPage"} component={UserPage} /> */}
+                        <Route path={"/userPage"} component={NewMain} />
                         <Route path={"/verifyEmail/:id"} component={VerifyEmail} />
                         <Route path="*" component={NoMatch}/>
                     </Switch>

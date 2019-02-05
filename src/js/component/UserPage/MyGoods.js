@@ -47,13 +47,13 @@ class MyGoods extends Component {
         const boo = window.confirm("delete?")
         if (boo) {
             try {
-                const res = await Axios(`https://trade4goods.xyz/api/product/${id}`, {
+                const res = await Axios(`https://localhost:8443/api/product/${id}`, {
                     method: "delete",
                     withCredentials: true
                 })
                 console.log(res)
 
-                const pres = await Axios.get('https://trade4goods.xyz/api/allProducts/')
+                const pres = await Axios.get('https://localhost:8443/api/allProducts/')
                 pres.data.forEach((u) => {
                     u.openOneModal = false
                     u.openOGModal = false
@@ -63,11 +63,11 @@ class MyGoods extends Component {
                 this.props.storeAllProducts(pres.data)
 
                 // fetch allUsers
-                const users = await Axios.get('https://trade4goods.xyz/api/allProfile/')
+                const users = await Axios.get('https://localhost:8443/api/allProfile/')
                 this.props.storeAllUsers(users.data)
 
                 // fetch myUser
-                const user = await Axios('https://trade4goods.xyz/api/profile', {
+                const user = await Axios('https://localhost:8443/api/profile', {
                     method: "get",
                     withCredentials: true
                 })

@@ -11,6 +11,7 @@ import userReducer from "./js/reducers/userReducer"
 import searchReducer from "./js/reducers/searchReducer"
 import roootReducer from "./js/reducers/rootReducer"
 import tradeReducer from "./js/reducers/tradeReducer"
+import newUserReducer from "./js/reducers/newUserReducer"
 import logger from "redux-logger";
 require('dotenv').config()
 
@@ -20,7 +21,8 @@ const rootReducers = combineReducers({
     userReducer,
     searchReducer,
     roootReducer,
-    tradeReducer
+    tradeReducer,
+    newUserReducer
 })
 
 const store = createStore(rootReducers, applyMiddleware(logger))

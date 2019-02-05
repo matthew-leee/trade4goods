@@ -42,7 +42,7 @@ class NormalLoginForm extends React.Component {
                 }
 
                 try {
-                    let res = await axios('https://trade4goods.xyz/api/login', {
+                    let res = await axios('https://localhost:8443/api/login', {
                         method: "post",
                         data: passingDB,
                         withCredentials: true
@@ -50,7 +50,7 @@ class NormalLoginForm extends React.Component {
                     console.log(res)
 
                     // put userinfo in redux
-                    const user = await axios('https://trade4goods.xyz/api/profile', {
+                    const user = await axios('https://localhost:8443/api/profile', {
                         method: "get",
                         withCredentials: true
                     })
@@ -90,7 +90,7 @@ class NormalLoginForm extends React.Component {
         }
         console.log(res._token.accessToken)
         if (access_token) {
-            axios(`https://trade4goods.xyz/api/facebook_login`,
+            axios(`https://localhost:8443/api/facebook_login`,
                 {
                     method: "post",
                     data: {
@@ -104,7 +104,7 @@ class NormalLoginForm extends React.Component {
                 .then(async () => {
 
                     try {
-                        const user = await axios('https://trade4goods.xyz/api/profile', {
+                        const user = await axios('https://localhost:8443/api/profile', {
                             method: "get",
                             withCredentials: true
                         })
@@ -140,7 +140,7 @@ class NormalLoginForm extends React.Component {
         console.log(res)
         if (access_token) {
             console.log("try login google")
-            axios(`https://trade4goods.xyz/api/google_login`,
+            axios(`https://localhost:8443/api/google_login`,
                 {
                     method: "post",
                     data: {
@@ -154,7 +154,7 @@ class NormalLoginForm extends React.Component {
             )
                 .then(async () => {
                     console.log('google login success')
-                    const user = await axios('https://trade4goods.xyz/api/profile', {
+                    const user = await axios('https://localhost:8443/api/profile', {
                         method: "get",
                         withCredentials: true
                     })

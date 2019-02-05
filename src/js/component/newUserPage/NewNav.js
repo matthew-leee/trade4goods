@@ -1,0 +1,48 @@
+import React, { Component } from "react"
+import { connect } from "react-redux";
+
+// css
+import NewNavStyle from "./style/NewNav"
+import actions_newUserPage from "../../actions/newUserPage";
+
+class NewNav extends Component {
+    render() {
+        return (
+            <div className="content">
+                <ul>
+                    <li>
+                        <p style={NewNavStyle.p} onClick={()=>{this.props.handleNav("MyProf")}}>My Profile</p>
+                    </li>
+                    <li>
+                        <p style={NewNavStyle.p} onClick={()=>{this.props.handleNav("MyG")}}>My Goods</p>
+                    </li>
+                    <li>
+                        <p style={NewNavStyle.p} onClick={()=>{this.props.handleNav("FollowedG")}}>Followed Goods</p>
+                    </li>
+                    <li>
+                        <p style={NewNavStyle.p} onClick={()=>{this.props.handleNav("SentReq")}}>Sent Request</p>
+                    </li>
+                </ul>
+                <button onClick={this.props.handleClick}>Click to change</button>
+            </div>
+        )
+    }
+}
+
+const mapStateToProps = (state) => {
+    const nu = state.newUserReducer
+    return {
+        nav: nu.nav
+    }   
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        handleNav: (tag)=>{
+            dispatch(actions_newUserPage.handleNav(tag))
+        },
+
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewNav)
