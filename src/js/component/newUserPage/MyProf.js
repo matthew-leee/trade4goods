@@ -22,7 +22,7 @@ class MyProf extends Component {
                             <div className="imgOverlay" style={MyProfStyle.imgHover} onMouseLeave={this.props.handleImgHover}>
                                 <Icon type="edit" style={MyProfStyle.icon} />
                             </div>}
-                        <img style={MyProfStyle.img} src="https://instagram.fhkg10-1.fna.fbcdn.net/vp/857f8f78aec79e847df2015101da19ed/5CF95050/t51.2885-15/e35/50875616_283040825708747_6865581596424783698_n.jpg?_nc_ht=instagram.fhkg10-1.fna.fbcdn.net" alt="" />
+                        <img style={MyProfStyle.img} src="https://instagram.fhkg10-1.fna.fbcdn.net/vp/54f1a6e2759141c23a4d3a9045c8d77d/5CDDE8C2/t51.2885-15/e35/42003025_325826901577405_8149234815467752856_n.jpg?_nc_ht=instagram.fhkg10-1.fna.fbcdn.net" alt="" />
                     </div>
 
                     <div className="details" style={MyProfStyle.details}>

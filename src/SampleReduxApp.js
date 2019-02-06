@@ -25,7 +25,7 @@ class App extends Component {
             <BrowserRouter>
                 <div>
                     <Navvv />
-                    <div style={{marginTop: "7vh"}}>
+                    <div style={{paddingTop: "7vh"}}>
                     <Switch>
                         <Route exact path={"/"} component={MainGrid} />
                         <Route path={"/addPhotos"} component={AddPhotos} />

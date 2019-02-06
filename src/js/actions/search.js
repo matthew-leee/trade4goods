@@ -15,6 +15,18 @@ const actions_search = {
             type: "STORE_ALL_PRODUCTS",
             allProducts: products
         }
+    },
+    setMyProducts:(id)=>{
+        return {
+            type: "SET_MY_PRODUCTS",
+            id: id
+        }
+    },
+    sortProducts:(sort)=>{
+        return {
+            type: "SORT_PRODUCTS",
+            sort: sort
+        }
     }
 }
 

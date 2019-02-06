@@ -2,6 +2,7 @@ const searchReducer = (state = {
     search: "",
     submit: "",
     allProducts: [],
+    myProducts: []
 }, action) => {
     switch (action.type) {
         case "STORE_SEARCH":
@@ -85,6 +86,29 @@ const searchReducer = (state = {
             return {
                 ...state,
                 allProducts: mgProducts,
+            }
+        case "SET_MY_PRODUCTS":
+            return {
+                ...state,
+                myProducts: state.allProducts.filter((u)=>{
+                    return u.uploaded_by == action.id
+                })
+            }
+        case "SORT_PRODUCTS":
+            if(action.sort =="date"){
+                return {
+                    ...state,
+                    myProducts: state.myProducts.sort((a,b)=>{
+                        return new Date(b.uploaded_at) - new Date(a.uploaded_at)
+                    })
+                }
+            } else if (action.sort == "pop"){
+                return {
+                    ...state,
+                    myProducts: state.myProducts.sort((a,b)=>{
+                        return b.liked_by.length - a.liked_by.length
+                    })
+                }
             }
         default:
             return state

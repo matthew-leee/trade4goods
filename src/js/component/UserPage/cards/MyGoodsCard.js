@@ -53,6 +53,7 @@ class MyGoodsCard extends Component {
                     <Card.Meta
                         title={name}
                         description={description}
+                        style={{backgroundColor: "rgb(150, 150, 150)"}}
                     />
 
                     <GeneralTags tags={tags} closable={false} />

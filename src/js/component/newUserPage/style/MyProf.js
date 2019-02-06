@@ -3,8 +3,8 @@ const MyProfStyle = {
         fontFamily: "'Rajdhani', sans-serif",
         padding: "2.5vw 2.5vw 2.5vw 2.5vw",
         display: "grid",
-        height: "inherits",
-        width: "90vw",
+        height: "inherit",
+        width: "inherit",
         gridTemplateColumns: "1fr 3fr",
         gridTemplateRows: "repeat(3, 1fr)",
         gridTemplateAreas: `
