@@ -5,7 +5,7 @@ import NewNav from "./NewNav"
 import MyProf from "./MyProf"
 import MyG from "./MyG"
 import FollowedG from "./FollowedG"
-import SentReq from "./SentReq"
+import Upload from "./Upload"
 
 // css
 import NewMainStyle from "./style/NewMain"
@@ -44,7 +44,7 @@ class NewMain extends Component {
                     {nav.MyProf && <MyProf />}
                     {nav.MyG && <MyG />}
                     {nav.FollowedG && <FollowedG />}
-                    {nav.SentReq && <SentReq />}
+                    {nav.Upload && <Upload />}
                 </div>
             </div>
         )

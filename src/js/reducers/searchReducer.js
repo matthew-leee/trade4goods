@@ -90,22 +90,22 @@ const searchReducer = (state = {
         case "SET_MY_PRODUCTS":
             return {
                 ...state,
-                myProducts: state.allProducts.filter((u)=>{
+                myProducts: state.allProducts.filter((u) => {
                     return u.uploaded_by == action.id
                 })
             }
         case "SORT_PRODUCTS":
-            if(action.sort =="date"){
+            if (action.sort == "date") {
                 return {
                     ...state,
-                    myProducts: state.myProducts.sort((a,b)=>{
+                    myProducts: [...state.myProducts].sort((a, b) => {
                         return new Date(b.uploaded_at) - new Date(a.uploaded_at)
                     })
                 }
-            } else if (action.sort == "pop"){
+            } else if (action.sort == "pop") {
                 return {
                     ...state,
-                    myProducts: state.myProducts.sort((a,b)=>{
+                    myProducts: [...state.myProducts].sort((a, b) => {
                         return b.liked_by.length - a.liked_by.length
                     })
                 }

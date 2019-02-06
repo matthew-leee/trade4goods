@@ -81,7 +81,7 @@ class MyG extends Component {
                 )
             })
         const trading = this.props.myProducts
-            .filter((u) => { return u.status == 2 })
+            .filter((u) => { return u.status == 2 && u.offered_by.length == 0 })
             .map((u) => {
                 return (
                     <div style={{ margin: "1vw 1vw 1vw 1vw" }}>
@@ -133,7 +133,7 @@ class MyG extends Component {
                     )
             }
         }
-        
+
         const handleSortProducts = (sort)=>{
             this.props.sortProducts(sort)
             filter()

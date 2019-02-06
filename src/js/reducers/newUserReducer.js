@@ -3,7 +3,7 @@ const newUserReducer = (state = {
         MyProf: true,
         MyG: false,
         FollowedG: false,
-        SentReq: false
+        Upload: false
     },
     imgHover: false
 }, action) => {

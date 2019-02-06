@@ -20,7 +20,7 @@ class NewNav extends Component {
                         <p style={NewNavStyle.p} onClick={()=>{this.props.handleNav("FollowedG")}}>Followed Goods</p>
                     </li>
                     <li>
-                        <p style={NewNavStyle.p} onClick={()=>{this.props.handleNav("SentReq")}}>Sent Request</p>
+                        <p style={NewNavStyle.p} onClick={()=>{this.props.handleNav("Upload")}}>Upload New Products</p>
                     </li>
                 </ul>
                 <button onClick={this.props.handleClick}>Click to change</button>

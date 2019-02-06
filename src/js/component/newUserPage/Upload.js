@@ -1,11 +1,11 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
-class SentReq extends Component {
+class Upload extends Component {
     render() {
         return (
-            <div className="SentReq">
-                <p>SentReq</p>
+            <div className="Upload">
+                <p>Upload</p>
             </div>
         )
     }
@@ -23,5 +23,5 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SentReq)
+export default connect(mapStateToProps, mapDispatchToProps)(Upload)
 
