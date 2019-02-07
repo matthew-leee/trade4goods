@@ -5,6 +5,7 @@ import { popUpCloseTag, content } from './compCSS/popupCss'
 import TermsAndConditions from './TermsAndCondition'
 import axios from 'axios'
 import SuccessfulReg from './HandleOKandError/SuccessfulReg'
+import SuccessfulFBGGReg from './HandleOKandError/SuccessfulFBGGReg'
 import SocialButton from './SocialButton'
 import ErrAllInOne from './HandleOKandError/ErrAllInOne'
 
@@ -19,6 +20,7 @@ class RegistrationFormgp extends React.Component {
             open: true,
             terms: false,
             finishReg: false,
+            isSocialReg:false,
             isLoggedIn: false,
             userID: '',
             name: '',
@@ -163,7 +165,10 @@ class RegistrationFormgp extends React.Component {
                             withCredentials: true
                         }
                     )
-                        .then(() => console.log('fb register success'))
+                        .then(() =>{
+                            this.setState({isSocialReg:true})
+                            this.setState({ finishReg: true })
+                        })
                         .catch((err) => {
                             console.log("api profile create fail")
                             console.log(err.response.status)
@@ -235,7 +240,10 @@ class RegistrationFormgp extends React.Component {
                                 },
                                 withCredentials: true
                             })
-                            .then(() => console.log('google register success'))
+                            .then(() => {
+                                this.setState({isSocialReg:true})
+                                this.setState({ finishReg: true })
+                            })
                             .catch((err) => {
                                 console.log("api profile create fail")
                                 console.log(err.response.status)
@@ -421,8 +429,9 @@ class RegistrationFormgp extends React.Component {
                             </div>
                         </div>}
                     {this.state.terms && <TermsAndConditions openTerms={this.openTerms} style={{ color: "black" }} />}
-                    {this.state.finishReg && <div><SuccessfulReg /></div>}
-                    {this.state.finishReg && <a onClick={this.props.handleRegToggle}>return</a>}
+                    {this.state.finishReg && !this.state.isSocialReg && <div><SuccessfulReg /></div>}
+                    {this.state.finishReg && this.state.isSocialReg && <div><SuccessfulFBGGReg /></div>}
+                    {this.state.finishReg && <a className="myBtn" onClick={this.props.handleRegToggle}>return</a>}
                     {this.state.regErr && <ErrAllInOne err ={this.state.errMsg} rubyClose={this.props.handleRegToggle}/>}
                 </div>
             </Popup>
