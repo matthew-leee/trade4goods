@@ -6,7 +6,7 @@ import MyGStyle from "./style/MyG"
 import { Button } from "antd"
 import actions_search from "../../actions/search";
 
-const err = require('../asset/gif/error404.gif')
+const err = require('../asset/gif/replaceNoImg.gif')
 
 class MyG extends Component {
     constructor(props) {
@@ -27,7 +27,6 @@ class MyG extends Component {
         })
     }
     
-
     render() {
         const ButtonGroup = Button.Group;
         const allCards = this.props.myProducts
@@ -38,16 +37,17 @@ class MyG extends Component {
                             image={u.image[0] ? u.image[0] : err}
                             name={u.name}
                             key={`${u.product_id}_MyGCards`}
-                            traded={u.sold_to !== null}
+                            traded={u.status == 3}
                             withR={u.offered_by.length > 0 && u.sold_to == null}
                             trading={u.status == 2}
                             nth={u.status == 1 && u.offered_by.length == 0}
+                            product_id={u.product_id}
                         />
                     </div>
                 )
             })
         const traded = this.props.myProducts
-            .filter((u) => { return u.sold_to !== null })
+            .filter((u) => { return u.status == 3})
             .map((u) => {
                 return (
                     <div style={{ margin: "1vw 1vw 1vw 1vw" }}>
@@ -55,10 +55,11 @@ class MyG extends Component {
                             image={u.image[0] ? u.image[0] : err}
                             name={u.name}
                             key={`${u.product_id}_MyGCards`}
-                            traded={u.sold_to !== null}
+                            traded={u.status == 3}
                             withR={u.offered_by.length > 0 && u.sold_to == null}
                             trading={u.status == 2}
                             nth={u.status == 1 && u.offered_by.length == 0}
+                            product_id={u.product_id}
                         />
                     </div>
                 )
@@ -72,11 +73,12 @@ class MyG extends Component {
                             image={u.image[0] ? u.image[0] : err}
                             name={u.name}
                             key={`${u.product_id}_MyGCards`}
-                            traded={u.sold_to !== null}
+                            traded={u.status == 3}
                             withR={u.offered_by.length > 0 && u.sold_to == null}
                             trading={u.status == 2}
                             nth={u.status == 1 && u.offered_by.length == 0}
-                        />
+                            product_id={u.product_id}
+                        />   
                     </div>
                 )
             })
@@ -89,7 +91,7 @@ class MyG extends Component {
                             image={u.image[0] ? u.image[0] : err}
                             name={u.name}
                             key={`${u.product_id}_MyGCards`}
-                            traded={u.sold_to !== null}
+                            traded={u.status == 3}
                             withR={u.offered_by.length > 0 && u.sold_to == null}
                             trading={u.status == 2}
                             nth={u.status == 1 && u.offered_by.length == 0}

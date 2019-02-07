@@ -12,7 +12,8 @@ const MyGStyle = {
             gridTemplateRows: "6vh auto",
             width: "inherit",
             height: "auto",
-            justifyContent: "center"
+            justifyContent: "center",
+            position: "relative",
         },
         bigFrame: {
             gridRow: "2/3",
@@ -27,7 +28,7 @@ const MyGStyle = {
         button: {
             gridRow: "1/2",
             display: "flex",
-            backgroundImage: "linear-gradient(rgba(150,150,150,0.8),rgb(110, 110, 110))",
+            backgroundImage: "linear-gradient(rgba(33,25,168,0.8),rgb(110, 110, 110))",
             justifyContent: "flex-end",
             alignItems: "center",
             opacity: 0.8,

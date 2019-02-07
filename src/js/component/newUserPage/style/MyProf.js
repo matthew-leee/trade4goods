@@ -11,7 +11,8 @@ const MyProfStyle = {
         "a b b"
         "a c c"
         "a d d"
-        `
+        `,
+        position: "relative",
     },
     profile: {
         gridArea: "a",

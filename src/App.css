@@ -584,3 +584,81 @@
 	padding:0px !important;
 
 }
+
+/* width */
+.MyG .contents::-webkit-scrollbar {
+	width: 10px;
+  }
+  
+  /* Track */
+.MyG .contents::-webkit-scrollbar-track {
+	background: #f1f1f1; 
+  }
+  
+  /* Handle */
+.MyG .contents::-webkit-scrollbar-thumb {
+	background: #888; 
+  }
+  
+  /* Handle on hover */
+.MyG .contents::-webkit-scrollbar-thumb:hover {
+	background: #555; 
+  }
+
+  /* width */
+.FollowedG .contents::-webkit-scrollbar {
+	width: 10px;
+  }
+  
+  /* Track */
+.FollowedG .contents::-webkit-scrollbar-track {
+	background: #f1f1f1; 
+  }
+  
+  /* Handle */
+.FollowedG .contents::-webkit-scrollbar-thumb {
+	background: #888; 
+  }
+  
+  /* Handle on hover */
+.FollowedG .contents::-webkit-scrollbar-thumb:hover {
+	background: #555; 
+  }
+
+.notImg::-webkit-scrollbar {
+	width: 10px;
+  }
+  
+  /* Track */
+.notImg::-webkit-scrollbar-track {
+	background: rgb(200,200,200); 
+  }
+  
+  /* Handle */
+.notImg::-webkit-scrollbar-thumb {
+	background: #888; 
+  }
+  
+  /* Handle on hover */
+.notImg::-webkit-scrollbar-thumb:hover {
+	background: #555; 
+  }
+
+.imageCarosel::-webkit-scrollbar {
+	width: 10px;
+  }
+  
+  /* Track */
+.imageCarosel::-webkit-scrollbar-track {
+	background: rgb(200,200,200); 
+  }
+  
+  /* Handle */
+.imageCarosel::-webkit-scrollbar-thumb {
+	background: #888; 
+  }
+  
+  /* Handle on hover */
+.imageCarosel::-webkit-scrollbar-thumb:hover {
+	background: #555; 
+  }

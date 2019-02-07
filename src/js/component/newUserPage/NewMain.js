@@ -6,6 +6,7 @@ import MyProf from "./MyProf"
 import MyG from "./MyG"
 import FollowedG from "./FollowedG"
 import Upload from "./Upload"
+import BigCards from "./cards/BigCards"
 
 // css
 import NewMainStyle from "./style/NewMain"
@@ -28,7 +29,7 @@ class NewMain extends Component {
     }
 
     render() {
-        const {nav} = this.props
+        const {nav, currentProduct} = this.props
         return (
             <div className="newMain" style={NewMainStyle.newMain}>
 
@@ -45,6 +46,7 @@ class NewMain extends Component {
                     {nav.MyG && <MyG />}
                     {nav.FollowedG && <FollowedG />}
                     {nav.Upload && <Upload />}
+                    {currentProduct.details && <BigCards />}
                 </div>
             </div>
         )
@@ -53,8 +55,10 @@ class NewMain extends Component {
 
 const mapStateToPrpos = (state) => {
     const nu = state.newUserReducer
+    const search = state.searchReducer
     return {
-        nav: nu.nav
+        nav: nu.nav,
+        currentProduct: search.currentProduct
     }   
 }
 

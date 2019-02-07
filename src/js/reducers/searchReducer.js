@@ -2,7 +2,9 @@ const searchReducer = (state = {
     search: "",
     submit: "",
     allProducts: [],
-    myProducts: []
+    myProducts: [],
+    fProducts: [],
+    currentProduct: {}
 }, action) => {
     switch (action.type) {
         case "STORE_SEARCH":
@@ -94,6 +96,31 @@ const searchReducer = (state = {
                     return u.uploaded_by == action.id
                 })
             }
+        case "SET_F_PRODUCTS":
+            return {
+                ...state,
+                fProducts: state.allProducts.filter((u) => {
+                    return u.liked_by.some((a) => {
+                        return a == action.id
+                    })
+                })
+            }
+        case "SORT_FPRODUCTS":
+            if (action.sort == "date") {
+                return {
+                    ...state,
+                    myProducts: [...state.fProducts].sort((a, b) => {
+                        return new Date(b.uploaded_at) - new Date(a.uploaded_at)
+                    })
+                }
+            } else if (action.sort == "pop") {
+                return {
+                    ...state,
+                    myProducts: [...state.fProducts].sort((a, b) => {
+                        return b.liked_by.length - a.liked_by.length
+                    })
+                }
+            }
         case "SORT_PRODUCTS":
             if (action.sort == "date") {
                 return {
@@ -109,6 +136,23 @@ const searchReducer = (state = {
                         return b.liked_by.length - a.liked_by.length
                     })
                 }
+            }
+        case "OPEN_DETAILS":
+            const currentDetails = state.allProducts.filter((u) => {
+                return u.product_id == action.id
+            })
+            return {
+                ...state,
+                currentProduct: {
+                    details: currentDetails,
+                    whom: action.whom,
+                    which: action.which
+                }
+            }
+        case "CLOSE_DETAILS":
+            return {
+                ...state,
+                currentProduct: {}
             }
         default:
             return state

@@ -1,11 +1,11 @@
 const actions_search = {
-    storeSearch: (value)=>{
+    storeSearch: (value) => {
         return {
             type: "STORE_SEARCH",
             search: value
         }
     },
-    submitSearch: () =>{
+    submitSearch: () => {
         return {
             type: "SUBMIT_SEARCH"
         }
@@ -16,16 +16,39 @@ const actions_search = {
             allProducts: products
         }
     },
-    setMyProducts:(id)=>{
+    setMyProducts: (id) => {
         return {
             type: "SET_MY_PRODUCTS",
             id: id
         }
     },
-    sortProducts:(sort)=>{
+    setFProducts: (id) => {
+        return {
+            type: "SET_F_PRODUCTS",
+            id: id
+        }
+    },
+    sortProducts: (sort) => {
         return {
             type: "SORT_PRODUCTS",
             sort: sort
+        }
+    },
+    sortFProducts: (sort) => {
+        return {
+            type: "SORT_FPRODUCTS",
+            sort: sort
+        }
+    },
+    openDetails: (id, whom, which)=>{
+        return {
+            type: "OPEN_DETAILS",
+            id, whom, which
+        }
+    },
+    closeDetails: ()=>{
+        return {
+            type: "CLOSE_DETAILS"
         }
     }
 }
