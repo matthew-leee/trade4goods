@@ -68,7 +68,7 @@ module.exports = class {
                 throw {
                     statusCode: 403,
                     error: "Profile Does Not Exist",
-                    message: "Unknown Error, profile not found",
+                    message: "Profile not found, please sign up and create a new profile",
                     suggestSolution: "Sign Up and create a new profile"
                 }
             }
@@ -122,7 +122,7 @@ module.exports = class {
             throw {
                 statusCode: 401,
                 error: "Unauthorized",
-                message: "Unknown error, user has not been registered"
+                message: "User has not been registered, please register before login"
             }
         } else {
             return user
