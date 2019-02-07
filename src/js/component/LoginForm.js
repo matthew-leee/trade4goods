@@ -47,7 +47,6 @@ class NormalLoginForm extends React.Component {
                         data: passingDB,
                         withCredentials: true
                     })
-                    console.log(res)
 
                     // put userinfo in redux
                     const user = await axios('https://localhost:8443/api/profile', {
@@ -84,10 +83,7 @@ class NormalLoginForm extends React.Component {
         let displayed_name = res._profile.name
         let profile_picutre = res._profile.profilePicURL
         let phone_number = ""
-        console.log(res)
-        if (!res._token.accessToken) {
-            return console.log("hi")
-        }
+
         console.log(res._token.accessToken)
         if (access_token) {
             axios(`https://localhost:8443/api/facebook_login`,
@@ -102,24 +98,21 @@ class NormalLoginForm extends React.Component {
                 }
             )
                 .then(async () => {
-                    console.log("OK")
-                    // try {
-                    //     const user = await axios('https://localhost:8443/api/profile', {
-                    //         method: "get",
-                    //         withCredentials: true
-                    //     })
+                    try {
+                        const user = await axios('https://localhost:8443/api/profile', {
+                            method: "get",
+                            withCredentials: true
+                        })
+                        this.props.storeMyUser(user.data)
+                        this.setState({ open: false })
 
-                    //     console.log(user.data)
-                    //     this.props.storeMyUser(user.data)
-                    //     console.log('fb login success')
-
-                    // } catch (err) {
-                    //     if (err.response.data.message) {
-                    //         this.setState({ errMsg: err.response.data.message })
-                    //     } else {
-                    //         this.setState({ errMsg: "Connection fail, please try again later" })
-                    //     }
-                    // }
+                    } catch (err) {
+                        if (err.response.data.message) {
+                            this.setState({ errMsg: err.response.data.message })
+                        } else {
+                            this.setState({ errMsg: "Connection fail, please try again later" })
+                        }
+                    }
                 }
                 )
                 .catch(err => {
@@ -127,6 +120,7 @@ class NormalLoginForm extends React.Component {
                     console.log(err.response)
                     console.log(err.response.data)
                     console.log(err.response.data.message)
+                    this.setState({ errMsg: err.response.data.message })
                 })
         }
     }
@@ -136,10 +130,8 @@ class NormalLoginForm extends React.Component {
         let name = res._profile.name
         let access_token = res._token.accessToken
         let id_token = res._token.idToken
-        
-        console.log(res)
+
         if (access_token) {
-            console.log("try login google")
             axios(`https://localhost:8443/api/google_login`,
                 {
                     method: "post",
@@ -161,6 +153,7 @@ class NormalLoginForm extends React.Component {
 
                     console.log(user.data)
                     this.props.storeMyUser(user.data)
+                    this.setState({ open: false })
                 }
                 )
                 .catch(err => {
@@ -168,6 +161,7 @@ class NormalLoginForm extends React.Component {
                     console.log(err.response)
                     console.log(err.response.data)
                     console.log(err.response.data.message)
+                    this.setState({ errMsg: err.response.data.message })
                 })
         }
     }
