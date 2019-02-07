@@ -39,6 +39,12 @@ const actions_addPhotos = {
         return {
             type: "CLEAR_FORM"
         }
+    },
+    imgDelete:(key)=>{
+        return {
+            type: "IMG_DEL",
+            key: key
+        }
     }
 }
 

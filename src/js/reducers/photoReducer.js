@@ -1,17 +1,3 @@
-// const actions = require ("./actions")
-
-// const photoState = {
-//     details: [],
-//     uploadedPhotos: [],
-//     previewPhotos: [],
-//     tags: [],
-//     inputVisible: false,
-//     inputValue: "",
-//     inputConfirm: "",
-//     typingTag: "",
-//     finishedTag: []
-// }
-
 const photoReducer = (state = {
     details: [],
     uploadedPhotos: [],
@@ -88,6 +74,13 @@ const photoReducer = (state = {
                 finishedTag: [],
                 uploadedPhotos: []
             }
+        case "IMG_DEL":
+        return {
+            ...state,
+            previewPhotos: state.previewPhotos.filter((u)=>{
+                return u.key !== action.key
+            })
+        }
         default:
             return state
     }

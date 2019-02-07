@@ -11,16 +11,20 @@ class NewNav extends Component {
             <div className="content">
                 <ul>
                     <li>
-                        <p style={NewNavStyle.p} onClick={()=>{this.props.handleNav("MyProf")}}>My Profile</p>
+                        {this.props.nav.MyProf && <p style={NewNavStyle.pA} onClick={() => { this.props.handleNav("MyProf") }}>My Profile</p>}
+                        {!this.props.nav.MyProf && <p style={NewNavStyle.p} onClick={() => { this.props.handleNav("MyProf") }}>My Profile</p>}
                     </li>
                     <li>
-                        <p style={NewNavStyle.p} onClick={()=>{this.props.handleNav("MyG")}}>My Goods</p>
+                        {this.props.nav.MyG && <p style={NewNavStyle.pA} onClick={() => { this.props.handleNav("MyG") }}>My Goods</p>}
+                        {!this.props.nav.MyG && <p style={NewNavStyle.p} onClick={() => { this.props.handleNav("MyG") }}>My Goods</p>}
                     </li>
                     <li>
-                        <p style={NewNavStyle.p} onClick={()=>{this.props.handleNav("FollowedG")}}>Followed Goods</p>
+                        {this.props.nav.FollowedG && <p style={NewNavStyle.pA} onClick={() => { this.props.handleNav("FollowedG") }}>Followed Goods</p>}
+                        {!this.props.nav.FollowedG && <p style={NewNavStyle.p} onClick={() => { this.props.handleNav("FollowedG") }}>Followed Goods</p>}
                     </li>
                     <li>
-                        <p style={NewNavStyle.p} onClick={()=>{this.props.handleNav("Upload")}}>Upload New Products</p>
+                        {this.props.nav.Upload && <p style={NewNavStyle.pA} onClick={() => { this.props.handleNav("Upload") }}>Upload New Products</p>}
+                        {!this.props.nav.Upload && <p style={NewNavStyle.p} onClick={() => { this.props.handleNav("Upload") }}>Upload New Products</p>}
                     </li>
                 </ul>
                 {/* <button onClick={this.props.handleClick}>Click to change</button> */}
@@ -33,12 +37,12 @@ const mapStateToProps = (state) => {
     const nu = state.newUserReducer
     return {
         nav: nu.nav
-    }   
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        handleNav: (tag)=>{
+        handleNav: (tag) => {
             dispatch(actions_newUserPage.handleNav(tag))
         },
 

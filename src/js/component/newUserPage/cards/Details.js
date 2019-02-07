@@ -137,9 +137,9 @@ class ProductDetails extends Component {
                                     <List.Item key={`${u.product_id}comment`}>
                                         <List.Item.Meta
                                             title={<h6>{item.title}</h6>}
-                                            description={item.description}
+                                            description={item.content}
                                         />
-                                        {item.content}
+                                        {item.description}
                                     </List.Item>
                                 )}
                             >
@@ -212,10 +212,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                         const user = allUsers.filter((u) => {
                             return u.user_id == comment.commentator
                         })[0].displayed_name
+                        const day = Math.floor((new Date() - new Date(comment.comment_at))/86400000)
                         return {
                             title: user,
                             content: comment.comment,
-                            description: comment.comment_at
+                            description: `${day} days ago`
                         }
                     })
 

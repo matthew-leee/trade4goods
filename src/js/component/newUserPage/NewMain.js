@@ -5,7 +5,7 @@ import NewNav from "./NewNav"
 import MyProf from "./MyProf"
 import MyG from "./MyG"
 import FollowedG from "./FollowedG"
-import Upload from "./Upload"
+import Uploads from "./Upload"
 import BigCards from "./cards/BigCards"
 
 // css
@@ -45,7 +45,7 @@ class NewMain extends Component {
                     {nav.MyProf && <MyProf />}
                     {nav.MyG && <MyG />}
                     {nav.FollowedG && <FollowedG />}
-                    {nav.Upload && <Upload />}
+                    {nav.Upload && <Uploads />}
                     {currentProduct.details && <BigCards />}
                 </div>
             </div>

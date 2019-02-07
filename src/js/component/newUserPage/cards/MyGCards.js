@@ -84,7 +84,7 @@ const mapDispatchToProps = (dispatch) => {
                 const cmtIds = products.data.filter((u)=>{
                     return u.product_id == id
                 })[0].comments
-                
+
                 // const ids = res.data[0].map((u) => { return u[0] })
                 const comments = cmtIds.map(async (comment_id) => {
                     const sth = await Axios(`https://localhost:8443/api/comment/${comment_id}`, {
@@ -95,11 +95,12 @@ const mapDispatchToProps = (dispatch) => {
                     const user = allUsers.filter((u) => {
                         return u.user_id == comment.commentator
                     })[0].displayed_name
-                    return {
-                        title: user,
-                        content: comment.comment,
-                        description: comment.comment_at
-                    }
+                    const day = Math.floor((new Date() - new Date(comment.comment_at))/86400000)
+                        return {
+                            title: user,
+                            content: comment.comment,
+                            description: `${day} days ago`
+                        }
                 })
 
                 Promise.all(comments)
