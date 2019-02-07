@@ -102,24 +102,24 @@ class NormalLoginForm extends React.Component {
                 }
             )
                 .then(async () => {
+                    console.log("OK")
+                    // try {
+                    //     const user = await axios('https://localhost:8443/api/profile', {
+                    //         method: "get",
+                    //         withCredentials: true
+                    //     })
 
-                    try {
-                        const user = await axios('https://localhost:8443/api/profile', {
-                            method: "get",
-                            withCredentials: true
-                        })
+                    //     console.log(user.data)
+                    //     this.props.storeMyUser(user.data)
+                    //     console.log('fb login success')
 
-                        console.log(user.data)
-                        this.props.storeMyUser(user.data)
-                        console.log('fb login success')
-
-                    } catch (err) {
-                        if (err.response.data.message) {
-                            this.setState({ errMsg: err.response.data.message })
-                        } else {
-                            this.setState({ errMsg: "Connection fail, please try again later" })
-                        }
-                    }
+                    // } catch (err) {
+                    //     if (err.response.data.message) {
+                    //         this.setState({ errMsg: err.response.data.message })
+                    //     } else {
+                    //         this.setState({ errMsg: "Connection fail, please try again later" })
+                    //     }
+                    // }
                 }
                 )
                 .catch(err => {

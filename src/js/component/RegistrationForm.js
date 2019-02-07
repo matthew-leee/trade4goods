@@ -142,8 +142,17 @@ class RegistrationFormgp extends React.Component {
                     withCredentials: true
                 }
             )
-                .then(() => {
-                    axios(`https://localhost:8443/api/profile/`,
+                .then(async () => {
+                    await axios(`https://localhost:8443/api/facebook_login`, {
+                        method: "post",
+                        data: {
+                            facebook_id: facebook_id,
+                            access_token: access_token,
+
+                        },
+                        withCredentials: true
+                    });
+                    await axios(`https://localhost:8443/api/profile/`,
                         {
                             method: "post",
                             data: {
@@ -189,7 +198,7 @@ class RegistrationFormgp extends React.Component {
         let displayed_name = res._profile.name
         let phone_number = ""
         let profile_picture = ""
-        console.log(res)
+        console.log()
         if (access_token) {
             axios(`https://localhost:8443/api/signup`, {
                     method: "post",
@@ -204,8 +213,20 @@ class RegistrationFormgp extends React.Component {
                     },
                     withCredentials: true
                 })
-                .then(() => {
-                        axios(`https://localhost:8443/api/profile/`, {
+                .then(async () => {
+                        await axios(`https://localhost:8443/api/google_login`,
+                        {
+                            method: "post",
+                            data: {
+                                google_id: google_id,
+                                access_token: access_token,
+                                id_token: id_token,
+                                name: name
+                            },
+                            withCredentials: true
+                        }
+                    )
+                        await axios(`https://localhost:8443/api/profile/`, {
                                 method: "post",
                                 data: {
                                     profile_picture: profile_picture,
