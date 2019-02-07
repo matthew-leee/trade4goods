@@ -8,8 +8,9 @@ class ErrAllInOne extends React.Component {
     render() {
         return (
                 <div style={{textAlign: "center"}}> 
+                    <p>Opps...Something goes wrong..</p>
                     <p>{this.props.err}</p>
-                    <buttun className="myBtn" onClick={this.props.rubyClose}> Return</buttun>
+                    <button className="myBtn" onClick={this.props.rubyClose}> Return</button>
                 </div>
         )
 

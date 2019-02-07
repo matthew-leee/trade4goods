@@ -303,6 +303,7 @@ module.exports = class {
     async verifyEmail(key) {
         try {
             const emailInKey = await this.getAsync(key)
+            console.log(emailInKey)
             if (emailInKey) {
                 await this.knex('users_credential').where('email', emailInKey).update({ email_isVerifying: false })
                 this.redisClient.del(key)

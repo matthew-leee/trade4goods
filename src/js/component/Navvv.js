@@ -6,7 +6,7 @@ import { Link } from "react-router-dom"
 import {updateFilterArr,updateFilterKey,handleLoginToggle,handleRegToggle} from '../actions/hello'
 import { withRouter } from "react-router";
 
-import { Select } from 'antd';
+import { Select, Icon } from 'antd';
 const _ = require('lodash')
 const Option = Select.Option;
 
@@ -114,7 +114,7 @@ class ConnectedNavvv extends React.Component {
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style={{height: "7vh"}}>
     
                 <Link className="navbar-brand d-inline" to="/">Trade4Goods</Link>
-                <Select onInputKeyDown={this.handleNavPressEnter} onBlur={this.handleNavOnBlur} notFoundContent="Not Found" mode="multiple" style={{ width: '50%' }} defaultValue={[]} placeholder="Please select" onChange={this.handleChange} maxTagCount={3}>
+                <Select onInputKeyDown={this.handleNavPressEnter} notFoundContent="Not Found" mode="multiple" style={{ width: '50%' }} defaultValue={[]} placeholder="Please select" onChange={this.handleChange} maxTagCount={3}>
                     {this.state.arr}
                 </Select>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">

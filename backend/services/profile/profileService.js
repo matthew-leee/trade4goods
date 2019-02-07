@@ -39,19 +39,14 @@ module.exports = class {
                     message: "Phone number can contain numbers only",
                 }
             }
-            // if (info.profile_picture && !/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/.test(info.profile_picture)) {
-            //     throw {
-            //         statusCode: 415,
-            //         error: "Invalid Image Format",
-            //         message: "Image has to be base64 encoded, this is probably an error at processing the image",
-            //         suggestSolution: "Please skip uploading profile picture for now, contact us for help"
-            //     }
-            // }
+
             const injectingInfo = {
                 user_id: id
             }
             injectingInfo.displayed_name = info.displayed_name;
-            injectingInfo.phone_number = info.phone_number;
+            if (info.phone_number !== "") {
+                injectingInfo.phone_number = info.phone_number;
+            }
             if (info.profile_picture) {
                 injectingInfo.profile_picture = info.profile_picture
             }
@@ -73,7 +68,7 @@ module.exports = class {
                 throw {
                     statusCode: 403,
                     error: "Profile Does Not Exist",
-                    message: "Unknown Error, profile not found",
+                    message: "Profile not found, please sign up and create a new profile",
                     suggestSolution: "Sign Up and create a new profile"
                 }
             }
@@ -110,7 +105,7 @@ module.exports = class {
                 //         suggestSolution: "Please do not upload profile picture for now, contact us for help"
                 //     }
                 // } else {
-                    updatedInfo.profile_picture = info.profile_picture
+                updatedInfo.profile_picture = info.profile_picture
                 // }
             }
             await this.knex('users').where('user_id', id).update(updatedInfo)
@@ -127,17 +122,17 @@ module.exports = class {
             throw {
                 statusCode: 401,
                 error: "Unauthorized",
-                message: "Unknown error, user has not been registered"
+                message: "User has not been registered, please register before login"
             }
         } else {
             return user
         }
-    } 
-    
+    }
+
     async getAllProfiles() {
         try {
             return await this.knex('users')
-        } catch(err) {
+        } catch (err) {
             throw err
         }
     }

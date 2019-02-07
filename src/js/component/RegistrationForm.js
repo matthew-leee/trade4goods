@@ -5,8 +5,9 @@ import { popUpCloseTag, content } from './compCSS/popupCss'
 import TermsAndConditions from './TermsAndCondition'
 import axios from 'axios'
 import SuccessfulReg from './HandleOKandError/SuccessfulReg'
+import SuccessfulFBGGReg from './HandleOKandError/SuccessfulFBGGReg'
 import SocialButton from './SocialButton'
-
+import ErrAllInOne from './HandleOKandError/ErrAllInOne'
 
 
 
@@ -19,10 +20,13 @@ class RegistrationFormgp extends React.Component {
             open: true,
             terms: false,
             finishReg: false,
+            isSocialReg:false,
             isLoggedIn: false,
             userID: '',
             name: '',
             email: '',
+            regErr: false,
+            errMsg: "",
 
         };
         this.closeModal = this.closeModal.bind(this)
@@ -125,7 +129,7 @@ class RegistrationFormgp extends React.Component {
         let profile_picture = ""
 
         if (access_token) {
-            axios(`https://localhost:8080/api/signup`,
+            axios(`https://localhost:8443/api/signup`,
                 {
                     method: "post",
                     data: {
@@ -140,8 +144,17 @@ class RegistrationFormgp extends React.Component {
                     withCredentials: true
                 }
             )
-                .then(() => {
-                    axios(`https://localhost:8080/api/profile/`,
+                .then(async () => {
+                    await axios(`https://localhost:8443/api/facebook_login`, {
+                        method: "post",
+                        data: {
+                            facebook_id: facebook_id,
+                            access_token: access_token,
+
+                        },
+                        withCredentials: true
+                    });
+                    await axios(`https://localhost:8443/api/profile/`,
                         {
                             method: "post",
                             data: {
@@ -152,13 +165,18 @@ class RegistrationFormgp extends React.Component {
                             withCredentials: true
                         }
                     )
-                        .then(() => console.log('fb register success'))
+                        .then(() =>{
+                            this.setState({isSocialReg:true})
+                            this.setState({ finishReg: true })
+                        })
                         .catch((err) => {
                             console.log("api profile create fail")
                             console.log(err.response.status)
                             console.log(err.response)
                             console.log(err.response.data)
                             console.log(err.response.data.message)
+                            this.setState({ regErr: true })
+                            this.setState({ errMsg: err.response.data.message })
                         })
                 }
 
@@ -169,6 +187,8 @@ class RegistrationFormgp extends React.Component {
                     console.log(err.response)
                     console.log(err.response.data)
                     console.log(err.response.data.message)
+                    this.setState({ regErr: true })
+                    this.setState({ errMsg: err.response.data.message })
                 })
         }
     }
@@ -177,32 +197,73 @@ class RegistrationFormgp extends React.Component {
 
         let google_id = res._profile.id
         let email = res._profile.email
-        let accessToken = res._token.accessToken
+        let access_token = res._token.accessToken
         let id_token = res._token.idToken
         let name = res._profile.id
-
-        if (accessToken) {
-            axios(`https://localhost:8080/api/signup`,
-                {
+        let displayed_name = res._profile.name
+        let phone_number = ""
+        let profile_picture = ""
+        console.log()
+        if (access_token) {
+            axios(`https://localhost:8443/api/signup`, {
                     method: "post",
                     data: {
                         google_id: google_id,
-                        access_token: accessToken,
-                        id_token: id_token,
+                        access_token: access_token,
                         name: name,
-                        email: email
+                        email: email,
+                        id_token: id_token,
+                        phone_number: phone_number,
+                        displayed_name: displayed_name
                     },
                     withCredentials: true
-                }
-            )
-                .then(() =>
-                    console.log('google register success')
+                })
+                .then(async () => {
+                        await axios(`https://localhost:8443/api/google_login`,
+                        {
+                            method: "post",
+                            data: {
+                                google_id: google_id,
+                                access_token: access_token,
+                                id_token: id_token,
+                                name: name
+                            },
+                            withCredentials: true
+                        }
+                    )
+                        await axios(`https://localhost:8443/api/profile/`, {
+                                method: "post",
+                                data: {
+                                    profile_picture: profile_picture,
+                                    phone_number: phone_number,
+                                    displayed_name: displayed_name
+                                },
+                                withCredentials: true
+                            })
+                            .then(() => {
+                                this.setState({isSocialReg:true})
+                                this.setState({ finishReg: true })
+                            })
+                            .catch((err) => {
+                                console.log("api profile create fail")
+                                console.log(err.response.status)
+                                console.log(err.response)
+                                console.log(err.response.data)
+                                console.log(err.response.data.message)
+                                this.setState({ regErr: true })
+                                this.setState({ errMsg: err.response.data.message })
+                            })
+                    }
+
                 )
                 .catch(err => {
+                    console.log("api sign up create fail")
                     console.log(err.response.status)
                     console.log(err.response)
                     console.log(err.response.data)
                     console.log(err.response.data.message)
+                    this.setState({ regErr: true })
+                    this.setState({ errMsg: err.response.data.message })
                 })
         }
     }
@@ -242,7 +303,7 @@ class RegistrationFormgp extends React.Component {
             <Popup contentStyle={content} open={this.state.open} closeOnDocumentClick onClose={this.props.handleRegToggle}>
                 <div style={{ textAlign: "center", }}>
                     <a style={popUpCloseTag} onClick={this.props.handleRegToggle}>&times;</a>
-                    {!this.state.finishReg &&
+                    {!this.state.finishReg && !this.state.regErr &&
 
                         <div style={{ position: "absolute", left: "50%", top: "40%", transform: 'translate(-50%, -50%)' }}>
 
@@ -368,8 +429,10 @@ class RegistrationFormgp extends React.Component {
                             </div>
                         </div>}
                     {this.state.terms && <TermsAndConditions openTerms={this.openTerms} style={{ color: "black" }} />}
-                    {this.state.finishReg && <div><SuccessfulReg /></div>}
-                    {this.state.finishReg && <a onClick={this.props.handleRegToggle}>return</a>}
+                    {this.state.finishReg && !this.state.isSocialReg && <div><SuccessfulReg /></div>}
+                    {this.state.finishReg && this.state.isSocialReg && <div><SuccessfulFBGGReg /></div>}
+                    {this.state.finishReg && <a className="myBtn" onClick={this.props.handleRegToggle}>return</a>}
+                    {this.state.regErr && <ErrAllInOne err ={this.state.errMsg} rubyClose={this.props.handleRegToggle}/>}
                 </div>
             </Popup>
         );
