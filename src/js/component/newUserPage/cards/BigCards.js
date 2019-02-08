@@ -13,7 +13,7 @@ class BigCards extends Component {
         return (
             <div className="bigCards" onClick={this.props.closeDetails} style={BigCardsStyle.frame}>
                 <div className="content"style={BigCardsStyle.content} onClick={this.stopPropagation}>
-                    <ProductDetails details={details[0]} />
+                    <ProductDetails details={details[0]} whom={whom} status={which} />
                 </div>
             </div>
         )

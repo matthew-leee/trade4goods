@@ -26,6 +26,7 @@
     "popper": "^1.0.1",
     "randomstring": "^1.1.5",
     "react": "^16.7.0",
+    "react-bootstrap": "^1.0.0-beta.5",
     "react-dom": "^16.7.0",
     "react-facebook-login": "^4.1.1",
     "react-infinite-scroller": "^1.2.4",

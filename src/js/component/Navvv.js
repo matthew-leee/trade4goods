@@ -134,7 +134,7 @@ class ConnectedNavvv extends React.Component {
                         </li>}
                         {this.props.myUser.displayed_name && 
                         <li className="nav-item" style={{display: "flex", flexDirection:"row"}}>
-                            <p className="nav-link">Welcome, {this.props.myUser.displayed_name}</p> 
+                            <a className="nav-link" href="#">Welcome, {this.props.myUser.displayed_name}</a> 
                             <Link className="nav-link" to="/userPage">User Page</Link>
                         </li>}
                     </ul>

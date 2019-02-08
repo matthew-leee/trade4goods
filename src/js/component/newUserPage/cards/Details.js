@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Carousel, List, Row, Col } from "antd"
+import { List, Row, Col } from "antd"
 import actions_userPage from "../../../actions/userPage";
 import actions_search from '../../../actions/search'
 import { connect } from "react-redux"
@@ -7,23 +7,16 @@ import Axios from "axios";
 // import Trade from "./Trade"
 import BigCardsStyle from "../style/BigCards"
 
+import Trade from "./Trade"
+import Carousel from "./Carousel"
+
 const err = require('../../asset/gif/replaceNoImg.gif')
 
 class ProductDetails extends Component {
 
     render() {
         const u = this.props.details
-        const images = u.image.map((src) => {
-            if(src){
-                return (
-                    <img src={src} alt="" />
-                )
-            } else {
-                return (
-                    <img src={err} alt="" />
-                )
-            }
-        })
+        const status = this.props.status
         const displayed_name = this.props.allUsers
             .filter((a) => {
                 return a.user_id == u.uploaded_by
@@ -31,8 +24,6 @@ class ProductDetails extends Component {
             .map((u) => {
                 return u.displayed_name
             })[0]
-
-        console.log(this.props)
 
         const comments = this.props.allComments
             .some((a) => {
@@ -43,22 +34,7 @@ class ProductDetails extends Component {
                     return a.product_id == u.product_id
                 })[0].comments : []
 
-        const otherUser = this.props.allUsers
-            .filter((u) => { return u.displayed_name == this.props.otherUser })
-            .map((u) => {
-                return (
-                    <div style={{ backgroundColor: "#f4fef4", borderRadius: "1vw", display: "flex", flexDirection: "column" }}>
-                        <div className="userBanner" style={{ borderRadius: "1vw", backgroundColor: "#c1fcc1", height: "5vh", display: "flex", justifyContent: "center", alignContent: "center", alignItems: "center" }}>
-                            <p>this is a banner</p>
-                        </div>
-                        <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
-                            <img src={u.profile_picture} style={{ marginTop: "2vh", marginBottom: "2vh", width: "10vw", borderRadius: "50%" }} />
-                            <h4 style={{ paddingTop: "1vw", paddingBottom: "1vw" }}>{u.displayed_name}</h4>
-                            <h4 style={{ paddingTop: "1vw", paddingBottom: "1vw" }}>Credibility: {u.credibility}</h4>
-                        </div>
-                    </div>
-                )
-            })
+        // 
 
         const details = [
             {
@@ -86,16 +62,19 @@ class ProductDetails extends Component {
                 description: u.status == 1 ? "Available" : "Trading"
             }
         ]
+        
         const detail = BigCardsStyle.details
         return (
             <div key={`details-${u.product_id}`} style={detail.outer}>
 
                 {/* image */}
                 <div style={detail.inner.img} className="imageCarosel">
-                    <h5>{u.name}</h5>
-                    <Carousel autoplay>
-                        {images}
-                    </Carousel>
+                    <div className="header"
+                        style={detail.inner.imgHeader}>
+                        <h4 style={{ padding: 0, margin: 0 }}>{u.name}</h4>
+                        <Trade details={u} status={status} />
+                    </div>
+                    <Carousel srcs={u.image} />
                 </div>
 
 
@@ -212,7 +191,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                         const user = allUsers.filter((u) => {
                             return u.user_id == comment.commentator
                         })[0].displayed_name
-                        const day = Math.floor((new Date() - new Date(comment.comment_at))/86400000)
+                        const day = Math.floor((new Date() - new Date(comment.comment_at)) / 86400000)
                         return {
                             title: user,
                             content: comment.comment,
@@ -234,3 +213,20 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetails)
+
+// const otherUser = this.props.allUsers
+//         //     .filter((u) => { return u.displayed_name == this.props.otherUser })
+//         //     .map((u) => {
+//         //         return (
+//         //             <div style={{ backgroundColor: "#f4fef4", borderRadius: "1vw", display: "flex", flexDirection: "column" }}>
+//         //                 <div className="userBanner" style={{ borderRadius: "1vw", backgroundColor: "#c1fcc1", height: "5vh", display: "flex", justifyContent: "center", alignContent: "center", alignItems: "center" }}>
+//         //                     <p>this is a banner</p>
+//         //                 </div>
+//         //                 <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
+//         //                     <img src={u.profile_picture} style={{ marginTop: "2vh", marginBottom: "2vh", width: "10vw", borderRadius: "50%" }} />
+//         //                     <h4 style={{ paddingTop: "1vw", paddingBottom: "1vw" }}>{u.displayed_name}</h4>
+//         //                     <h4 style={{ paddingTop: "1vw", paddingBottom: "1vw" }}>Credibility: {u.credibility}</h4>
+//         //                 </div>
+//         //             </div>
+//         //         )
+//         //     })

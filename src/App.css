@@ -644,22 +644,25 @@
 	background: #555; 
   }
 
-.imageCarosel::-webkit-scrollbar {
+.fkcarousel::-webkit-scrollbar {
 	width: 10px;
   }
   
   /* Track */
-.imageCarosel::-webkit-scrollbar-track {
+.fkcarousel::-webkit-scrollbar-track {
 	background: rgb(200,200,200); 
   }
   
   /* Handle */
-.imageCarosel::-webkit-scrollbar-thumb {
+.fkcarousel::-webkit-scrollbar-thumb {
 	background: #888; 
   }
   
   /* Handle on hover */
-.imageCarosel::-webkit-scrollbar-thumb:hover {
+.fkcarousel::-webkit-scrollbar-thumb:hover {
 	background: #555; 
   }
 
+.carouselSmall {
+	
+}
