@@ -10,6 +10,7 @@ import BigCards from "./cards/BigCards"
 
 // css
 import NewMainStyle from "./style/NewMain"
+import TradeCards from "./cards/TradeCards";
 
 class NewMain extends Component {
     constructor(props){
@@ -29,7 +30,7 @@ class NewMain extends Component {
     }
 
     render() {
-        const {nav, currentProduct} = this.props
+        const {nav, currentProduct, currentTrade} = this.props
         return (
             <div className="newMain" style={NewMainStyle.newMain}>
 
@@ -47,6 +48,7 @@ class NewMain extends Component {
                     {nav.FollowedG && <FollowedG />}
                     {nav.Upload && <Uploads />}
                     {currentProduct.details && <BigCards />}
+                    {currentTrade.details && <TradeCards />}
                 </div>
             </div>
         )
@@ -56,9 +58,11 @@ class NewMain extends Component {
 const mapStateToPrpos = (state) => {
     const nu = state.newUserReducer
     const search = state.searchReducer
+    const trade = state.tradeReducer
     return {
         nav: nu.nav,
-        currentProduct: search.currentProduct
+        currentProduct: search.currentProduct,
+        currentTrade: trade.currentTrade
     }   
 }
 

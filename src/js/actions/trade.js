@@ -27,6 +27,19 @@ const actions_trade = {
         return {
             type: "CLEAR_SELECT"
         }
+    },
+    openTradeCards: (details, status) => {
+        return {
+            type: "OPEN_TRADECARDS",
+            currentTrade: {
+                details, status
+            }
+        }
+    },
+    closeTradeCards: () => {
+        return {
+            type: "CLOSE_TRADECARDS"
+        }
     }
 }
 

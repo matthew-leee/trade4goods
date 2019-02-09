@@ -2,6 +2,7 @@ const tradeReducer = (state = {
     openMyGoodModal: false,
     openOGModal: false,
     selected: "",
+    currentTrade: {},
 }, action) => {
     switch (action.type) {
         case "OPEN_MYGOOD_MODAL":
@@ -18,6 +19,16 @@ const tradeReducer = (state = {
             return {
                 ...state,
                 selected: ""
+            }
+        case "OPEN_TRADECARDS":
+            return {
+                ...state,
+                currentTrade: action.currentTrade
+            }
+        case "CLOSE_TRADECARDS": 
+            return {
+                ...state,
+                currentTrade: {}
             }
         default:
             return state

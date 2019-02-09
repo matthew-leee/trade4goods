@@ -149,9 +149,9 @@ class MyG extends Component {
                             <h6 style={{ paddingTop: "0.4vw", paddingBottom: 0, marginBottom: 0, marginRight: "0.4vw", color: "white" }}>Filter</h6>
                             <ButtonGroup>
                                 <Button onClick={() => { this.handleFilter("all") }}>All</Button>
-                                <Button onClick={() => { this.handleFilter("withR") }}>With Requests</Button>
-                                <Button onClick={() => { this.handleFilter("trading") }}>Trading</Button>
-                                <Button onClick={() => { this.handleFilter("traded") }}>Traded</Button>
+                                <Button style={{backgroundColor: "rgba(4, 90, 239,0.5)", color: "white"}} onClick={() => { this.handleFilter("withR") }}>With Requests</Button>
+                                <Button style={{backgroundColor: "rgba(239, 192, 4,0.5)", color: "white"}} onClick={() => { this.handleFilter("trading") }}>Trading</Button>
+                                <Button style={{backgroundColor: "rgba(17, 178, 44,0.5)", color: "white"}} onClick={() => { this.handleFilter("traded") }}>Traded</Button>
                             </ButtonGroup>
                         </div>
                         <div className="Order" style={{ display: "flex", flexDirection: "row", marginLeft: "1vw", marginRight: "1vw" }}>

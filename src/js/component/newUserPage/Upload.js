@@ -369,10 +369,11 @@ const mapDispatchToProps = (dispatch) => {
                             }))
                         })
                 } else {
-                    dispatch(actions_addPhotos.PreviewPhotos({
-                        src: "fail",
-                        key: id
-                    }))
+                    // dispatch(actions_addPhotos.PreviewPhotos({
+                    //     src: "fail",
+                    //     key: id
+                    // }))
+                    window.alert("One or more photos exceed 5MB limit")
                 }
             })
         },

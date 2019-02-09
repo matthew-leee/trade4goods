@@ -9,7 +9,7 @@ import Axios from "axios"
 
 class MyGCards extends Component {
     render() {
-        const { image, name, key, traded, trading, withR, nth, product_id, na, a } = this.props
+        const { image, name, key, traded, trading, withR, nth, product_id, na, a, requested } = this.props
 
         return (
             <div className="MyGCard" style={MyGStyle.frame} key={key}>
@@ -43,6 +43,10 @@ class MyGCards extends Component {
                     {a && <div className="imgFrame" 
                     style={FollowedGStyle.cards.a}
                     onClick={()=>{this.props.openDetails(product_id,"other","a", this.props.allUsers)}}
+                    ></div>}
+                    {requested && <div className="imgFrame" 
+                    style={FollowedGStyle.cards.requested}
+                    onClick={()=>{this.props.openDetails(product_id,"other","requested", this.props.allUsers)}}
                     ></div>}
 
                     <img src={image} alt="" style={MyGStyle.img.img} />

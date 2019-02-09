@@ -149,8 +149,8 @@ class Trade extends Component {
     }
 
     render() {
-        const { status, details } = this.props
-
+        const { status, details, myUser } = this.props
+        const id = myUser.user_id
         switch (status) {
             // now there are 6 status
 
@@ -163,41 +163,40 @@ class Trade extends Component {
             // a: other things open for trade
             case "nth":
                 return (
-                    <div className="trade" style={{}}>
+                    <div className="trade">
                         <Button ghost type="primary">No Offers</Button>
                     </div>
                 )
             case "traded":
                 return (
-                    <div className="trade" style={{}}>
+                    <div className="trade">
                         <Button ghost type="dashed">Traded</Button>
                     </div>
                 )
+            case "requested":
             case "trading":
                 return (
-                    <div className="trade" style={{}}>
-                        <Button ghost type="primary">Rollback Offer</Button>
+                    <div className="trade">
+                        <Button ghost type="primary" onClick={() => { this.props.openTradeCards(details, status, id) }}>Rollback Offer</Button>
                     </div>
                 )
             case "withR":
                 return (
-                    <div className="trade" style={{}}>
-                        <Button ghost type="primary">Check Received Offers</Button>
+                    <div className="trade">
+                        <Button ghost type="primary" onClick={() => { this.props.openTradeCards(details, status, id) }}>Check Received Offers</Button>
 
                     </div>
                 )
             case "a":
                 return (
-                    <div className="trade" style={{}}>
-                        <Button ghost type="primary">Make An Offer</Button>
-
+                    <div className="trade">
+                        <Button ghost type="primary" onClick={() => { this.props.openTradeCards(details, status, id) }}>Make An Offer</Button>
                     </div>
                 )
             case "na":
                 return (
-                    <div className="trade" style={{}}>
+                    <div className="trade">
                         <Button ghost type="primary">Not available</Button>
-
                     </div>
                 )
             default:
@@ -255,7 +254,10 @@ const mapDispatchToProps = (dispatch) => {
         storeMyUser: (user) => {
             dispatch(actions_userPage.storeMyUser(user))
         },
-        // handleLoginToggle: a=> dispatch(handleLoginToggle(a)),
+        openTradeCards: (details, status, id) => {
+            dispatch(actions_search.setMyProducts(id))
+            dispatch(actions_trade.openTradeCards(details, status))
+        }
     }
 }
 

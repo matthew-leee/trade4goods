@@ -16,7 +16,16 @@ const FollowedGStyle = {
             zIndex: 9999,
             borderWidth: 10,
             borderStyle: "solid",
-            borderColor: "rgba(200,0,0,0.8)",
+            borderColor: "rgba(150,0,24,0.8)",
+        },
+        requested: {
+            position: "absolute",
+            width: 250,
+            height: 250,
+            zIndex: 9999,
+            borderWidth: 10,
+            borderStyle: "solid",
+            borderColor: "#20639B",
         }
     },
     button: {

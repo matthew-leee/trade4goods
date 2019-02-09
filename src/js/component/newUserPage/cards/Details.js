@@ -34,8 +34,6 @@ class ProductDetails extends Component {
                     return a.product_id == u.product_id
                 })[0].comments : []
 
-        // 
-
         const details = [
             {
                 title: "Product Name",
@@ -215,18 +213,18 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetails)
 
 // const otherUser = this.props.allUsers
-//         //     .filter((u) => { return u.displayed_name == this.props.otherUser })
-//         //     .map((u) => {
-//         //         return (
-//         //             <div style={{ backgroundColor: "#f4fef4", borderRadius: "1vw", display: "flex", flexDirection: "column" }}>
-//         //                 <div className="userBanner" style={{ borderRadius: "1vw", backgroundColor: "#c1fcc1", height: "5vh", display: "flex", justifyContent: "center", alignContent: "center", alignItems: "center" }}>
-//         //                     <p>this is a banner</p>
-//         //                 </div>
-//         //                 <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
-//         //                     <img src={u.profile_picture} style={{ marginTop: "2vh", marginBottom: "2vh", width: "10vw", borderRadius: "50%" }} />
-//         //                     <h4 style={{ paddingTop: "1vw", paddingBottom: "1vw" }}>{u.displayed_name}</h4>
-//         //                     <h4 style={{ paddingTop: "1vw", paddingBottom: "1vw" }}>Credibility: {u.credibility}</h4>
-//         //                 </div>
-//         //             </div>
-//         //         )
-//         //     })
+        //     .filter((u) => { return u.displayed_name == this.props.otherUser })
+        //     .map((u) => {
+        //         return (
+        //             <div style={{ backgroundColor: "#f4fef4", borderRadius: "1vw", display: "flex", flexDirection: "column" }}>
+        //                 <div className="userBanner" style={{ borderRadius: "1vw", backgroundColor: "#c1fcc1", height: "5vh", display: "flex", justifyContent: "center", alignContent: "center", alignItems: "center" }}>
+        //                     <p>this is a banner</p>
+        //                 </div>
+        //                 <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
+        //                     <img src={u.profile_picture} style={{ marginTop: "2vh", marginBottom: "2vh", width: "10vw", borderRadius: "50%" }} />
+        //                     <h4 style={{ paddingTop: "1vw", paddingBottom: "1vw" }}>{u.displayed_name}</h4>
+        //                     <h4 style={{ paddingTop: "1vw", paddingBottom: "1vw" }}>Credibility: {u.credibility}</h4>
+        //                 </div>
+        //             </div>
+        //         )
+        //     })

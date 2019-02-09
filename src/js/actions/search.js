@@ -22,6 +22,12 @@ const actions_search = {
             id: id
         }
     },
+    filterMyProducts: (id) => {
+        return {
+            type: "FILTER_MY_PRODUCTS",
+            id: id
+        }
+    },
     setFProducts: (id) => {
         return {
             type: "SET_F_PRODUCTS",

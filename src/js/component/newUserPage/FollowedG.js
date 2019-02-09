@@ -44,6 +44,12 @@ class FollowedG extends Component {
                             {naCards}
                         </div>
                     )
+                case "requested":
+                    return (
+                        <div className="contents" style={MyGStyle.outFrame.bigFrame}>
+                            {requestedCards}
+                        </div>
+                    )
                 case "all":
                     return (
                         <div className="contents" style={MyGStyle.outFrame.bigFrame}>
@@ -58,8 +64,14 @@ class FollowedG extends Component {
                     )
             }
         }
+        const myProductArr = this.props.myUser.uploaded_products
         const allCards = this.props.fProducts
             .map((u) => {
+                const offered = u.offered_by.some((offer) => {
+                    return myProductArr.some((a) => {
+                        return a == offer
+                    })
+                })
                 return (
                     <div style={{ margin: "1vw 1vw 1vw 1vw" }}>
                         <MyGCards
@@ -68,6 +80,7 @@ class FollowedG extends Component {
                             key={`${u.product_id}_MyGCards`}
                             na={u.status > 1}
                             a={u.status == 1}
+                            requested={offered}
                             product_id={u.product_id}
                         />
                     </div>
@@ -76,6 +89,11 @@ class FollowedG extends Component {
         const aCards = this.props.fProducts
             .filter((u) => { return u.status == 1 })
             .map((u) => {
+                const offered = u.offered_by.some((offer) => {
+                    return myProductArr.some((a) => {
+                        return a == offer
+                    })
+                })
                 return (
                     <div style={{ margin: "1vw 1vw 1vw 1vw" }}>
                         <MyGCards
@@ -84,6 +102,7 @@ class FollowedG extends Component {
                             key={`${u.product_id}_FollowedGCards`}
                             na={u.status > 1}
                             a={u.status == 1}
+                            requested={offered}
                             product_id={u.product_id}
                         />
                     </div>
@@ -91,6 +110,35 @@ class FollowedG extends Component {
             })
         const naCards = this.props.fProducts
             .filter((u) => { return u.status > 1 })
+            .map((u) => {
+                const offered = u.offered_by.some((offer) => {
+                    return myProductArr.some((a) => {
+                        return a == offer
+                    })
+                })
+                return (
+                    <div style={{ margin: "1vw 1vw 1vw 1vw" }}>
+                        <MyGCards
+                            image={u.image[0] ? u.image[0] : err}
+                            name={u.name}
+                            key={`${u.product_id}_FollowedGCards`}
+                            na={u.status > 1}
+                            a={u.status == 1}
+                            requested={offered}
+                            product_id={u.product_id}
+                        />
+                    </div>
+                )
+            })
+        const requestedCards = this.props.fProducts
+            .filter((u) => {
+                const offered = u.offered_by.some((offer) => {
+                    return myProductArr.some((a) => {
+                        return a == offer
+                    })
+                })
+                return offered
+            })
             .map((u) => {
                 return (
                     <div style={{ margin: "1vw 1vw 1vw 1vw" }}>
@@ -100,11 +148,13 @@ class FollowedG extends Component {
                             key={`${u.product_id}_FollowedGCards`}
                             na={u.status > 1}
                             a={u.status == 1}
+                            requested={true}
                             product_id={u.product_id}
                         />
                     </div>
                 )
             })
+
         const handleSortProducts = (sort) => {
             this.props.sortFProducts(sort)
             filter()
@@ -118,8 +168,9 @@ class FollowedG extends Component {
                             <h6 style={{ paddingTop: "0.4vw", paddingBottom: 0, marginBottom: 0, marginRight: "0.4vw", color: "white" }}>Filter</h6>
                             <ButtonGroup>
                                 <Button onClick={() => { this.handleFilter("all") }}>All</Button>
-                                <Button onClick={() => { this.handleFilter("a") }}>Available</Button>
-                                <Button onClick={() => { this.handleFilter("na") }}>Not Available</Button>
+                                <Button style={{backgroundColor: "rgba(200,0,0,0.5)", color: "white"}} onClick={() => { this.handleFilter("a") }}>Available</Button>
+                                <Button style={{backgroundColor: "rgba(30,30,30,0.5)", color: "white"}} onClick={() => { this.handleFilter("na") }}>Not Available</Button>
+                                <Button style={{backgroundColor: "#20639B", color: "white"}} onClick={() => { this.handleFilter("requested") }}>Requested</Button>
                             </ButtonGroup>
                         </div>
                         <div className="Order" style={{ display: "flex", flexDirection: "row", marginLeft: "1vw", marginRight: "1vw" }}>

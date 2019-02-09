@@ -96,6 +96,13 @@ const searchReducer = (state = {
                     return u.uploaded_by == action.id
                 })
             }
+        case "FILTER_MY_PRODUCTS":
+            return {
+                ...state,
+                myProducts: state.myProducts.filter((u) => {
+                    return u.product_id !== action.id
+                })
+            }
         case "SET_F_PRODUCTS":
             return {
                 ...state,
