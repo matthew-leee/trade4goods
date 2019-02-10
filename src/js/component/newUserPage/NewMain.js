@@ -30,7 +30,7 @@ class NewMain extends Component {
     }
 
     render() {
-        const {nav, currentProduct, currentTrade} = this.props
+        const {nav, currentProduct, currentTrade, reqError} = this.props
         return (
             <div className="newMain" style={NewMainStyle.newMain}>
 
@@ -62,7 +62,7 @@ const mapStateToPrpos = (state) => {
     return {
         nav: nu.nav,
         currentProduct: search.currentProduct,
-        currentTrade: trade.currentTrade
+        currentTrade: trade.currentTrade,
     }   
 }
 

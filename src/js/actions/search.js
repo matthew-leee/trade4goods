@@ -56,7 +56,7 @@ const actions_search = {
         return {
             type: "CLOSE_DETAILS"
         }
-    }
+    },
 }
 
 export default actions_search

@@ -32,7 +32,7 @@ class BigCards extends Component {
                 withCredentials: true
             })
             this.props.storeMyUser(user.data)
-            this.props.closeDetails()
+            this.props.closeDetails(this.props.myUser.user_id)
         } catch (err) {
             console.log(err)
         }
@@ -52,14 +52,18 @@ class BigCards extends Component {
 
 const mapStateToProps = (state) => {
     const search = state.searchReducer
+    const user = state.userReducer
     return {
-        currentProduct: search.currentProduct
+        currentProduct: search.currentProduct,
+        myUser: user.myUser
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        closeDetails: () => {
+        closeDetails: (id) => {
+            dispatch(actions_search.setMyProducts(id))
+            dispatch(actions_search.setFProducts(id))
             dispatch(actions_search.closeDetails())
         },
         storeAllProducts: (products) => {

@@ -4,7 +4,8 @@ const searchReducer = (state = {
     allProducts: [],
     myProducts: [],
     fProducts: [],
-    currentProduct: {}
+    currentProduct: {},
+    reqError: false,
 }, action) => {
     switch (action.type) {
         case "STORE_SEARCH":

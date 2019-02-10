@@ -80,7 +80,7 @@ class FollowedG extends Component {
                             key={`${u.product_id}_MyGCards`}
                             na={u.status > 1}
                             a={u.status == 1}
-                            requested={offered}
+                            requested={offered && u.status != 3}
                             product_id={u.product_id}
                         />
                     </div>
@@ -102,7 +102,7 @@ class FollowedG extends Component {
                             key={`${u.product_id}_FollowedGCards`}
                             na={u.status > 1}
                             a={u.status == 1}
-                            requested={offered}
+                            requested={offered && u.status != 3}
                             product_id={u.product_id}
                         />
                     </div>
@@ -124,7 +124,7 @@ class FollowedG extends Component {
                             key={`${u.product_id}_FollowedGCards`}
                             na={u.status > 1}
                             a={u.status == 1}
-                            requested={offered}
+                            requested={offered && u.status != 3}
                             product_id={u.product_id}
                         />
                     </div>
@@ -137,7 +137,7 @@ class FollowedG extends Component {
                         return a == offer
                     })
                 })
-                return offered
+                return offered && u.status != 3
             })
             .map((u) => {
                 return (

@@ -264,6 +264,42 @@ module.exports = class {
         }
     }
 
+    async declineOffer(product_offered, user_offered, product_offering) {
+        try {
+            product_offered = await this.knex('products').where('product_id', product_offered).andWhere('uploaded_by', user_offered)
+            product_offered = product_offered[0]
+            product_offering = await this.knex('products').where('product_id', product_offering)
+            product_offering = product_offering[0]
+            if (!product_offering) {
+                throw {
+                    statusCode: 403,
+                    error: "Product not belongs to user",
+                    message: `user ${user_offered} does not own product ${product_offering.product_id}`
+                }
+            } else if (!product_offered) {
+                throw {
+                    statusCode: 404,
+                    error: "Product not found",
+                    message: `product ${product_offered.product_id} does not exists`
+                }
+            } else if (!product_offered.offered_by.find(e => e === product_offering.product_id)) {
+                throw {
+                    statusCode: 406,
+                    error: "Product has not offer",
+                    message: `product ${product_offering.product_id} did not offer on ${product_offered.product_id}`
+                }
+            } else {
+                const deleteIndex = product_offered.offered_by.indexOf(product_offering.product_id)
+                product_offered.offered_by.splice(deleteIndex, 1)
+                await this.knex('products').where('product_id', product_offered.product_id).update(product_offered)
+                product_offering.status = 1
+                await this.knex('products').where('product_id', product_offering.product_id).update(product_offering)
+            }
+        } catch (err) {
+            throw err
+        }
+    }
+
     async addComment(product_id, user_id, comment) {
         try {
             let product = await this.knex('products').where('product_id', product_id)
@@ -374,6 +410,8 @@ module.exports = class {
                 }
             } else {
                 product_offered.status = 3
+                product_offered.offered_by = []
+                product_offering.offered_by = []
                 product_offered.sold_to = product_offering.uploaded_by
                 product_offering.status = 3
                 const trade = {

@@ -25,7 +25,6 @@ class ProductDetails extends Component {
                 return u.displayed_name
             })[0]
 
-        console.log(this.props)
 
         const comments = this.props.allComments
             .some((a) => {

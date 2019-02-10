@@ -21,6 +21,8 @@ class TradeCards extends Component {
             delete: false,
             swapDone: false,
             myRequestedProduct: null,
+            accepted: false,
+            original: null,
         }
     }
 
@@ -42,6 +44,8 @@ class TradeCards extends Component {
             delete: false,
             swapDone: false,
             myRequestedProduct: null,
+            accepted: false,
+            original: null,
         })
         this.props.closeTradeCards(id)
     }
@@ -129,6 +133,8 @@ class TradeCards extends Component {
             delete: false,
             swapDone: false,
             myRequestedProduct: null,
+            accepted: false,
+            original: null,
         })
 
         // close the window
@@ -187,18 +193,18 @@ class TradeCards extends Component {
                     u.openDELModal = false
                 })
                 this.props.storeAllProducts(pres.data)
-    
+
                 // fetch allUsers
                 const users = await Axios.get('https://localhost:8443/api/allProfile/')
                 this.props.storeAllUsers(users.data)
-    
+
                 // fetch myUser
                 const user = await Axios('https://localhost:8443/api/profile', {
                     method: "get",
                     withCredentials: true
                 })
                 this.props.storeMyUser(user.data)
-    
+
             } catch (err) {
                 console.log(err)
             }
@@ -237,11 +243,11 @@ class TradeCards extends Component {
                     u.openDELModal = false
                 })
                 this.props.storeAllProducts(pres.data)
-    
+
                 // fetch allUsers
                 const users = await Axios.get('https://localhost:8443/api/allProfile/')
                 this.props.storeAllUsers(users.data)
-    
+
                 // fetch myUser
                 const user = await Axios('https://localhost:8443/api/profile', {
                     method: "get",
@@ -252,7 +258,7 @@ class TradeCards extends Component {
                     swap: false,
                     swapDone: true
                 })
-    
+
             } catch (err) {
                 console.log(err)
             }
@@ -354,6 +360,80 @@ class TradeCards extends Component {
 
     // END==================end of functions for status "requested"==================
 
+    // START===================functions for status "withR"======================
+
+    handleWithR = async () => {
+        const selectedID = this.state.a.product_id
+        // suspected : filter is not needed
+        // you needa
+        const notSelected = this.props.currentTrade.details.offered_by
+            .filter((u) => {
+                return u != selectedID
+            })
+        const myID = this.props.currentTrade.details.product_id
+        const accept = {
+            product_offered: myID,
+            product_offering: selectedID
+        }
+        this.setState({
+            original: this.props.currentTrade.details
+        })
+        try {
+            // rollback all offers that are not accepted
+            for (let fail of notSelected) {
+                const rollbackData = {
+                    product_offered: myID,
+                    product_offering: fail
+                }
+                const rollback = await Axios("https://localhost:8443/api/decline_offer", {
+                    method: 'delete',
+                    data: rollbackData,
+                    withCredentials: true
+                })
+            }
+
+            // accept offer
+            const res = await Axios("https://localhost:8443/api/acceptOffer/", {
+                method: 'post',
+                data: accept,
+                withCredentials: true
+            })
+            // fetch allProducts
+            const pres = await Axios.get('https://localhost:8443/api/allProducts/')
+            pres.data.forEach((u) => {
+                u.openOneModal = false
+                u.openOGModal = false
+                u.openMyGoodModal = false
+                u.openDELModal = false
+            })
+            this.props.storeAllProducts(pres.data)
+
+            // fetch allUsers
+            const users = await Axios.get('https://localhost:8443/api/allProfile/')
+            this.props.storeAllUsers(users.data)
+
+            // fetch myUser
+            const user = await Axios('https://localhost:8443/api/profile', {
+                method: "get",
+                withCredentials: true
+            })
+            this.props.storeMyUser(user.data)
+
+            this.props.setMyProducts(this.props.myUser.user_id)
+
+            this.props.setFProducts(this.props.myUser.user_id)
+
+            this.setState({
+                accepted: true
+            })
+
+        } catch (err) {
+
+        }
+    }
+
+    // END=================end of functions for status "withR"=====================
+
     render() {
         const { status, details } = this.props.currentTrade
 
@@ -410,7 +490,34 @@ class TradeCards extends Component {
                     return a == details.product_id
                 })
             })[0]
-        console.log (details)
+
+        // ============= RENDER for status "withR" ====================
+        const withRItems = this.props.allProducts.filter((u) => {
+            return details.offered_by.some((a) => {
+                return u.product_id == a
+            })
+        })
+            .map((u) => {
+                return (
+                    <div className="smallCard"
+                        style={TradeStyle.a.smallCard}
+                        key={`${u.product_id}_smallCard`}
+                        onClick={(e) => this.onAClick(e, u)}
+                    >
+                        <div className="img" style={TradeStyle.a.img}>
+                            <img src={u.image[0] ? u.image[0] : err} alt=""
+                                style={{ width: "7vw", height: "7vw", objectFit: "contain" }} />
+                        </div>
+                        <div className="name" style={TradeStyle.a.name}>
+                            <p
+                                style={{ textAlign: "center", padding: 0, margin: 0, fontSize: "0.5vw" }}>
+                                {u.name}
+                            </p>
+                        </div>
+                    </div>
+                )
+            })
+
         switch (status) {
             case "requested":
                 // use mySentProduct
@@ -565,7 +672,6 @@ class TradeCards extends Component {
 
                             {this.state.swap &&
                                 <div className="buttons" style={TradeStyle.inner.buttons}>
-                                    {/* <Button type="danger" onClick={() => { this.handleSwap(mySentProductID) }}>Confirm Swap</Button> */}
                                     <Button type="danger" onClick={() => { this.handleShit(mySentProductID) }}>Confirm Swap</Button>
                                     <Button type="primary" onClick={() => { this.closeTradeCards(this.props.myUser.user_id) }}>Return</Button>
                                 </div>}
@@ -612,7 +718,7 @@ class TradeCards extends Component {
                                         </div>
                                         {!this.state.delete &&
                                             <div className="buttons" style={TradeStyle.swap.swapButton}>
-                                                <Button type="danger" onClick={()=>{this.handleMyOpenSwap(myRequestedProduct)}}>Swap another product</Button>
+                                                <Button type="danger" onClick={() => { this.handleMyOpenSwap(myRequestedProduct) }}>Swap another product</Button>
                                                 <Button type="danger" onClick={() => { this.handleMyDeleteOffer(myRequestedProduct.product_id) }}>Delete Request</Button>
                                             </div>}
                                     </div>}
@@ -744,7 +850,6 @@ class TradeCards extends Component {
 
                             {this.state.swap &&
                                 <div className="buttons" style={TradeStyle.inner.buttons}>
-                                    {/* <Button type="danger" onClick={() => { this.handleSwap(mySentProductID) }}>Confirm Swap</Button> */}
                                     <Button type="danger" onClick={() => { this.handleMyShit(myRequestedProduct.product_id) }}>Confirm Swap</Button>
                                     <Button type="primary" onClick={() => { this.closeTradeCards(this.props.myUser.user_id) }}>Return</Button>
                                 </div>}
@@ -756,13 +861,116 @@ class TradeCards extends Component {
                 return (
                     <div className="tradeCards" style={TradeStyle.frame} onClick={() => { this.closeTradeCards(this.props.myUser.user_id) }}>
                         <div className="content" style={TradeStyle.content} onClick={this.stopPropagation}>
-                            <div className="title" style={TradeStyle.inner.title}></div>
-                            <div className="innerContent" style={TradeStyle.inner.content}>
-                                <p>{details.name}</p>
+                            <div className="title" style={TradeStyle.inner.titleWithRConfirm}>
+                                <h3 style={{ paddingBottom: 0, paddingLeft: "1vw", margin: 0, textAlign: "center" }}>
+                                    Received Requests
+                                </h3>
                             </div>
-                            <div className="buttons" style={TradeStyle.inner.buttons}>
-                                <Button type="primary" onClick={() => { this.closeTradeCards(this.props.myUser.user_id) }}>Return</Button>
+                            <div className="innerContent" style={TradeStyle.a.frame}>
+
+                                {/* <div className="arrow" style={TradeStyle.withR.arrow}>
+                                    <Icon type="swap" />
+                                </div> */}
+
+                                {!this.state.accepted &&
+                                    <div className="aItems" style={TradeStyle.withR.frame}>
+
+                                        <div className="items" style={TradeStyle.withR.items}>
+                                            <div className="itemsTitle" style={TradeStyle.withR.itemsTitle}>
+                                                <h6>Products for Exchange</h6>
+                                            </div>
+                                            <div className="itemsContent" style={TradeStyle.withR.itemsContent}>
+                                                {withRItems}
+                                            </div>
+                                        </div>
+
+                                        {this.state.a != null &&
+                                            <div className="choosed" style={TradeStyle.withR.choosed}>
+                                                <div className="middleCard" style={TradeStyle.a.middleCard}>
+                                                    <div className="img" style={TradeStyle.a.img}>
+                                                        <img src={this.state.a.image[0] ? this.state.a.image[0] : err}
+                                                            alt=""
+                                                            style={{ width: "14vw", height: "14vw", objectFit: "contain" }}
+                                                        />
+                                                    </div>
+                                                    <div className="middleName" style={TradeStyle.a.middlename}>
+                                                        <p style={{ padding: 0, margin: 0, textAlign: "center" }}>{this.state.a.name}</p>
+                                                    </div>
+                                                </div>
+                                            </div>}
+                                        {this.state.a == null &&
+                                            <div className="choosed" style={TradeStyle.withR.choosed}>
+                                                <h5>Choose a product for exchange</h5>
+                                            </div>}
+                                    </div>}
+
+                                {!this.state.accepted &&
+                                    <div className="select" style={TradeStyle.a.drop}>
+                                        <div className="title" style={{ marginBottom: "3vw" }}>
+                                            <h4>Your Own Product</h4>
+                                        </div>
+                                        <div className="middleCard" style={TradeStyle.a.middleCard}>
+                                            <div className="img" style={TradeStyle.a.img}>
+                                                <img src={details.image[0] ? details.image[0] : err}
+                                                    alt=""
+                                                    style={{ width: "14vw", height: "14vw", objectFit: "contain" }}
+                                                />
+                                            </div>
+                                            <div className="middleName" style={TradeStyle.a.middlename}>
+                                                <p style={{ padding: 0, margin: 0, textAlign: "center" }}>{details.name}</p>
+                                            </div>
+                                        </div>
+                                    </div>}
+
+
+
+                                {this.state.accepted &&
+                                    <div className="aItems" style={TradeStyle.withR.accepted}>
+                                        <div className="title" style={{ marginBottom: "3vw" }}>
+                                            <h4>Your Original Product</h4>
+                                        </div>
+                                        <div className="middleCard" style={TradeStyle.a.middleCard}>
+                                            <div className="img" style={TradeStyle.a.img}>
+                                                <img src={this.state.original.image[0] ? this.state.original.image[0] : err}
+                                                    alt=""
+                                                    style={{ width: "14vw", height: "14vw", objectFit: "contain" }}
+                                                />
+                                            </div>
+                                            <div className="middleName" style={TradeStyle.a.middlename}>
+                                                <p style={{ padding: 0, margin: 0, textAlign: "center" }}>{this.state.original.name}</p>
+                                            </div>
+                                        </div>
+                                    </div>}
+
+                                {this.state.accepted &&
+                                    <div className="select" style={TradeStyle.a.drop}>
+                                        <div className="title" style={{ marginBottom: "3vw" }}>
+                                            <h4>Received Product</h4>
+                                        </div>
+                                        <div className="middleCard" style={TradeStyle.a.middleCard}>
+                                            <div className="img" style={TradeStyle.a.img}>
+                                                <img src={this.state.a.image[0] ? this.state.a.image[0] : err}
+                                                    alt=""
+                                                    style={{ width: "14vw", height: "14vw", objectFit: "contain" }}
+                                                />
+                                            </div>
+                                            <div className="middleName" style={TradeStyle.a.middlename}>
+                                                <p style={{ padding: 0, margin: 0, textAlign: "center" }}>{this.state.a.name}</p>
+                                            </div>
+                                        </div>
+                                    </div>}
+
                             </div>
+
+                            {!this.state.accepted &&
+                                <div className="buttons" style={TradeStyle.inner.buttons}>
+                                    <Button type="danger" onClick={this.handleWithR}>Confirm Trade</Button>
+                                    <Button type="primary" onClick={this.handleAConfirm}>Return</Button>
+                                </div>}
+                            {this.state.accepted &&
+                                <div className="buttons" style={TradeStyle.inner.buttons}>
+                                    <Button type="primary" onClick={this.handleAConfirm}>Return</Button>
+                                </div>}
                         </div>
                     </div>
                 )
@@ -912,6 +1120,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         setMyProducts: (id) => {
             dispatch(actions_search.setMyProducts(id))
+        },
+        setFProducts: (id) => {
+            dispatch(actions_search.setFProducts(id))
         },
         filterMyProducts: (id) => {
             dispatch(actions_search.filterMyProducts(id))

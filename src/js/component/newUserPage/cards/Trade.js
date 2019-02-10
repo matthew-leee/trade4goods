@@ -255,8 +255,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actions_userPage.storeMyUser(user))
         },
         openTradeCards: (details, status, id) => {
-            dispatch(actions_search.setMyProducts(id))
-            dispatch(actions_trade.openTradeCards(details, status))
+                dispatch(actions_search.setMyProducts(id))
+                dispatch(actions_trade.openTradeCards(details, status))
         }
     }
 }

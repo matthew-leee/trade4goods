@@ -107,11 +107,27 @@ const mapDispatchToProps = (dispatch) => {
                         }
                 })
 
-                Promise.all(comments)
+                const newStatus = products.data.filter((u)=>{
+                    return u.product_id == id
+                })[0].status
+
+                if (newStatus == 3){
+                    Promise.all(comments)
                     .then((results) => {
+                        dispatch(actions_search.setMyProducts(id))
+                        dispatch(actions_search.setFProducts(id))
+                        dispatch(actions_userPage.storeAllComments(results, id))
+                        dispatch(actions_search.openDetails(id,whom,"traded"))
+                    })
+                } else {
+                    Promise.all(comments)
+                    .then((results) => {
+                        dispatch(actions_search.setMyProducts(id))
+                        dispatch(actions_search.setFProducts(id))
                         dispatch(actions_userPage.storeAllComments(results, id))
                         dispatch(actions_search.openDetails(id,whom,which))
                     })
+                }
             }catch(err){
                 console.log (err)
             }

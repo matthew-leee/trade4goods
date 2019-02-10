@@ -69,7 +69,6 @@ class Trade extends Component {
             product_offered: this.props.details.product_id,
             product_offering: this.props.selected
         }
-        console.log(data)
         try {
             const res = await Axios("https://localhost:8443/api/acceptOffer/", {
                 method: 'post',
@@ -77,7 +76,6 @@ class Trade extends Component {
                 withCredentials: true
             })
 
-            console.log(res)
 
             // fetch allProducts
             const pres = await Axios.get('https://localhost:8443/api/allProducts/')
