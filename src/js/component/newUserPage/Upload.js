@@ -76,7 +76,6 @@ class AddPhotoForm extends Component {
             autoCompleteResult: [],
             imgOverlay: UploadStyle.img.overlay
         }
-        console.log(props)
     }
 
     handleSubmit = (e) => {
