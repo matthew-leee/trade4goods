@@ -9,7 +9,7 @@ const userReducer = (state = {
     openSQModal: false,
     openRQModal: false,
     openUploadModal: false,
-    otherUser: "",
+    otherUser: null,
     myUser: {},
     allUsers: [],
     allComments: []
@@ -76,11 +76,11 @@ const userReducer = (state = {
                 ...state,
                 comment: ""
             }
-        case "CLOSE_OTHERUSER":
-            return {
-                ...state,
-                otherUser: ""
-            }
+        // case "CLOSE_OTHERUSER":
+        //     return {
+        //         ...state,
+        //         otherUser: ""
+        //     }
         case "STORE_MYUSER":
             return {
                 ...state,
@@ -119,6 +119,11 @@ const userReducer = (state = {
             return {
                 ...state,
                 myUser: {}
+            }
+        case "CLOSE_OTHERUSER":
+            return {
+                ...state,
+                otherUser: null
             }
         default:
             return state

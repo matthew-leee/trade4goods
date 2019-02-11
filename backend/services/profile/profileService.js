@@ -62,6 +62,8 @@ module.exports = class {
 
     async updateProfile(info, id) {
         try {
+            console.log (info)
+            console.log (id)
             let profileExist = await this.knex('users').where('user_id', id)
             profileExist = profileExist[0]
             if (!profileExist) {
@@ -74,6 +76,7 @@ module.exports = class {
             }
             const updatedInfo = {}
             if (info.displayed_name) {
+                console.log ("happy")
                 if (!/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/.test(info.displayed_name)) {
                     throw {
                         statusCode: 422,

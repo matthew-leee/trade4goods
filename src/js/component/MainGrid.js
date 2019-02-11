@@ -10,6 +10,7 @@ import actions_search from '../actions/search';
 import actions_userPage from '../actions/userPage';
 import BigOutCards from "./newUserPage/cards/BigOutCards"
 import TradeCards from "./newUserPage/cards/TradeCards"
+import OtherUser from './newUserPage/cards/OtherUser';
 
 class ConnectedMainGrid extends React.Component {
     constructor(props) {
@@ -150,12 +151,13 @@ class ConnectedMainGrid extends React.Component {
         let c6 = cards.filter((el, i) => { return ((i + 1) % 6 === 0) })
 
 
-        const {currentOutProduct, currentTrade} = this.props
+        const {currentOutProduct, currentTrade, otherUser} = this.props
 
         return (
             <div>
                 {currentOutProduct.details && <BigOutCards />}
                 {currentTrade.details && <TradeCards out={true} />}
+                {otherUser!==null && <OtherUser out={true} />}
 
                 <Row type="flex" gutter={10}>
 
@@ -198,13 +200,15 @@ const mapStateToProps = state => {
     const rooot = state.roootReducer
     const search = state.searchReducer
     const trade = state.tradeReducer
+    const user = state.userReducer
     return { 
         searchArr: rooot.searchArr, 
         productsArr: rooot.productsArr,
         currentOutProduct: search.currentOutProduct,
         currentTrade: trade.currentTrade,
         refresh: search.refresh,
-        allProducts: search.allProducts
+        allProducts: search.allProducts,
+        otherUser: user.otherUser
     };
 };
 

@@ -9,6 +9,16 @@ const actions_newUserPage = {
         return {
             type: "IMG_HOVER"
         }
+    },
+    updatePropic: ()=>{
+        return {
+            type: "UPDATE_PROPIC"
+        }
+    },
+    closePropic: ()=>{
+        return {
+            type: "CLOSE_PROPIC"
+        }
     }
 }
 

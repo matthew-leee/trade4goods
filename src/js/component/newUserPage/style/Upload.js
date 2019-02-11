@@ -40,6 +40,17 @@ const UploadStyle = {
             padding: 0,
             margin: 0,
         },
+        plabel: {
+            display: "flex",
+            flexDirection: "column",
+            width: "16vw",
+            height: "16vw",
+            backgroundColor: "rgba(240,240,240,0.7)",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 0,
+            margin: 0,
+        },
         overlay: {
             display: "flex",
             flexDirection: "column",

@@ -197,11 +197,16 @@ class Trade extends Component {
                         <Button ghost type="primary">Not available</Button>
                     </div>
                 )
+            case "login":
+                return (
+                    <div className="trade">
+                        <Button type="danger">Login To Make a Deal!</Button>
+                    </div>
+                )
             default:
                 return (
-                    <div className="trade" style={{ marginTop: "50px", textAlign: "center" }}>
-                        {this.props.tryLogin && <LoginForm handleLogin={this.props.handleLoginToggle} />}
-                        <Button onClick={this.props.handleLoginToggle} className="myLgBtn">Login to make a deal!</Button>
+                    <div className="trade">
+                        <Button type="danger">Login To Make a Deal!</Button>
                     </div>
                 )
         }
@@ -253,8 +258,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actions_userPage.storeMyUser(user))
         },
         openTradeCards: (details, status, id) => {
-                dispatch(actions_search.setMyProducts(id))
-                dispatch(actions_trade.openTradeCards(details, status))
+            dispatch(actions_search.setMyProducts(id))
+            dispatch(actions_trade.openTradeCards(details, status))
         },
         updateProducts: arr => dispatch(updateProducts(arr)),
     }

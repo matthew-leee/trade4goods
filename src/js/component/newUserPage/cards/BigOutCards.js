@@ -28,12 +28,14 @@ class BigOutCards extends Component {
             this.props.storeAllUsers(users.data)
 
             // fetch myUser
-            const user = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
-                method: "get",
-                withCredentials: true
-            })
-            this.props.storeMyUser(user.data)
-            this.props.closeOutDetails(this.props.myUser.user_id)
+            if (this.props.myUser.user_id){
+                const user = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
+                    method: "get",
+                    withCredentials: true
+                })
+                this.props.storeMyUser(user.data)
+            }
+            this.props.closeOutDetails()
         } catch (err) {
             console.log(err)
         }
@@ -62,9 +64,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        closeOutDetails: (id) => {
-            // dispatch(actions_search.setMyProducts(id))
-            // dispatch(actions_search.setFProducts(id))
+        closeOutDetails: () => {
             dispatch(actions_search.closeOutDetails())
         },
         storeAllProducts: (products) => {

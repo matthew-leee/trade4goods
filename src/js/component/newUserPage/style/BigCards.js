@@ -81,9 +81,19 @@ const BigCardsStyle = {
             },
             notImg:{
                 gridColumn: "3/4",
+                display: "grid",
+                gridTemplateRows: "6vh 70vh"
+            },
+            button: {
+                gridRow: "1/2",
                 display: "flex",
-                flexDirection: "column",
+                justifyContent: "center",
                 height: "76vh",
+            },
+            notButton:{
+                gridRow: "2/3",
+                flexDirection: "column",
+                height: "70vh",
                 overflowY: "scroll"
             }
         }

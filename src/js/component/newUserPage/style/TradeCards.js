@@ -44,6 +44,13 @@ const TradeStyle = {
             alignItems: "center",
             color: "white"
         },
+        titlePConfirm: {
+            gridRow: "1/2",
+            backgroundColor: "rgba(124,10,2,0.8)",
+            display: "flex",
+            alignItems: "center",
+            color: "white"
+        },
         titleRequestedConfirm: {
             gridRow: "1/2",
             backgroundColor: "rgba(178,34,34,0.8)",
@@ -215,6 +222,70 @@ const TradeStyle = {
             width: "21vw",
             height: "inherit"
         }
+    },
+    otherUser: {
+        bigframe: {
+            width: "90vw",
+            height: "93vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.8)",
+            zIndex: 599998,
+            position: "absolute",
+            fontFamily: "'Rajdhani', sans-serif",
+        },
+        out: {
+            width: "100vw",
+            height: "93vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.8)",
+            zIndex: 599998,
+            position: "fixed",
+            fontFamily: "'Rajdhani', sans-serif",
+        },
+        content: {
+            width: "80vw",
+            height: "80vh",
+            backgroundColor: "rgba(200,200,200,0.85)",
+            display: "grid",
+            gridTemplateRows: "5vh 70vh 5vh",
+            zIndex: 599999,
+        },
+        drop: {
+            gridColumn: "3/4",
+            display: "grid",
+            gridTemplateRows: "10vh 60vh",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "37vw",
+            height: "inherit",
+            backgroundColor: "rgba(230,230,230,0.8)"
+        },
+        title: {
+            gridRow: "1/2",
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(200,200,200,0.8)",
+            height: "10vh",
+            width: "37vw"
+        },
+        aItems: {
+            gridRow: "2/3",
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "37vw",
+            height: "60vh",
+            backgroundColor: "rgba(230,230,230,0.8)",
+            overflowY: "scroll"
+        },
     },
     a: {
         frame: {

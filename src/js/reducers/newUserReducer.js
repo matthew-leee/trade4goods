@@ -5,7 +5,8 @@ const newUserReducer = (state = {
         FollowedG: false,
         Upload: false
     },
-    imgHover: false
+    imgHover: false,
+    propic: false
 }, action) => {
     switch (action.type) {
         case "NAV":
@@ -25,6 +26,16 @@ const newUserReducer = (state = {
             return {
                 ...state,
                 imgHover: !state.imgHover
+            }
+        case "UPDATE_PROPIC":
+            return {
+                ...state,
+                propic: true
+            }
+        case "CLOSE_PROPIC":
+            return {
+                ...state,
+                propic: false
             }
         default:
             return state

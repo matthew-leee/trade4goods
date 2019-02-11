@@ -7,10 +7,13 @@ import MyG from "./MyG"
 import FollowedG from "./FollowedG"
 import Uploads from "./Upload"
 import BigCards from "./cards/BigCards"
+import OtherUser from "./cards/OtherUser"
+import Propic from "./cards/Propic"
 
 // css
 import NewMainStyle from "./style/NewMain"
 import TradeCards from "./cards/TradeCards";
+import { userInfo } from "os";
 
 class NewMain extends Component {
     constructor(props){
@@ -30,7 +33,8 @@ class NewMain extends Component {
     }
 
     render() {
-        const {nav, currentProduct, currentTrade, reqError} = this.props
+        const {nav, currentProduct, currentTrade, propic, otherUser} = this.props
+        console.log (otherUser)
         return (
             <div className="newMain" style={NewMainStyle.newMain}>
 
@@ -49,6 +53,8 @@ class NewMain extends Component {
                     {nav.Upload && <Uploads />}
                     {currentProduct.details && <BigCards />}
                     {currentTrade.details && <TradeCards out={false} />}
+                    {propic && <Propic />}
+                    {otherUser!==null && <OtherUser out={false} />}
                 </div>
             </div>
         )
@@ -59,10 +65,13 @@ const mapStateToPrpos = (state) => {
     const nu = state.newUserReducer
     const search = state.searchReducer
     const trade = state.tradeReducer
+    const user = state.userReducer
     return {
         nav: nu.nav,
         currentProduct: search.currentProduct,
         currentTrade: trade.currentTrade,
+        otherUser: user.otherUser,
+        propic: nu.propic
     }   
 }
 

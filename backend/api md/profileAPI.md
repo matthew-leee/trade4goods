@@ -118,7 +118,7 @@ status: 401 Unauthorized
 
 - Update user profile
 
-    *GET: /api/profile/*
+    *PUT: /api/profile/*
 
 request params
 

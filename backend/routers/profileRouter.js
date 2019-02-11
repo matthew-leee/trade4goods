@@ -21,6 +21,7 @@ module.exports = (router, authService, profileService) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
             if (user_id) {
+                console.log (req.body)
                 await profileService.updateProfile(req.body, user_id)
                 res.sendStatus(200)
             } else {

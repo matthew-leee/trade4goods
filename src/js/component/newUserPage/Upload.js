@@ -12,14 +12,11 @@ import { connect } from "react-redux"
 import GeneralTags from "../AddPhotos/tags_antd"
 import uuidv1 from "uuid/v1"
 import Axios from "axios";
-import firebaseConfig from "../../../firebase"
-import * as firebase from 'firebase'
+import app from "./firebase"
 import { updateProducts } from '../../actions/hello'
 
 
 import UploadStyle from "./style/Upload"
-
-const app = firebase.initializeApp(firebaseConfig)
 
 const residences = [
     {
@@ -364,7 +361,6 @@ const mapDispatchToProps = (dispatch) => {
                     task
                         .then(snapshot => snapshot.ref.getDownloadURL())
                         .then((url) => {
-                            console.log(url)
                             dispatch(actions_addPhotos.PreviewPhotos({
                                 src: url,
                                 key: id

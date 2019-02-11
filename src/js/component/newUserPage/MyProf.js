@@ -2,11 +2,113 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import MyProfStyle from "./style/MyProf"
 import actions_newUserPage from "../../actions/newUserPage"
+import actions_userPage from "../../actions/userPage"
 
 // antd
 import { Icon, Progress } from "antd"
 
+import Axios from "axios"
+
+const err = require('../asset/gif/replaceNoImg.gif')
+
 class MyProf extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            editName: false,
+            editPhone: false,
+            name: "",
+            phone: null
+        }
+    }
+
+    // name 
+
+    editName = () => {
+        this.setState({
+            editName: true
+        })
+    }
+
+    setName = (e) => {
+        this.setState({
+            name: e.target.value
+        })
+    }
+
+    SubmitEditName = async () => {
+        const data = {
+            displayed_name: String(this.state.name),
+            phone_number: null,
+            profile_picture: null,
+        }
+        try {
+            const res = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
+                method: "put",
+                data: data,
+                withCredentials: true
+            })
+
+            const user = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
+                method: "get",
+                withCredentials: true
+            })
+            this.props.storeMyUser(user.data)
+            this.setState({
+                editName: false,
+                name: ""
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    // phone 
+
+    editPhone = () => {
+        this.setState({
+            editPhone: true
+        })
+    }
+
+    setPhone = (e) => {
+        const phone = Number(e.target.value)
+        this.setState({
+            phone: phone
+        })
+    }
+
+    SubmitEditPhone = async () => {
+        const phone = Number(this.state.phone)
+        if ((!phone || String(phone).length > 8) || String(phone).length < 8) {
+            alert("Invalid Phone Number")
+        } else {
+            const data = {
+                displayed_name: null,
+                phone_number: Number(this.state.phone),
+                profile_picture: null,
+            }
+            try {
+                const res = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
+                    method: "put",
+                    data: data,
+                    withCredentials: true
+                })
+
+                const user = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
+                    method: "get",
+                    withCredentials: true
+                })
+                this.props.storeMyUser(user.data)
+                this.setState({
+                    editPhone: false,
+                    phone: null
+                })
+            } catch (err) {
+                console.log(err)
+            }
+        }
+    }
 
     render() {
         return (
@@ -20,16 +122,36 @@ class MyProf extends Component {
                             </div>}
                         {this.props.imgHover &&
                             <div className="imgOverlay" style={MyProfStyle.imgHover} onMouseLeave={this.props.handleImgHover}>
-                                <Icon type="edit" style={MyProfStyle.icon} />
+                                <Icon type="edit" style={MyProfStyle.icon} onClick={this.props.updatePropic} />
                             </div>}
-                        <img style={MyProfStyle.img} src="https://instagram.fhkg10-1.fna.fbcdn.net/vp/54f1a6e2759141c23a4d3a9045c8d77d/5CDDE8C2/t51.2885-15/e35/42003025_325826901577405_8149234815467752856_n.jpg?_nc_ht=instagram.fhkg10-1.fna.fbcdn.net" alt="" />
+                        <img style={MyProfStyle.img} src={this.props.myUser.profile_picture ? this.props.myUser.profile_picture : err} alt="" />
                     </div>
 
                     <div className="details" style={MyProfStyle.details}>
-                        <p>name</p>
-                        <h4 style={MyProfStyle.detailsh4}>{this.props.myUser.displayed_name}</h4>
+
+                        <p>displayed name</p>
+                        {!this.state.editName &&
+                            <div style={{ display: "flex", justifyContent: "space-between", width: "inherit", height: "4vh", alignItems: "center", marginBottom: "2vw" }}>
+                                <h4>{this.props.myUser.displayed_name}</h4>
+                                <Icon type="edit" onClick={this.editName} />
+                            </div>}
+                        {this.state.editName &&
+                            <div style={{ display: "flex", justifyContent: "space-between", width: "inherit", height: "4vh", alignItems: "center", marginBottom: "2vw" }}>
+                                <input onChange={this.setName} />
+                                <Icon type="upload" onClick={this.SubmitEditName} />
+                            </div>}
+
                         <p>phone</p>
-                        <h4 style={MyProfStyle.detailsh4}>{this.props.myUser.phone_number}</h4>
+                        {!this.state.editPhone &&
+                            <div style={{ display: "flex", justifyContent: "space-between", width: "inherit", height: "4vh", alignItems: "center", marginBottom: "2vw" }}>
+                                <h4>{this.props.myUser.phone_number}</h4>
+                                <Icon type="edit" onClick={this.editPhone} />
+                            </div>}
+                        {this.state.editPhone &&
+                            <div style={{ display: "flex", justifyContent: "space-between", width: "inherit", height: "4vh", alignItems: "center", marginBottom: "2vw" }}>
+                                <input onChange={this.setPhone} />
+                                <Icon type="upload" onClick={this.SubmitEditPhone} />
+                            </div>}
                     </div>
 
                 </div>
@@ -58,12 +180,12 @@ class MyProf extends Component {
                         <h5 style={{ padding: 0, marginLeft: "0.5vw", marginBottom: 0 }}>Trade History</h5>
                     </div>
                     <div className="details" style={MyProfStyle.historyDetails}>
-                        {!this.props.myUser.trade_history &&
-                        <h5 style={{ padding: 0,  marginBottom: 0 }}>You have no Trade History. Start Bartering!</h5>}
+                        {this.props.myUser.trade_history.length == 0 &&
+                            <h5 style={{ padding: 0, marginBottom: 0 }}>You have no Trade History. Start Bartering!</h5>}
                     </div>
                 </div>
 
-                <div className="chain" style={MyProfStyle.chain}>asdf</div>
+                {/* <div className="chain" style={MyProfStyle.chain}>asdf</div> */}
             </div>
         )
     }
@@ -82,6 +204,12 @@ const mapDispatchToProps = (dispatch) => {
     return {
         handleImgHover: () => {
             dispatch(actions_newUserPage.imgHover())
+        },
+        storeMyUser: (user) => {
+            dispatch(actions_userPage.storeMyUser(user))
+        },
+        updatePropic: () =>{
+            dispatch(actions_newUserPage.updatePropic())
         }
     }
 }

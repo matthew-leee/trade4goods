@@ -10,7 +10,7 @@ const MyProfStyle = {
         gridTemplateAreas: `
         "a b b"
         "a c c"
-        "a d d"
+        "a c c"
         `,
         position: "relative",
     },
@@ -109,12 +109,12 @@ const MyProfStyle = {
     },
     history: {
         gridArea: "c",
-        backgroundColor: "rgb(181,229,80)",
+        backgroundColor: "rgb(252,255,152)",
         margin: "1vw 1vw 1vw 1vw",
         boxShadow: "0.5vw 0.5vw 4vw rgb(50,50,50)",
         display: "grid",
         gridTemplateColumns: "1fr",
-        gridTemplateRows: "repeat(6, 1fr)",
+        gridTemplateRows: "7vh 1fr",
     },
     historyTitle:{
         gridRow: "1/2",
@@ -123,11 +123,12 @@ const MyProfStyle = {
         alignItems: "center"
     },
     historyDetails: {
-        gridRow: "2/7",
+        gridRow: "2/3",
         display: "flex",
+        height: "inherit",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "rgba(150,150,150,0.6)",
+        padding: "1vw 1vw 1vw 1vw"
     },
     chain: {
         gridArea: "d",

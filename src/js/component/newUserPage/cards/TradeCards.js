@@ -66,7 +66,29 @@ class TradeCards extends Component {
             product_offered: this.props.currentTrade.details.product_id,
             product_offering: myID
         }
+
+        const receivedOffer = this.state.a.offered_by
+
         try {
+            // decline all offers you received
+            for (let fail of receivedOffer) {
+                const rollbackData = {
+                    product_offered: myID,
+                    product_offering: fail
+                }
+                const rollback = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/decline_offer", {
+                    method: 'delete',
+                    data: rollbackData,
+                    withCredentials: true
+                })
+            }
+
+            // follow the product you made offer
+            const like = await Axios(`${process.env.REACT_APP_BACKEND_URL}/api/like/${this.props.currentTrade.details.product_id}`, {
+                method: "put",
+                withCredentials: true
+              })
+
             const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/offer_product", {
                 method: 'post',
                 data: data,
@@ -1020,7 +1042,8 @@ class TradeCards extends Component {
 
                                 </div>
                                 <div className="buttons" style={TradeStyle.inner.buttons}>
-                                    <Button type="danger" onClick={() => { this.handlePlaceOffer(this.state.a.product_id) }}>Confirm</Button>
+                                    {this.state.a != null && 
+                                    <Button type="danger" onClick={() => { this.handlePlaceOffer(this.state.a.product_id) }}>Confirm</Button>}
                                     <Button type="primary" onClick={() => { this.closeTradeCards(this.props.myUser.user_id) }}>Return</Button>
                                 </div>
                             </div>

@@ -85,6 +85,11 @@ const actions_userPage = {
         return {
             type: "DEL_MYUSER"
         }
+    },
+    closeOtherUser: ()=>{
+        return {
+            type: "CLOSE_OTHERUSER"
+        }
     }
 }
 

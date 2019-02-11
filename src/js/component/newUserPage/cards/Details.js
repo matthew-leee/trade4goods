@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { List, Row, Col } from "antd"
+import { List, Row, Col, Button } from "antd"
 import actions_userPage from "../../../actions/userPage";
 import actions_search from '../../../actions/search'
 import { connect } from "react-redux"
@@ -7,6 +7,7 @@ import Axios from "axios";
 // import Trade from "./Trade"
 import BigCardsStyle from "../style/BigCards"
 import { updateProducts } from '../../../actions/hello'
+import GeneralTags from "../../AddPhotos/tags_antd"
 
 import Trade from "./Trade"
 import Carousel from "./Carousel"
@@ -14,6 +15,27 @@ import Carousel from "./Carousel"
 const err = require('../../asset/gif/replaceNoImg.gif')
 
 class ProductDetails extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            details: true,
+            comments: false
+        }
+    }
+
+    openDetails = () => {
+        this.setState({
+            details: true,
+            comments: false
+        })
+    }
+
+    openComments = () => {
+        this.setState({
+            details: false,
+            comments: true
+        })
+    }
 
     render() {
         const u = this.props.details
@@ -35,6 +57,25 @@ class ProductDetails extends Component {
                     return a.product_id == u.product_id
                 })[0].comments : []
 
+        const fullDate = () => {
+            const date = new Date(u.uploaded_at)
+            return {
+                year: date.getFullYear(),
+                month: date.getMonth() + 1,
+                date: date.getDate()
+            }
+        }
+
+        const tradestatus = () => {
+            if (u.status == 1) {
+                return "Available"
+            } else if (u.status == 2) {
+                return "trading"
+            } else if (u.status == 3) {
+                return "traded"
+            }
+        }
+
         const details = [
             {
                 title: "Product Name",
@@ -54,14 +95,15 @@ class ProductDetails extends Component {
             },
             {
                 title: "Date of Upload",
-                description: String(u.uploaded_at),
+                description: `${fullDate().year}-${fullDate().month}-${fullDate().date}`
             },
             {
                 title: "Status of Trade",
-                description: u.status == 1 ? "Available" : "Trading"
-            }
+                description: tradestatus()
+            },
+            
         ]
-        
+
         const detail = BigCardsStyle.details
         return (
             <div key={`details-${u.product_id}`} style={detail.outer}>
@@ -79,53 +121,73 @@ class ProductDetails extends Component {
 
                 {/* <Trade details={u} status={checkMyProduct()} /> */}
                 <div className="notImg" style={detail.inner.notImg}>
-                    {/* List of Details */}
-                    <div className="detailsList">
-                        <List
-                            itemLayout="vertical"
-                            dataSource={details}
-                            renderItem={item => (
-                                <List.Item key={`list-${u.product_id}`}>
-                                    {item.title != "Owner" &&
-                                        <List.Item.Meta
-                                            title={<h5>{item.title}</h5>}
-                                            description={item.description}
-                                        />}
-                                    {item.title == "Owner" &&
-                                        <List.Item.Meta
-                                            title={<h5>{item.title}</h5>}
-                                            description={item.description}
-                                            // this send the user id to server
-                                            onClick={() => { this.props.handleOtherUser(item.description) }}
-                                        />}
-                                </List.Item>
-                            )}
-                        >
-                        </List>
+                    <div className="buttons" style={detail.inner.button}>
+                        <Button ghost type="primary" onClick={this.openDetails} style={{ marginLeft: "1vw", marginRight: "1vw" }}>Details</Button>
+                        {this.props.myUser.user_id &&
+                            <Button ghost type="primary" onClick={this.openComments} style={{ marginLeft: "1vw", marginRight: "1vw" }}>Comments</Button>}
                     </div>
-
-                    {/* comments */}
-                    <div stlye={{ display: "flex", flexDirection: "column", position: "relative" }}>
-                        <div className="comments" style={{ marginBottom: "16px", paddingTop: "15px" }}>
-                            <h5>Comments</h5>
+                    {/* List of Details */}
+                    {this.state.details &&
+                        <div className="detailsList" style={detail.inner.notButton}>
                             <List
-                                itemLayout="horizontal"
-                                dataSource={comments}
+                                itemLayout="vertical"
+                                dataSource={details}
                                 renderItem={item => (
-                                    <List.Item key={`${u.product_id}comment`}>
-                                        <List.Item.Meta
-                                            title={<h6>{item.title}</h6>}
-                                            description={item.content}
-                                        />
-                                        {item.description}
+                                    <List.Item key={`list-${u.product_id}`}>
+                                        {(item.title != "Owner" && item.title != "Tags") &&
+                                            <List.Item.Meta
+                                                title={<h5>{item.title}</h5>}
+                                                description={item.description}
+                                            />}
+                                        {(item.title == "Owner" && u.uploaded_by !== this.props.myUser.user_id) &&
+                                            <List.Item.Meta
+                                                title={<h5>{item.title}</h5>}
+                                                description={item.description}
+                                                onClick={() => { this.props.handleOtherUser(u.uploaded_by) }}
+                                            />}
+                                        {(item.title == "Owner" && u.uploaded_by === this.props.myUser.user_id) &&
+                                            <List.Item.Meta
+                                            className="username"
+                                                title={<h5>{item.title}</h5>}
+                                                description={item.description}
+                                            />}
+                                        {item.title == "Tags" &&
+                                            <List.Item.Meta
+                                                title={<h5>{item.title}</h5>}>
+                                                
+                                            </List.Item.Meta>}
                                     </List.Item>
                                 )}
                             >
                             </List>
-                            <input style={{ width: "220px", marginBottom: "20px", height: "42.74px" }} type="text" onChange={this.props.handleComment} value={this.props.comment} placeholder="Write a comment!" />
-                            <button className="myCmBtn" onClick={() => { this.props.handleSubmitComment(u.product_id, this.props.comment, this.props.allUsers) }}>Submit Comment</button>
-                        </div>
-                    </div>
+                            <h5 style={{color: "rgb(100,100,100)"}}>Tags</h5>
+                            <GeneralTags tags={this.props.details.tags} closable={false} />
+                        </div>}
+
+                    {/* comments */}
+                    {(this.state.comments && this.props.myUser.user_id) &&
+                        <div stlye={{ display: "flex", flexDirection: "column", position: "relative" }} style={detail.inner.notButton}>
+                            <div className="comments" style={{ marginBottom: "16px", paddingTop: "15px" }}>
+                                <h5>Comments</h5>
+                                <List
+                                    itemLayout="horizontal"
+                                    dataSource={comments}
+                                    renderItem={item => (
+                                        <List.Item key={`${u.product_id}comment`}>
+                                            <List.Item.Meta
+                                                title={<h6>{item.title}</h6>}
+                                                description={item.content}
+                                            />
+                                            {item.description}
+                                        </List.Item>
+                                    )}
+                                >
+                                </List>
+                                <input style={{ width: "220px", marginBottom: "20px", height: "42.74px" }} type="text" onChange={this.props.handleComment} value={this.props.comment} placeholder="Write a comment!" />
+                                <button className="myCmBtn" onClick={() => { this.props.handleSubmitComment(u.product_id, this.props.comment, this.props.allUsers) }}>Submit Comment</button>
+                            </div>
+                        </div>}
+
                 </div>
 
 
@@ -213,20 +275,3 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetails)
-
-// const otherUser = this.props.allUsers
-        //     .filter((u) => { return u.displayed_name == this.props.otherUser })
-        //     .map((u) => {
-        //         return (
-        //             <div style={{ backgroundColor: "#f4fef4", borderRadius: "1vw", display: "flex", flexDirection: "column" }}>
-        //                 <div className="userBanner" style={{ borderRadius: "1vw", backgroundColor: "#c1fcc1", height: "5vh", display: "flex", justifyContent: "center", alignContent: "center", alignItems: "center" }}>
-        //                     <p>this is a banner</p>
-        //                 </div>
-        //                 <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
-        //                     <img src={u.profile_picture} style={{ marginTop: "2vh", marginBottom: "2vh", width: "10vw", borderRadius: "50%" }} />
-        //                     <h4 style={{ paddingTop: "1vw", paddingBottom: "1vw" }}>{u.displayed_name}</h4>
-        //                     <h4 style={{ paddingTop: "1vw", paddingBottom: "1vw" }}>Credibility: {u.credibility}</h4>
-        //                 </div>
-        //             </div>
-        //         )
-        //     })

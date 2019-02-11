@@ -14,6 +14,8 @@ import UserPage from "./js/component/UserPage/main"
 import NewMain from "./js/component/newUserPage/NewMain"
 import "./App.css"
 
+import {connect} from "react-redux"
+
 import {
     BrowserRouter,
     Route,
@@ -30,7 +32,7 @@ class App extends Component {
                     <div style={{paddingTop: "7vh"}}>
                     <Switch>
                         <Route exact path={"/"} component={MainGrid} />
-                        <Route path={"/userPage"} component={NewMain} />
+                        {this.props.myUser.user_id && <Route path={"/userPage"} component={NewMain} />}
                         <Route path={"/verifyEmail/:id"} component={VerifyEmail} />
                         <Route path={"/redirect"} component={Rredirect} />
                         <Route path="*" component={NoMatch}/>
@@ -42,4 +44,17 @@ class App extends Component {
     }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    const user = state.userReducer
+    return {
+        myUser: user.myUser
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
