@@ -72,7 +72,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         openDetails: async (id, whom, which, allUsers)=>{
             try {
-                const products = await Axios('https://localhost:8443/api/allProducts/', {
+                const products = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/', {
                     method: "get",
                     withCredentials: true
                 })

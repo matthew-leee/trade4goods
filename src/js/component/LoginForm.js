@@ -42,14 +42,14 @@ class NormalLoginForm extends React.Component {
                 }
 
                 try {
-                    let res = await axios('https://localhost:8443/api/login', {
+                    let res = await axios(process.env.REACT_APP_BACKEND_URL + '/api/login', {
                         method: "post",
                         data: passingDB,
                         withCredentials: true
                     })
 
                     // put userinfo in redux
-                    const user = await axios('https://localhost:8443/api/profile', {
+                    const user = await axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                         method: "get",
                         withCredentials: true
                     })
@@ -99,7 +99,7 @@ class NormalLoginForm extends React.Component {
             )
                 .then(async () => {
                     try {
-                        const user = await axios('https://localhost:8443/api/profile', {
+                        const user = await axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                             method: "get",
                             withCredentials: true
                         })
@@ -146,7 +146,7 @@ class NormalLoginForm extends React.Component {
             )
                 .then(async () => {
                     console.log('google login success')
-                    const user = await axios('https://localhost:8443/api/profile', {
+                    const user = await axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                         method: "get",
                         withCredentials: true
                     })

@@ -161,13 +161,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         handleSubmitComment: async (id, comment, allUsers) => {
             try {
-                const res = await Axios("https://localhost:8443/api/comment", {
+                const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/comment", {
                     method: "post",
                     data: { product_id: id, comment: comment },
                     withCredentials: true
                 })
                 if (res.status == 201) {
-                    const products = await Axios('https://localhost:8443/api/allProducts/', {
+                    const products = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/', {
                         method: "get",
                         withCredentials: true
                     })

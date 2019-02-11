@@ -59,7 +59,7 @@ class RegistrationFormgp extends React.Component {
                 }
 
                 try {
-                    const res = await axios('https://localhost:8443/api/signup', {
+                    const res = await axios(process.env.REACT_APP_BACKEND_URL + '/api/signup', {
                         method: "post",
                         data: passingDB,
                         withCredentials: true

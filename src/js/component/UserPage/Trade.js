@@ -29,14 +29,14 @@ class Trade extends Component {
             product_offering: this.props.selected
         }
         try {
-            const res = await Axios("https://localhost:8443/api/offer_product", {
+            const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/offer_product", {
                 method: 'post',
                 data: data,
                 withCredentials: true
             })
 
             // fetch allProducts
-            const pres = await Axios.get('https://localhost:8443/api/allProducts/')
+            const pres = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/')
             pres.data.forEach((u) => {
                 u.openOneModal = false
                 u.openOGModal = false
@@ -46,11 +46,11 @@ class Trade extends Component {
             this.props.storeAllProducts(pres.data)
 
             // fetch allUsers
-            const users = await Axios.get('https://localhost:8443/api/allProfile/')
+            const users = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProfile/')
             this.props.storeAllUsers(users.data)
 
             // fetch myUser
-            const user = await Axios('https://localhost:8443/api/profile', {
+            const user = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                 method: "get",
                 withCredentials: true
             })
@@ -70,7 +70,7 @@ class Trade extends Component {
             product_offering: this.props.selected
         }
         try {
-            const res = await Axios("https://localhost:8443/api/acceptOffer/", {
+            const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/acceptOffer/", {
                 method: 'post',
                 data: data,
                 withCredentials: true
@@ -78,7 +78,7 @@ class Trade extends Component {
 
 
             // fetch allProducts
-            const pres = await Axios.get('https://localhost:8443/api/allProducts/')
+            const pres = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/')
             pres.data.forEach((u) => {
                 u.openOneModal = false
                 u.openOGModal = false
@@ -88,11 +88,11 @@ class Trade extends Component {
             this.props.storeAllProducts(pres.data)
 
             // fetch allUsers
-            const users = await Axios.get('https://localhost:8443/api/allProfile/')
+            const users = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProfile/')
             this.props.storeAllUsers(users.data)
 
             // fetch myUser
-            const user = await Axios('https://localhost:8443/api/profile', {
+            const user = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                 method: "get",
                 withCredentials: true
             })
@@ -114,7 +114,7 @@ class Trade extends Component {
         }
         console.log(data)
         try {
-            const res = await Axios("https://localhost:8443/api/offer_product", {
+            const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/offer_product", {
                 method: 'delete',
                 data: data,
                 withCredentials: true
@@ -122,7 +122,7 @@ class Trade extends Component {
             console.log(res)
 
             // fetch allProducts
-            const pres = await Axios.get('https://localhost:8443/api/allProducts/')
+            const pres = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/')
             pres.data.forEach((u) => {
                 u.openOneModal = false
                 u.openOGModal = false
@@ -132,11 +132,11 @@ class Trade extends Component {
             this.props.storeAllProducts(pres.data)
 
             // fetch allUsers
-            const users = await Axios.get('https://localhost:8443/api/allProfile/')
+            const users = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProfile/')
             this.props.storeAllUsers(users.data)
 
             // fetch myUser
-            const user = await Axios('https://localhost:8443/api/profile', {
+            const user = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                 method: "get",
                 withCredentials: true
             })
