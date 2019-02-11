@@ -10,6 +10,7 @@ import { popUpCloseTag, content } from './compCSS/popupCss'
 import actions_userPage from "../actions/userPage"
 import actions_search from "../actions/search"
 import Axios from 'axios';
+import { updateProducts } from '../actions/hello'
 
 const { Meta } = Card;
 
@@ -76,7 +77,7 @@ class MainCard extends React.Component {
         })
         console.log(products)
         this.props.storeAllProducts(products.data)
-
+        this.props.updateProducts(products.data)
         // fetch allUsers
         const users = await Axios.get('https://localhost:8443/api/allProfile/')
         this.props.storeAllUsers(users.data)
@@ -216,6 +217,7 @@ const mapDispatchToProps = (dispatch) => {
     storeMyUser: (user) => {
       dispatch(actions_userPage.storeMyUser(user))
     },
+    updateProducts: arr => dispatch(updateProducts(arr)),
     openOutDetails: async (id, whom, which, allUsers)=>{
         try {
             const products = await Axios('https://localhost:8443/api/allProducts/', {
@@ -230,7 +232,7 @@ const mapDispatchToProps = (dispatch) => {
                 u.openDELModal = false
             })
             dispatch(actions_search.storeAllProducts(products.data))
-
+            dispatch(updateProducts(products.data))
             const cmtIds = products.data.filter((u)=>{
                 return u.product_id == id
             })[0].comments

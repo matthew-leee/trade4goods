@@ -7,6 +7,7 @@ import Popup from 'reactjs-popup'   //npm Reactjs-Popup
 import { popUpCloseTag, content } from '../compCSS/popupCss'
 import Axios from "axios";
 import Trade from "./Trade"
+import { updateProducts } from '../../actions/hello'
 
 class ProductDetails extends Component {
 
@@ -239,6 +240,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                         u.openDELModal = false
                     })
                     dispatch(actions_search.storeAllProducts(products.data))
+                    dispatch(updateProducts(products.data))
                     const ids = res.data[0].map((u) => { return u[0] })
                     console.log(ownProps.allUsers)
                     const comments = ids.map(async (comment_id) => {

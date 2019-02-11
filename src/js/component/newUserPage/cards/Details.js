@@ -6,6 +6,7 @@ import { connect } from "react-redux"
 import Axios from "axios";
 // import Trade from "./Trade"
 import BigCardsStyle from "../style/BigCards"
+import { updateProducts } from '../../../actions/hello'
 
 import Trade from "./Trade"
 import Carousel from "./Carousel"
@@ -179,6 +180,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                         u.openDELModal = false
                     })
                     dispatch(actions_search.storeAllProducts(products.data))
+                    dispatch(updateProducts(products.data))
                     const ids = res.data[0].map((u) => { return u[0] })
                     const comments = ids.map(async (comment_id) => {
                         const sth = await Axios(`https://localhost:8443/api/comment/${comment_id}`, {

@@ -13,7 +13,9 @@ import GeneralTags from "../AddPhotos/tags_antd"
 import uuidv1 from "uuid/v1"
 import Axios from "axios";
 import firebaseConfig from "../../../firebase"
-import * as firebase from 'firebase';
+import * as firebase from 'firebase'
+import { updateProducts } from '../../actions/hello'
+
 
 import UploadStyle from "./style/Upload"
 
@@ -125,7 +127,7 @@ class AddPhotoForm extends Component {
                         u.openDELModal = false
                     })
                     this.props.storeAllProducts(res.data)
-
+                    this.props.updateProducts(res.data)
                     // fetch allUsers
                     const users = await Axios.get('https://localhost:8443/api/allProfile/')
                     this.props.storeAllUsers(users.data)
@@ -391,7 +393,8 @@ const mapDispatchToProps = (dispatch) => {
         },
         handleImgDelete: (key)=>{
             dispatch(actions_addPhotos.imgDelete(key))
-        }
+        },
+        updateProducts: arr => dispatch(updateProducts(arr)),
     }
 }
 

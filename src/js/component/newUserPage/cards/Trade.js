@@ -7,7 +7,7 @@ import { connect } from "react-redux"
 import actions_trade from "../../../actions/trade"
 import actions_userPage from "../../../actions/userPage"
 import actions_search from "../../../actions/search"
-
+import { updateProducts } from '../../../actions/hello'
 import LoginForm from '../../LoginForm'
 // import RegistrationForm from "../RegistrationForm";
 // import {handleLoginToggle} from '../../actions/hello'
@@ -43,7 +43,7 @@ class Trade extends Component {
                 u.openDELModal = false
             })
             this.props.storeAllProducts(pres.data)
-
+            this.props.updateProducts(pres.data)
             // fetch allUsers
             const users = await Axios.get('https://localhost:8443/api/allProfile/')
             this.props.storeAllUsers(users.data)
@@ -87,7 +87,7 @@ class Trade extends Component {
                 u.openDELModal = false
             })
             this.props.storeAllProducts(pres.data)
-
+            this.props.updateProducts(pres.data)
             // fetch allUsers
             const users = await Axios.get('https://localhost:8443/api/allProfile/')
             this.props.storeAllUsers(users.data)
@@ -131,7 +131,7 @@ class Trade extends Component {
                 u.openDELModal = false
             })
             this.props.storeAllProducts(pres.data)
-
+            this.props.updateProducts(pres.data)
             // fetch allUsers
             const users = await Axios.get('https://localhost:8443/api/allProfile/')
             this.props.storeAllUsers(users.data)
@@ -257,7 +257,8 @@ const mapDispatchToProps = (dispatch) => {
         openTradeCards: (details, status, id) => {
                 dispatch(actions_search.setMyProducts(id))
                 dispatch(actions_trade.openTradeCards(details, status))
-        }
+        },
+        updateProducts: arr => dispatch(updateProducts(arr)),
     }
 }
 

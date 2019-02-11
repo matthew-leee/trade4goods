@@ -6,6 +6,7 @@ import {connect} from "react-redux"
 import actions_userPage from "../../../actions/userPage"
 import actions_search from "../../../actions/search"
 import Axios from "axios"
+import { updateProducts } from '../../../actions/hello'
 
 class MyGCards extends Component {
     render() {
@@ -84,7 +85,7 @@ const mapDispatchToProps = (dispatch) => {
                     u.openDELModal = false
                 })
                 dispatch(actions_search.storeAllProducts(products.data))
-
+                dispatch(updateProducts(products.data))
                 const cmtIds = products.data.filter((u)=>{
                     return u.product_id == id
                 })[0].comments

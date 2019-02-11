@@ -7,7 +7,7 @@ import actions_userPage from "../../../actions/userPage"
 import actions_newUserPage from "../../../actions/newUserPage"
 import { Button, Icon } from "antd"
 import Axios from "axios"
-
+import { updateProducts } from '../../../actions/hello'
 
 const err = require('../../asset/gif/replaceNoImg.gif')
 
@@ -82,7 +82,7 @@ class TradeCards extends Component {
                 u.openDELModal = false
             })
             this.props.storeAllProducts(pres.data)
-
+            this.props.updateProducts(pres.data)
             // fetch allUsers
             const users = await Axios.get('https://localhost:8443/api/allProfile/')
             this.props.storeAllUsers(users.data)
@@ -113,7 +113,7 @@ class TradeCards extends Component {
             u.openDELModal = false
         })
         this.props.storeAllProducts(pres.data)
-
+        this.props.updateProducts(pres.data)
         // fetch allUsers
         const users = await Axios.get('https://localhost:8443/api/allProfile/')
         this.props.storeAllUsers(users.data)
@@ -193,7 +193,7 @@ class TradeCards extends Component {
                     u.openDELModal = false
                 })
                 this.props.storeAllProducts(pres.data)
-
+                this.props.updateProducts(pres.data)
                 // fetch allUsers
                 const users = await Axios.get('https://localhost:8443/api/allProfile/')
                 this.props.storeAllUsers(users.data)
@@ -243,7 +243,7 @@ class TradeCards extends Component {
                     u.openDELModal = false
                 })
                 this.props.storeAllProducts(pres.data)
-
+                this.props.updateProducts(pres.data)
                 // fetch allUsers
                 const users = await Axios.get('https://localhost:8443/api/allProfile/')
                 this.props.storeAllUsers(users.data)
@@ -287,7 +287,7 @@ class TradeCards extends Component {
                 u.openDELModal = false
             })
             this.props.storeAllProducts(pres.data)
-
+            this.props.updateProducts(pres.data)
             // fetch allUsers
             const users = await Axios.get('https://localhost:8443/api/allProfile/')
             this.props.storeAllUsers(users.data)
@@ -330,7 +330,7 @@ class TradeCards extends Component {
                 u.openDELModal = false
             })
             this.props.storeAllProducts(pres.data)
-
+            this.props.updateProducts(pres.data)
             // fetch allUsers
             const users = await Axios.get('https://localhost:8443/api/allProfile/')
             this.props.storeAllUsers(users.data)
@@ -407,7 +407,7 @@ class TradeCards extends Component {
                 u.openDELModal = false
             })
             this.props.storeAllProducts(pres.data)
-
+            this.props.updateProducts(pres.data)
             // fetch allUsers
             const users = await Axios.get('https://localhost:8443/api/allProfile/')
             this.props.storeAllUsers(users.data)
@@ -1142,6 +1142,7 @@ const mapDispatchToProps = (dispatch) => {
         storeMyUser: (user) => {
             dispatch(actions_userPage.storeMyUser(user))
         },
+        updateProducts: arr => dispatch(updateProducts(arr)),
     }
 }
 

@@ -4,18 +4,20 @@ import RegistrationForm from './RegistrationForm'
 import LoginForm from './LoginForm'
 import { connect } from "react-redux";
 import { Link } from "react-router-dom"
-import actions_search from "../actions/search"
+
 import actions_userPage from "../actions/userPage"
 import {updateFilterArr,updateFilterKey,handleLoginToggle,handleRegToggle} from '../actions/hello'
 import { withRouter } from "react-router";
 
 import { Select, Icon } from 'antd';
 import actions_search from '../actions/search';
+import { updateProducts } from '../actions/hello'
 const _ = require('lodash')
 const Option = Select.Option;
 
 function mapDispatchToProps(dispatch) {
     return {
+        updateProducts: arr => dispatch(updateProducts(arr)),
         updateFilterArr: arr => dispatch(updateFilterArr(arr)),
         updateFilterKey: arr=> dispatch(updateFilterKey(arr)),
         handleLoginToggle: a=> dispatch(handleLoginToggle(a)),
@@ -42,6 +44,7 @@ const mapStateToProps = state => {
     const user = state.userReducer
     const sss = state.searchReducer
     return { 
+        searchArr: search.searchArr,
         productsArr: search.productsArr, 
         isLogin: search.isLogin,
         tryLogin: search.tryLogin,
@@ -78,7 +81,7 @@ class ConnectedNavvv extends React.Component {
                 u.openDELModal = false
             })
             this.props.storeAllProducts(pres.data)
-
+            this.props.updateProducts(pres.data)
             // fetch allUsers
             const users = await Axios.get('https://localhost:8443/api/allProfile/')
             this.props.storeAllUsers(users.data)
@@ -164,7 +167,7 @@ class ConnectedNavvv extends React.Component {
             children.push(<Option key={prodctNameArr[i] }>{prodctNameArr[i]}</Option>)
         }
         
-
+        this.props.updateProducts(nextProps.searchArr)
         this.setState({arr:children})
         console.log ("set children")
 
@@ -175,7 +178,7 @@ class ConnectedNavvv extends React.Component {
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style={{height: "7vh"}}>
     
-                <Link  className="navbar-brand d-inline" to="/redirect">Trade4Goods</Link>
+                <Link className="navbar-brand d-inline" to="/redirect">Trade4Goods</Link>
                 <Select onInputKeyDown={this.handleNavPressEnter} notFoundContent="Not Found" mode="multiple" style={{ width: '50%' }} defaultValue={[]} placeholder="Please select" onChange={this.handleChange} maxTagCount={3}>
                     {this.state.arr}
                 </Select>
