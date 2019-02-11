@@ -7,6 +7,7 @@ import Navvv from './js/component/Navvv'
 import MainGrid from './js/component/MainGrid'
 import NoMatch from './js/component/NoMatch'
 import VerifyEmail from './js/component/VerifyEmail'
+import Rredirect from "./js/component/Rredirect"
 
 import AddPhotos from "./js/component/AddPhotos/AddPhotos"
 import UserPage from "./js/component/UserPage/main"
@@ -19,6 +20,7 @@ import {
     Switch
 } from 'react-router-dom'
 
+
 class App extends Component {
     render() {
         return (
@@ -29,9 +31,9 @@ class App extends Component {
                     <Switch>
                         <Route exact path={"/"} component={MainGrid} />
                         <Route path={"/addPhotos"} component={AddPhotos} />
-                        {/* <Route path={"/userPage"} component={UserPage} /> */}
                         <Route path={"/userPage"} component={NewMain} />
                         <Route path={"/verifyEmail/:id"} component={VerifyEmail} />
+                        <Route path={"/redirect"} component={Rredirect} />
                         <Route path="*" component={NoMatch}/>
                     </Switch>
                     </div>

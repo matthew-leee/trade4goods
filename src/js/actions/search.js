@@ -73,6 +73,11 @@ const actions_search = {
             type: "SET_COPYSTATE",
             copyState: copyState
         }
+    },
+    refresh: ()=>{
+        return {
+            type: "REFRESH"
+        }
     }
 }
 

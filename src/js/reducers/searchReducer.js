@@ -14,7 +14,8 @@ const searchReducer = (state = {
         remainShowingBatch: 0,
         showingBatch: 0,
         hasmore: true
-    }
+    },
+    refresh: 1
 }, action) => {
     switch (action.type) {
         case "STORE_SEARCH":
@@ -193,6 +194,11 @@ const searchReducer = (state = {
                 ...state,
                 copyState: action.copyState
             }
+        case "REFRESH": 
+        return {
+            ...state,
+            refresh: state.refresh +1 
+        }
         default:
             return state
     }
