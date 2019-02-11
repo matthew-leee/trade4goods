@@ -25,7 +25,7 @@ const rootReducers = combineReducers({
     newUserReducer
 })
 
-const store = createStore(rootReducers, applyMiddleware(logger))
+const store = (process.env.NODE_ENV === 'development') ? createStore(rootReducers, applyMiddleware(logger)) : createStore(rootReducers)
 
 ReactDOM.render(
     
