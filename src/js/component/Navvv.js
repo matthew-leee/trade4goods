@@ -7,6 +7,7 @@ import {updateFilterArr,updateFilterKey,handleLoginToggle,handleRegToggle} from 
 import { withRouter } from "react-router";
 
 import { Select, Icon } from 'antd';
+import actions_search from '../actions/search';
 const _ = require('lodash')
 const Option = Select.Option;
 
@@ -15,8 +16,10 @@ function mapDispatchToProps(dispatch) {
         updateFilterArr: arr => dispatch(updateFilterArr(arr)),
         updateFilterKey: arr=> dispatch(updateFilterKey(arr)),
         handleLoginToggle: a=> dispatch(handleLoginToggle(a)),
-        handleRegToggle: a=> dispatch(handleRegToggle(a))
-       
+        handleRegToggle: a=> dispatch(handleRegToggle(a)),
+        refresh: ()=>{
+            dispatch(actions_search.refresh())
+        }
     };
   }
 
@@ -24,12 +27,14 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = state => {
     const search = state.roootReducer
     const user = state.userReducer
+    const sss = state.searchReducer
     return { 
         productsArr: search.productsArr, 
         isLogin: search.isLogin,
         tryLogin: search.tryLogin,
         tryRegister: search.tryReg,
-        myUser: user.myUser
+        myUser: user.myUser,
+        refresh: sss.refresh
     };
 };
 
@@ -43,7 +48,9 @@ class ConnectedNavvv extends React.Component {
         this.handleNavPressEnter = this.handleNavPressEnter.bind(this)
     }
 
-
+    refresh = () => {
+        this.props.refresh()
+    }
     
     handleNavOnBlur = () =>{
 
@@ -115,7 +122,7 @@ class ConnectedNavvv extends React.Component {
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style={{height: "7vh"}}>
     
-                <Link className="navbar-brand d-inline" to="/">Trade4Goods</Link>
+                <Link  className="navbar-brand d-inline" to="/redirect">Trade4Goods</Link>
                 <Select onInputKeyDown={this.handleNavPressEnter} notFoundContent="Not Found" mode="multiple" style={{ width: '50%' }} defaultValue={[]} placeholder="Please select" onChange={this.handleChange} maxTagCount={3}>
                     {this.state.arr}
                 </Select>

@@ -101,11 +101,13 @@ class ConnectedMainGrid extends React.Component {
         } catch (err) {
             console.log(err)
         }
+        
     }
 
 
     componentWillReceiveProps(nextProps) {
         console.log (nextProps)
+        console.log(this.props.refresh)
         let filterArr = nextProps.searchArr
         let remainShowingBatch = Math.floor(filterArr.length / 50)
         let showArr = filterArr.slice(0, 50)
@@ -201,7 +203,8 @@ const mapStateToProps = state => {
         searchArr: rooot.searchArr, 
         productsArr: rooot.productsArr,
         currentOutProduct: search.currentOutProduct,
-        currentTrade: trade.currentTrade
+        currentTrade: trade.currentTrade,
+        refresh: search.refresh,
     };
 };
 
