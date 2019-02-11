@@ -113,14 +113,12 @@ class Trade extends Component {
             product_offered: this.props.details.product_id,
             product_offering: id
         }
-        console.log(data)
         try {
             const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/offer_product", {
                 method: 'delete',
                 data: data,
                 withCredentials: true
             })
-            console.log(res)
 
             // fetch allProducts
             const pres = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/')
