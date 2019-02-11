@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import 'antd/dist/antd.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import Navvv from './js/component/Navvv'
-import MainGrid from './js/component/MainGrid'
+import Navvv from './js/component/NavvvClone'
+import MainGrid from './js/component/MainGridClone'
 import NoMatch from './js/component/NoMatch'
 import VerifyEmail from './js/component/VerifyEmail'
 
@@ -28,7 +28,7 @@ class App extends Component {
                     <div style={{paddingTop: "7vh"}}>
                     <Switch>
                         <Route exact path={"/"} component={MainGrid} />
-                        <Route path={"/addPhotos"} component={AddPhotos} />
+                        
                         {/* <Route path={"/userPage"} component={UserPage} /> */}
                         <Route path={"/userPage"} component={NewMain} />
                         <Route path={"/verifyEmail/:id"} component={VerifyEmail} />

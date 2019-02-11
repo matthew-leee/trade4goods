@@ -132,7 +132,7 @@ class ConnectedMainGrid extends React.Component {
             let remainShowingBatch = Math.floor(filterArr.length / 50)
             let showArr = filterArr.slice(0, 50)
             // let copyState = { ...this.state }
-            let copyState = this.props.copyState
+            let copyState = {...this.props.copyState}
             if (remainShowingBatch <= 1) {
                 copyState.hasmore = false
             } else {
@@ -183,7 +183,7 @@ class ConnectedMainGrid extends React.Component {
                         <InfiniteScroll
                             pageStart={0}
                             loadMore={this.showMoreItems.bind(this)}
-                            hasMore={this.state.hasmore}
+                            hasMore={copyState.hasmore}
                             loader={loader} useWindow={true}>
 
                             {c1}
