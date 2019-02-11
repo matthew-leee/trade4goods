@@ -1,13 +1,5 @@
 'use strict';
-//config
 require('dotenv').config();
-const 
-fs = require('fs'),
-path = require('path'),
-options = {
-  cert: fs.readFileSync(path.join(__dirname, 'cert', 'localhost.crt')),
-  key: fs.readFileSync(path.join(__dirname, 'cert', 'localhost.key'))
-}
 
 //library dependencies
 const 
@@ -16,7 +8,7 @@ express = require('express'),
 promisify = require('util').promisify,
 app = express(),
 axios = require('axios'),
-server = https.createServer(options, app),
+path = require('path'),
 bodyParser = require('body-parser'),
 cors = require('cors'),
 jwt = require('jsonwebtoken'),
@@ -55,4 +47,15 @@ require('./init/init-session')(app, redisClient, expressSession, RedisStore)
 require('./init/init-app')(app, express, bodyParser, cors, router, path)
 
 //server starts
+if (process.env.NODE_ENV === 'development') {
+const 
+fs = require('fs'),
+options = {
+  cert: fs.readFileSync(path.join(__dirname, 'cert', 'localhost.crt')),
+  key: fs.readFileSync(path.join(__dirname, 'cert', 'localhost.key'))
+},
+server = https.createServer(options, app);
 server.listen(process.env.PORT, () => console.log(`server started at port ${process.env.PORT} at ${new Date()}`));
+} else {
+  app.listen(process.env.PORT, () => console.log(`server started at port ${process.env.PORT} at ${new Date()}`));
+}
