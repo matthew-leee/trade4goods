@@ -49,7 +49,7 @@ class MyGoods extends Component {
         const boo = window.confirm("delete?")
         if (boo) {
             try {
-                const res = await Axios(`https://localhost:8443/api/product/${id}`, {
+                const res = await Axios(`${process.env.REACT_APP_BACKEND_URL}/api/product/${id}`, {
                     method: "delete",
                     withCredentials: true
                 })

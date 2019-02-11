@@ -17,7 +17,7 @@ class VerifyEmail extends React.Component {
     async componentDidMount() {
 
         try {
-            let good = await Axios(`https://localhost:8443/api/verifyEmail/${this.props.match.params.id}`,
+            let good = await Axios(`${process.env.REACT_APP_BACKEND_URL}/api/verifyEmail/${this.props.match.params.id}`,
                 {method: "post",
                 withCredentials: true}
               )

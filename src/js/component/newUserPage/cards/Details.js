@@ -183,7 +183,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                     dispatch(updateProducts(products.data))
                     const ids = res.data[0].map((u) => { return u[0] })
                     const comments = ids.map(async (comment_id) => {
-                        const sth = await Axios(`https://localhost:8443/api/comment/${comment_id}`, {
+                        const sth = await Axios(`${process.env.REACT_APP_BACKEND_URL}/api/comment/${comment_id}`, {
                             method: "get",
                             withCredentials: true
                         })

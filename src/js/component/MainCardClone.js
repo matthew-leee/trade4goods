@@ -58,7 +58,7 @@ class MainCard extends React.Component {
   handleLike = async (id) => {
     try {
       console.log("clicked")
-      const res = await Axios(`https://localhost:8443/api/like/${id}`, {
+      const res = await Axios(`${process.env.REACT_APP_BACKEND_URL}/api/like/${id}`, {
         method: "put",
         withCredentials: true
       })
@@ -239,7 +239,7 @@ const mapDispatchToProps = (dispatch) => {
 
             // const ids = res.data[0].map((u) => { return u[0] })
             const comments = cmtIds.map(async (comment_id) => {
-                const sth = await Axios(`https://localhost:8443/api/comment/${comment_id}`, {
+                const sth = await Axios(`${process.env.REACT_APP_BACKEND_URL}/api/comment/${comment_id}`, {
                     method: "get",
                     withCredentials: true
                 })

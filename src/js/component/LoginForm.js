@@ -86,7 +86,7 @@ class NormalLoginForm extends React.Component {
 
         console.log(res._token.accessToken)
         if (access_token) {
-            axios(`https://localhost:8443/api/facebook_login`,
+            axios(`${process.env.REACT_APP_BACKEND_URL}/api/facebook_login`,
                 {
                     method: "post",
                     data: {
@@ -132,7 +132,7 @@ class NormalLoginForm extends React.Component {
         let id_token = res._token.idToken
 
         if (access_token) {
-            axios(`https://localhost:8443/api/google_login`,
+            axios(`${process.env.REACT_APP_BACKEND_URL}/api/google_login`,
                 {
                     method: "post",
                     data: {
