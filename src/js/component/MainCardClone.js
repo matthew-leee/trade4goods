@@ -63,7 +63,6 @@ class MainCard extends React.Component {
         withCredentials: true
       })
       if (res.status == 200) {
-        console.log('res')
         const products = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/', {
           method: "get",
           withCredentials: true
@@ -75,7 +74,6 @@ class MainCard extends React.Component {
           u.openOGModal = false
           u.openMyGoodModal = false
         })
-        console.log(products)
         this.props.storeAllProducts(products.data)
         this.props.updateProducts(products.data)
         // fetch allUsers
@@ -88,7 +86,6 @@ class MainCard extends React.Component {
           withCredentials: true
         })
         this.props.storeMyUser(user.data)
-        console.log(this.props.details.profile_picture)
 
       }
     } catch (err) {
