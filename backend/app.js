@@ -48,14 +48,14 @@ require('./init/init-app')(app, express, bodyParser, cors, router, path)
 
 //server starts
 if (process.env.NODE_ENV === 'development') {
-const 
-fs = require('fs'),
-options = {
-  cert: fs.readFileSync(path.join(__dirname, 'cert', 'localhost.crt')),
-  key: fs.readFileSync(path.join(__dirname, 'cert', 'localhost.key'))
-},
-server = https.createServer(options, app);
-server.listen(process.env.PORT, () => console.log(`server started at port ${process.env.PORT} at ${new Date()}`));
+  const
+    fs = require('fs'),
+    options = {
+      cert: fs.readFileSync(path.join(__dirname, 'cert', 'localhost.crt')),
+      key: fs.readFileSync(path.join(__dirname, 'cert', 'localhost.key'))
+    },
+    server = https.createServer(options, app);
+  server.listen(process.env.PORT, () => console.log(`server started at port ${process.env.PORT} at ${new Date()}`));
 } else {
   app.listen(process.env.PORT, () => console.log(`server started at port ${process.env.PORT} at ${new Date()}`));
 }
