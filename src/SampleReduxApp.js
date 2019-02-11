@@ -30,7 +30,6 @@ class App extends Component {
                     <div style={{paddingTop: "7vh"}}>
                     <Switch>
                         <Route exact path={"/"} component={MainGrid} />
-                        <Route path={"/addPhotos"} component={AddPhotos} />
                         <Route path={"/userPage"} component={NewMain} />
                         <Route path={"/verifyEmail/:id"} component={VerifyEmail} />
                         <Route path={"/redirect"} component={Rredirect} />
