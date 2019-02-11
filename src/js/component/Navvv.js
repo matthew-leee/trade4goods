@@ -1,8 +1,11 @@
 import React from 'react';
+import Axios from 'axios';
 import RegistrationForm from './RegistrationForm'
 import LoginForm from './LoginForm'
 import { connect } from "react-redux";
 import { Link } from "react-router-dom"
+import actions_search from "../actions/search"
+import actions_userPage from "../actions/userPage"
 import {updateFilterArr,updateFilterKey,handleLoginToggle,handleRegToggle} from '../actions/hello'
 import { withRouter } from "react-router";
 
@@ -17,9 +20,19 @@ function mapDispatchToProps(dispatch) {
         updateFilterKey: arr=> dispatch(updateFilterKey(arr)),
         handleLoginToggle: a=> dispatch(handleLoginToggle(a)),
         handleRegToggle: a=> dispatch(handleRegToggle(a)),
-        refresh: ()=>{
-            dispatch(actions_search.refresh())
+        storeAllProducts: (products) => {
+            dispatch(actions_search.storeAllProducts(products))
+        },
+        storeAllUsers: (allUsers) => {
+            dispatch(actions_userPage.storeAllUsers(allUsers))
+        },
+        storeMyUser: (user) => {
+            dispatch(actions_userPage.storeMyUser(user))
+        },
+        deleteMyUser: ()=>{
+            dispatch(actions_userPage.deleteMyUser())
         }
+
     };
   }
 
@@ -48,8 +61,36 @@ class ConnectedNavvv extends React.Component {
         this.handleNavPressEnter = this.handleNavPressEnter.bind(this)
     }
 
-    refresh = () => {
-        this.props.refresh()
+    componentWillMount = async () => {
+            let isLoggedIn = await Axios('https://localhost:8443/api/isLoggedIn', {
+                method: "get",
+                withCredentials: true
+            })
+            if (isLoggedIn.data) {
+            // put userinfo in redux
+
+            // fetch allProducts
+            const pres = await Axios.get('https://localhost:8443/api/allProducts/')
+            pres.data.forEach((u) => {
+                u.openOneModal = false
+                u.openOGModal = false
+                u.openMyGoodModal = false
+                u.openDELModal = false
+            })
+            this.props.storeAllProducts(pres.data)
+
+            // fetch allUsers
+            const users = await Axios.get('https://localhost:8443/api/allProfile/')
+            this.props.storeAllUsers(users.data)
+
+            // fetch myUser
+            const user = await Axios('https://localhost:8443/api/profile', {
+                method: "get",
+                withCredentials: true
+            })
+            this.props.storeMyUser(user.data)
+
+        }
     }
     
     handleNavOnBlur = () =>{
@@ -61,6 +102,18 @@ class ConnectedNavvv extends React.Component {
     handleNavPressEnter = (event) =>{
         if(event.key == 'Enter'){
             this.props.history.push('/');
+        }
+    }
+
+    logout = async() =>{
+        try {
+            const user = await Axios('https://localhost:8443/api/logout', {
+                method: "post",
+                withCredentials: true
+            })
+            this.props.deleteMyUser()
+        }catch(err){
+            console.log (err)
         }
     }
 
@@ -143,8 +196,9 @@ class ConnectedNavvv extends React.Component {
                         </li>}
                         {this.props.myUser.displayed_name && 
                         <li className="nav-item" style={{display: "flex", flexDirection:"row"}}>
-                            <a className="nav-link" href="#">Welcome, {this.props.myUser.displayed_name}</a> 
+                            <a className="nav-link" href="">Welcome, {this.props.myUser.displayed_name}</a> 
                             <Link className="nav-link" to="/userPage">User Page</Link>
+                            <a className="nav-link" href="" onClick={this.logout}>Logout</a> 
                         </li>}
                     </ul>
                 </div>
