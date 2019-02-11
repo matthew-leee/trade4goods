@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import 'antd/dist/antd.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import Navvv from './js/component/NavvvClone'
-import MainGrid from './js/component/MainGridClone'
+import Navvv from './js/component/Navvv'
+import MainGrid from './js/component/MainGrid'
 import NoMatch from './js/component/NoMatch'
 import VerifyEmail from './js/component/VerifyEmail'
 import Rredirect from "./js/component/Rredirect"
