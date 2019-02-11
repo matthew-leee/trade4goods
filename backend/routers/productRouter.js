@@ -57,7 +57,6 @@ module.exports = (router, authService, productService) => {
         try {
             const user_id = await authService.isAuthenticated(req.session.jwt)
             if (user_id) {
-                console.log (user_id)
                 await productService.deleteProduct(req.params.id, user_id)
                 res.sendStatus(200)
             } else {
