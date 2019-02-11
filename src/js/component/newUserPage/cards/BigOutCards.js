@@ -14,7 +14,7 @@ class BigOutCards extends Component {
 
     closeOutDetails = async () => {
         try {
-            const pres = await Axios.get('https://localhost:8443/api/allProducts/')
+            const pres = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/')
             pres.data.forEach((u) => {
                 u.openOneModal = false
                 u.openOGModal = false
@@ -24,11 +24,11 @@ class BigOutCards extends Component {
             this.props.storeAllProducts(pres.data)
             this.props.updateProducts(pres.data)
             // fetch allUsers
-            const users = await Axios.get('https://localhost:8443/api/allProfile/')
+            const users = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProfile/')
             this.props.storeAllUsers(users.data)
 
             // fetch myUser
-            const user = await Axios('https://localhost:8443/api/profile', {
+            const user = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                 method: "get",
                 withCredentials: true
             })
