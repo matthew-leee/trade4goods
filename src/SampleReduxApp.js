@@ -31,7 +31,6 @@ class App extends Component {
                     <Switch>
                         <Route exact path={"/"} component={MainGrid} />
                         <Route path={"/addPhotos"} component={AddPhotos} />
-                        {/* <Route path={"/userPage"} component={UserPage} /> */}
                         <Route path={"/userPage"} component={NewMain} />
                         <Route path={"/verifyEmail/:id"} component={VerifyEmail} />
                         <Route path={"/redirect"} component={Rredirect} />

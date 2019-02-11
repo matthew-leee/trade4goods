@@ -22,6 +22,7 @@ function rootReducer(state = initialState, action) {
   if (action.type === UPDATE_PRODUCTS) {
     let change = {...state}
     change.productsArr = action.payload
+    change.searchArr = action.payload
     return change
   }
   if (action.type === UPDATE_FILTERARR) {
