@@ -24,7 +24,7 @@ module.exports = class {
                 to: user.email,
                 subject: 'Your Product has recieved offer', // Subject line
                 html: `<p>Heads Up!Your product ${product.name} has been offered<p>` +
-                    `<p>Visit <a>${process.env.FRONTEND_URL}/userPage</a>to view your offer</p>` +
+                    `<p>Visit <a href=${process.env.FRONTEND_URL}/userPage>your profile</a> to view your offer</p>` +
                     `<p>This is an automatic message sent by system, please do not reply to this message</p>`// html body
             };
             this.transporter.sendMail(mailOptions)
@@ -44,7 +44,7 @@ module.exports = class {
                 to: user.email,
                 subject: 'Your Offer has been Accepted', // Subject line
                 html: `<p>Heads Up!Your offer on roduct ${product.name} has been accept<p>` +
-                    `<p>Visit <a>${process.env.FRONTEND_URL}</a>to manage the trade</p>` +
+                    `<p>Visit <a href=${process.env.FRONTEND_URL}>Trade4Goods</a>to manage the trade</p>` +
                     `<p>This is an automatic message sent by system, please do not reply to this message</p>`// html body
             };
             this.transporter.sendMail(mailOptions)
