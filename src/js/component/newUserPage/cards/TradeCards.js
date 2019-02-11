@@ -7,7 +7,7 @@ import actions_userPage from "../../../actions/userPage"
 import actions_newUserPage from "../../../actions/newUserPage"
 import { Button, Icon } from "antd"
 import Axios from "axios"
-
+import { updateProducts } from '../../../actions/hello'
 
 const err = require('../../asset/gif/replaceNoImg.gif')
 
@@ -67,14 +67,14 @@ class TradeCards extends Component {
             product_offering: myID
         }
         try {
-            const res = await Axios("https://localhost:8443/api/offer_product", {
+            const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/offer_product", {
                 method: 'post',
                 data: data,
                 withCredentials: true
             })
 
             // fetch allProducts
-            const pres = await Axios.get('https://localhost:8443/api/allProducts/')
+            const pres = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/')
             pres.data.forEach((u) => {
                 u.openOneModal = false
                 u.openOGModal = false
@@ -82,13 +82,13 @@ class TradeCards extends Component {
                 u.openDELModal = false
             })
             this.props.storeAllProducts(pres.data)
-
+            this.props.updateProducts(pres.data)
             // fetch allUsers
-            const users = await Axios.get('https://localhost:8443/api/allProfile/')
+            const users = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProfile/')
             this.props.storeAllUsers(users.data)
 
             // fetch myUser
-            const user = await Axios('https://localhost:8443/api/profile', {
+            const user = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                 method: "get",
                 withCredentials: true
             })
@@ -105,7 +105,7 @@ class TradeCards extends Component {
 
     handleAConfirm = async () => {
         // fetch allProducts
-        const pres = await Axios.get('https://localhost:8443/api/allProducts/')
+        const pres = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/')
         pres.data.forEach((u) => {
             u.openOneModal = false
             u.openOGModal = false
@@ -113,13 +113,13 @@ class TradeCards extends Component {
             u.openDELModal = false
         })
         this.props.storeAllProducts(pres.data)
-
+        this.props.updateProducts(pres.data)
         // fetch allUsers
-        const users = await Axios.get('https://localhost:8443/api/allProfile/')
+        const users = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProfile/')
         this.props.storeAllUsers(users.data)
 
         // fetch myUser
-        const user = await Axios('https://localhost:8443/api/profile', {
+        const user = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
             method: "get",
             withCredentials: true
         })
@@ -171,12 +171,12 @@ class TradeCards extends Component {
                 product_offering: this.state.a.product_id
             }
             try {
-                const del = await Axios("https://localhost:8443/api/offer_product", {
+                const del = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/offer_product", {
                     method: 'delete',
                     data: data,
                     withCredentials: true
                 })
-                const res = await Axios("https://localhost:8443/api/offer_product", {
+                const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/offer_product", {
                     method: 'post',
                     data: newData,
                     withCredentials: true
@@ -185,7 +185,7 @@ class TradeCards extends Component {
                     swap: false,
                     swapDone: true
                 })
-                const pres = await Axios.get('https://localhost:8443/api/allProducts/')
+                const pres = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/')
                 pres.data.forEach((u) => {
                     u.openOneModal = false
                     u.openOGModal = false
@@ -193,13 +193,13 @@ class TradeCards extends Component {
                     u.openDELModal = false
                 })
                 this.props.storeAllProducts(pres.data)
-
+                this.props.updateProducts(pres.data)
                 // fetch allUsers
-                const users = await Axios.get('https://localhost:8443/api/allProfile/')
+                const users = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProfile/')
                 this.props.storeAllUsers(users.data)
 
                 // fetch myUser
-                const user = await Axios('https://localhost:8443/api/profile', {
+                const user = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                     method: "get",
                     withCredentials: true
                 })
@@ -224,18 +224,18 @@ class TradeCards extends Component {
                 product_offering: this.state.a.product_id,
             }
             try {
-                const del = await Axios("https://localhost:8443/api/offer_product", {
+                const del = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/offer_product", {
                     method: 'delete',
                     data: data,
                     withCredentials: true
                 })
-                const res = await Axios("https://localhost:8443/api/offer_product", {
+                const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/offer_product", {
                     method: 'post',
                     data: newData,
                     withCredentials: true
                 })
 
-                const pres = await Axios.get('https://localhost:8443/api/allProducts/')
+                const pres = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/')
                 pres.data.forEach((u) => {
                     u.openOneModal = false
                     u.openOGModal = false
@@ -243,13 +243,13 @@ class TradeCards extends Component {
                     u.openDELModal = false
                 })
                 this.props.storeAllProducts(pres.data)
-
+                this.props.updateProducts(pres.data)
                 // fetch allUsers
-                const users = await Axios.get('https://localhost:8443/api/allProfile/')
+                const users = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProfile/')
                 this.props.storeAllUsers(users.data)
 
                 // fetch myUser
-                const user = await Axios('https://localhost:8443/api/profile', {
+                const user = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                     method: "get",
                     withCredentials: true
                 })
@@ -272,14 +272,14 @@ class TradeCards extends Component {
             product_offering: id
         }
         try {
-            const res = await Axios("https://localhost:8443/api/offer_product", {
+            const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/offer_product", {
                 method: 'delete',
                 data: data,
                 withCredentials: true
             })
 
             // fetch allProducts
-            const pres = await Axios.get('https://localhost:8443/api/allProducts/')
+            const pres = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/')
             pres.data.forEach((u) => {
                 u.openOneModal = false
                 u.openOGModal = false
@@ -287,13 +287,13 @@ class TradeCards extends Component {
                 u.openDELModal = false
             })
             this.props.storeAllProducts(pres.data)
-
+            this.props.updateProducts(pres.data)
             // fetch allUsers
-            const users = await Axios.get('https://localhost:8443/api/allProfile/')
+            const users = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProfile/')
             this.props.storeAllUsers(users.data)
 
             // fetch myUser
-            const user = await Axios('https://localhost:8443/api/profile', {
+            const user = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                 method: "get",
                 withCredentials: true
             })
@@ -315,14 +315,14 @@ class TradeCards extends Component {
             product_offering: this.props.currentTrade.details.product_id,
         }
         try {
-            const res = await Axios("https://localhost:8443/api/offer_product", {
+            const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/offer_product", {
                 method: 'delete',
                 data: data,
                 withCredentials: true
             })
 
             // fetch allProducts
-            const pres = await Axios.get('https://localhost:8443/api/allProducts/')
+            const pres = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/')
             pres.data.forEach((u) => {
                 u.openOneModal = false
                 u.openOGModal = false
@@ -330,13 +330,13 @@ class TradeCards extends Component {
                 u.openDELModal = false
             })
             this.props.storeAllProducts(pres.data)
-
+            this.props.updateProducts(pres.data)
             // fetch allUsers
-            const users = await Axios.get('https://localhost:8443/api/allProfile/')
+            const users = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProfile/')
             this.props.storeAllUsers(users.data)
 
             // fetch myUser
-            const user = await Axios('https://localhost:8443/api/profile', {
+            const user = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                 method: "get",
                 withCredentials: true
             })
@@ -385,7 +385,7 @@ class TradeCards extends Component {
                     product_offered: myID,
                     product_offering: fail
                 }
-                const rollback = await Axios("https://localhost:8443/api/decline_offer", {
+                const rollback = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/decline_offer", {
                     method: 'delete',
                     data: rollbackData,
                     withCredentials: true
@@ -393,13 +393,13 @@ class TradeCards extends Component {
             }
 
             // accept offer
-            const res = await Axios("https://localhost:8443/api/acceptOffer/", {
+            const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/acceptOffer/", {
                 method: 'post',
                 data: accept,
                 withCredentials: true
             })
             // fetch allProducts
-            const pres = await Axios.get('https://localhost:8443/api/allProducts/')
+            const pres = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/')
             pres.data.forEach((u) => {
                 u.openOneModal = false
                 u.openOGModal = false
@@ -407,13 +407,13 @@ class TradeCards extends Component {
                 u.openDELModal = false
             })
             this.props.storeAllProducts(pres.data)
-
+            this.props.updateProducts(pres.data)
             // fetch allUsers
-            const users = await Axios.get('https://localhost:8443/api/allProfile/')
+            const users = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProfile/')
             this.props.storeAllUsers(users.data)
 
             // fetch myUser
-            const user = await Axios('https://localhost:8443/api/profile', {
+            const user = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                 method: "get",
                 withCredentials: true
             })
@@ -1142,6 +1142,7 @@ const mapDispatchToProps = (dispatch) => {
         storeMyUser: (user) => {
             dispatch(actions_userPage.storeMyUser(user))
         },
+        updateProducts: arr => dispatch(updateProducts(arr)),
     }
 }
 

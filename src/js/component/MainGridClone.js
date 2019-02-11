@@ -48,7 +48,7 @@ class ConnectedMainGrid extends React.Component {
 
     componentDidMount = async () => {
         try {
-            const res = await Axios.get('https://localhost:8443/api/allProducts/')
+            const res = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/')
             res.data.forEach((u) => {
                 u.openOneModal = false
                 u.openOGModal = false
@@ -92,7 +92,7 @@ class ConnectedMainGrid extends React.Component {
             }
 
 
-            const users = await Axios.get('https://localhost:8443/api/allProfile/')
+            const users = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProfile/')
             this.props.storeAllUsers(users.data)
 
         } catch (err) {

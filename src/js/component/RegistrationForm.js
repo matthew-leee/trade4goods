@@ -59,7 +59,7 @@ class RegistrationFormgp extends React.Component {
                 }
 
                 try {
-                    const res = await axios('https://localhost:8443/api/signup', {
+                    const res = await axios(process.env.REACT_APP_BACKEND_URL + '/api/signup', {
                         method: "post",
                         data: passingDB,
                         withCredentials: true
@@ -129,7 +129,7 @@ class RegistrationFormgp extends React.Component {
         let profile_picture = ""
 
         if (access_token) {
-            axios(`https://localhost:8443/api/signup`,
+            axios(`${process.env.REACT_APP_BACKEND_URL}/api/signup`,
                 {
                     method: "post",
                     data: {
@@ -145,7 +145,7 @@ class RegistrationFormgp extends React.Component {
                 }
             )
                 .then(async () => {
-                    await axios(`https://localhost:8443/api/facebook_login`, {
+                    await axios(`${process.env.REACT_APP_BACKEND_URL}/api/facebook_login`, {
                         method: "post",
                         data: {
                             facebook_id: facebook_id,
@@ -154,7 +154,7 @@ class RegistrationFormgp extends React.Component {
                         },
                         withCredentials: true
                     });
-                    await axios(`https://localhost:8443/api/profile/`,
+                    await axios(`${process.env.REACT_APP_BACKEND_URL}/api/profile/`,
                         {
                             method: "post",
                             data: {
@@ -205,7 +205,7 @@ class RegistrationFormgp extends React.Component {
         let profile_picture = ""
         console.log()
         if (access_token) {
-            axios(`https://localhost:8443/api/signup`, {
+            axios(`${process.env.REACT_APP_BACKEND_URL}/api/signup`, {
                     method: "post",
                     data: {
                         google_id: google_id,
@@ -219,7 +219,7 @@ class RegistrationFormgp extends React.Component {
                     withCredentials: true
                 })
                 .then(async () => {
-                        await axios(`https://localhost:8443/api/google_login`,
+                        await axios(`${process.env.REACT_APP_BACKEND_URL}/api/google_login`,
                         {
                             method: "post",
                             data: {
@@ -231,7 +231,7 @@ class RegistrationFormgp extends React.Component {
                             withCredentials: true
                         }
                     )
-                        await axios(`https://localhost:8443/api/profile/`, {
+                        await axios(`${process.env.REACT_APP_BACKEND_URL}/api/profile/`, {
                                 method: "post",
                                 data: {
                                     profile_picture: profile_picture,

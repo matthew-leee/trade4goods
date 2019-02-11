@@ -42,14 +42,14 @@ class NormalLoginForm extends React.Component {
                 }
 
                 try {
-                    let res = await axios('https://localhost:8443/api/login', {
+                    let res = await axios(process.env.REACT_APP_BACKEND_URL + '/api/login', {
                         method: "post",
                         data: passingDB,
                         withCredentials: true
                     })
 
                     // put userinfo in redux
-                    const user = await axios('https://localhost:8443/api/profile', {
+                    const user = await axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                         method: "get",
                         withCredentials: true
                     })
@@ -86,7 +86,7 @@ class NormalLoginForm extends React.Component {
 
         console.log(res._token.accessToken)
         if (access_token) {
-            axios(`https://localhost:8443/api/facebook_login`,
+            axios(`${process.env.REACT_APP_BACKEND_URL}/api/facebook_login`,
                 {
                     method: "post",
                     data: {
@@ -99,7 +99,7 @@ class NormalLoginForm extends React.Component {
             )
                 .then(async () => {
                     try {
-                        const user = await axios('https://localhost:8443/api/profile', {
+                        const user = await axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                             method: "get",
                             withCredentials: true
                         })
@@ -132,7 +132,7 @@ class NormalLoginForm extends React.Component {
         let id_token = res._token.idToken
 
         if (access_token) {
-            axios(`https://localhost:8443/api/google_login`,
+            axios(`${process.env.REACT_APP_BACKEND_URL}/api/google_login`,
                 {
                     method: "post",
                     data: {
@@ -146,7 +146,7 @@ class NormalLoginForm extends React.Component {
             )
                 .then(async () => {
                     console.log('google login success')
-                    const user = await axios('https://localhost:8443/api/profile', {
+                    const user = await axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                         method: "get",
                         withCredentials: true
                     })

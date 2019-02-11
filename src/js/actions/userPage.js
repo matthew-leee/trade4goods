@@ -80,6 +80,11 @@ const actions_userPage = {
             comments: comments,
             product_id: id
         }
+    },
+    deleteMyUser: ()=>{
+        return {
+            type: "DEL_MYUSER"
+        }
     }
 }
 

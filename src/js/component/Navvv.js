@@ -1,22 +1,40 @@
 import React from 'react';
+import Axios from 'axios';
 import RegistrationForm from './RegistrationForm'
 import LoginForm from './LoginForm'
 import { connect } from "react-redux";
 import { Link } from "react-router-dom"
+
+import actions_userPage from "../actions/userPage"
 import {updateFilterArr,updateFilterKey,handleLoginToggle,handleRegToggle} from '../actions/hello'
 import { withRouter } from "react-router";
 
 import { Select, Icon } from 'antd';
+import actions_search from '../actions/search';
+import { updateProducts } from '../actions/hello'
 const _ = require('lodash')
 const Option = Select.Option;
 
 function mapDispatchToProps(dispatch) {
     return {
+        updateProducts: arr => dispatch(updateProducts(arr)),
         updateFilterArr: arr => dispatch(updateFilterArr(arr)),
         updateFilterKey: arr=> dispatch(updateFilterKey(arr)),
         handleLoginToggle: a=> dispatch(handleLoginToggle(a)),
-        handleRegToggle: a=> dispatch(handleRegToggle(a))
-       
+        handleRegToggle: a=> dispatch(handleRegToggle(a)),
+        storeAllProducts: (products) => {
+            dispatch(actions_search.storeAllProducts(products))
+        },
+        storeAllUsers: (allUsers) => {
+            dispatch(actions_userPage.storeAllUsers(allUsers))
+        },
+        storeMyUser: (user) => {
+            dispatch(actions_userPage.storeMyUser(user))
+        },
+        deleteMyUser: ()=>{
+            dispatch(actions_userPage.deleteMyUser())
+        }
+
     };
   }
 
@@ -24,12 +42,15 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = state => {
     const search = state.roootReducer
     const user = state.userReducer
+    const sss = state.searchReducer
     return { 
+        searchArr: search.searchArr,
         productsArr: search.productsArr, 
         isLogin: search.isLogin,
         tryLogin: search.tryLogin,
         tryRegister: search.tryReg,
-        myUser: user.myUser
+        myUser: user.myUser,
+        refresh: sss.refresh
     };
 };
 
@@ -43,7 +64,37 @@ class ConnectedNavvv extends React.Component {
         this.handleNavPressEnter = this.handleNavPressEnter.bind(this)
     }
 
+    componentWillMount = async () => {
+            let isLoggedIn = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/isLoggedIn', {
+                method: "get",
+                withCredentials: true
+            })
+            if (isLoggedIn.data) {
+            // put userinfo in redux
 
+            // fetch allProducts
+            const pres = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/')
+            pres.data.forEach((u) => {
+                u.openOneModal = false
+                u.openOGModal = false
+                u.openMyGoodModal = false
+                u.openDELModal = false
+            })
+            this.props.storeAllProducts(pres.data)
+            this.props.updateProducts(pres.data)
+            // fetch allUsers
+            const users = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProfile/')
+            this.props.storeAllUsers(users.data)
+
+            // fetch myUser
+            const user = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
+                method: "get",
+                withCredentials: true
+            })
+            this.props.storeMyUser(user.data)
+
+        }
+    }
     
     handleNavOnBlur = () =>{
 
@@ -54,6 +105,18 @@ class ConnectedNavvv extends React.Component {
     handleNavPressEnter = (event) =>{
         if(event.key == 'Enter'){
             this.props.history.push('/');
+        }
+    }
+
+    logout = async() =>{
+        try {
+            const user = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/logout', {
+                method: "post",
+                withCredentials: true
+            })
+            this.props.deleteMyUser()
+        }catch(err){
+            console.log (err)
         }
     }
 
@@ -104,7 +167,7 @@ class ConnectedNavvv extends React.Component {
             children.push(<Option key={prodctNameArr[i] }>{prodctNameArr[i]}</Option>)
         }
         
-
+        this.props.updateProducts(nextProps.searchArr)
         this.setState({arr:children})
         console.log ("set children")
 
@@ -115,7 +178,7 @@ class ConnectedNavvv extends React.Component {
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style={{height: "7vh"}}>
     
-                <Link className="navbar-brand d-inline" to="/">Trade4Goods</Link>
+                <Link className="navbar-brand d-inline" to="/redirect">Trade4Goods</Link>
                 <Select onInputKeyDown={this.handleNavPressEnter} notFoundContent="Not Found" mode="multiple" style={{ width: '50%' }} defaultValue={[]} placeholder="Please select" onChange={this.handleChange} maxTagCount={3}>
                     {this.state.arr}
                 </Select>
@@ -136,8 +199,9 @@ class ConnectedNavvv extends React.Component {
                         </li>}
                         {this.props.myUser.displayed_name && 
                         <li className="nav-item" style={{display: "flex", flexDirection:"row"}}>
-                            <a className="nav-link" href="#">Welcome, {this.props.myUser.displayed_name}</a> 
+                            <a className="nav-link" href="">Welcome, {this.props.myUser.displayed_name}</a> 
                             <Link className="nav-link" to="/userPage">User Page</Link>
+                            <a className="nav-link" href="" onClick={this.logout}>Logout</a> 
                         </li>}
                     </ul>
                 </div>

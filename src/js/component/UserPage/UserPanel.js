@@ -31,7 +31,6 @@ class UserPanel extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state)
     const u = state.userReducer
     return {
         users: u.users,

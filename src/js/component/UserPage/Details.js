@@ -7,6 +7,7 @@ import Popup from 'reactjs-popup'   //npm Reactjs-Popup
 import { popUpCloseTag, content } from '../compCSS/popupCss'
 import Axios from "axios";
 import Trade from "./Trade"
+import { updateProducts } from '../../actions/hello'
 
 class ProductDetails extends Component {
 
@@ -221,13 +222,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         handleSubmitComment: async (id, comment, allUsers) => {
             try {
-                const res = await Axios("https://localhost:8443/api/comment", {
+                const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/comment", {
                     method: "post",
                     data: { product_id: id, comment: comment },
                     withCredentials: true
                 })
                 if (res.status == 201) {
-                    const products = await Axios('https://localhost:8443/api/allProducts/', {
+                    const products = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/', {
                         method: "get",
                         withCredentials: true
                     })
@@ -239,10 +240,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                         u.openDELModal = false
                     })
                     dispatch(actions_search.storeAllProducts(products.data))
+                    dispatch(updateProducts(products.data))
                     const ids = res.data[0].map((u) => { return u[0] })
                     console.log(ownProps.allUsers)
                     const comments = ids.map(async (comment_id) => {
-                        const sth = await Axios(`https://localhost:8443/api/comment/${comment_id}`, {
+                        const sth = await Axios(`${process.env.REACT_APP_BACKEND_URL}/api/comment/${comment_id}`, {
                             method: "get",
                             withCredentials: true
                         })

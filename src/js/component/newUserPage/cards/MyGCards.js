@@ -6,6 +6,7 @@ import {connect} from "react-redux"
 import actions_userPage from "../../../actions/userPage"
 import actions_search from "../../../actions/search"
 import Axios from "axios"
+import { updateProducts } from '../../../actions/hello'
 
 class MyGCards extends Component {
     render() {
@@ -72,7 +73,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         openDetails: async (id, whom, which, allUsers)=>{
             try {
-                const products = await Axios('https://localhost:8443/api/allProducts/', {
+                const products = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/', {
                     method: "get",
                     withCredentials: true
                 })
@@ -84,14 +85,14 @@ const mapDispatchToProps = (dispatch) => {
                     u.openDELModal = false
                 })
                 dispatch(actions_search.storeAllProducts(products.data))
-
+                dispatch(updateProducts(products.data))
                 const cmtIds = products.data.filter((u)=>{
                     return u.product_id == id
                 })[0].comments
 
                 // const ids = res.data[0].map((u) => { return u[0] })
                 const comments = cmtIds.map(async (comment_id) => {
-                    const sth = await Axios(`https://localhost:8443/api/comment/${comment_id}`, {
+                    const sth = await Axios(`${process.env.REACT_APP_BACKEND_URL}/api/comment/${comment_id}`, {
                         method: "get",
                         withCredentials: true
                     })

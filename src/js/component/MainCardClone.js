@@ -10,6 +10,7 @@ import { popUpCloseTag, content } from './compCSS/popupCss'
 import actions_userPage from "../actions/userPage"
 import actions_search from "../actions/search"
 import Axios from 'axios';
+import { updateProducts } from '../actions/hello'
 
 const { Meta } = Card;
 
@@ -57,13 +58,13 @@ class MainCard extends React.Component {
   handleLike = async (id) => {
     try {
       console.log("clicked")
-      const res = await Axios(`https://localhost:8443/api/like/${id}`, {
+      const res = await Axios(`${process.env.REACT_APP_BACKEND_URL}/api/like/${id}`, {
         method: "put",
         withCredentials: true
       })
       if (res.status == 200) {
         console.log('res')
-        const products = await Axios('https://localhost:8443/api/allProducts/', {
+        const products = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/', {
           method: "get",
           withCredentials: true
         })
@@ -76,13 +77,13 @@ class MainCard extends React.Component {
         })
         console.log(products)
         this.props.storeAllProducts(products.data)
-
+        this.props.updateProducts(products.data)
         // fetch allUsers
-        const users = await Axios.get('https://localhost:8443/api/allProfile/')
+        const users = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProfile/')
         this.props.storeAllUsers(users.data)
 
         // fetch myUser
-        const user = await Axios('https://localhost:8443/api/profile', {
+        const user = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
           method: "get",
           withCredentials: true
         })
@@ -216,9 +217,10 @@ const mapDispatchToProps = (dispatch) => {
     storeMyUser: (user) => {
       dispatch(actions_userPage.storeMyUser(user))
     },
+    updateProducts: arr => dispatch(updateProducts(arr)),
     openOutDetails: async (id, whom, which, allUsers)=>{
         try {
-            const products = await Axios('https://localhost:8443/api/allProducts/', {
+            const products = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/', {
                 method: "get",
                 withCredentials: true
             })
@@ -230,14 +232,14 @@ const mapDispatchToProps = (dispatch) => {
                 u.openDELModal = false
             })
             dispatch(actions_search.storeAllProducts(products.data))
-
+            dispatch(updateProducts(products.data))
             const cmtIds = products.data.filter((u)=>{
                 return u.product_id == id
             })[0].comments
 
             // const ids = res.data[0].map((u) => { return u[0] })
             const comments = cmtIds.map(async (comment_id) => {
-                const sth = await Axios(`https://localhost:8443/api/comment/${comment_id}`, {
+                const sth = await Axios(`${process.env.REACT_APP_BACKEND_URL}/api/comment/${comment_id}`, {
                     method: "get",
                     withCredentials: true
                 })

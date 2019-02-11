@@ -54,7 +54,7 @@ class ConnectedMainGrid extends React.Component {
     componentDidMount = async () => {
         try {
 
-            const res = await Axios.get('https://localhost:8443/api/allProducts/')
+            const res = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/')
             res.data.forEach((u) => {
                 u.openOneModal = false
                 u.openOGModal = false
@@ -91,21 +91,22 @@ class ConnectedMainGrid extends React.Component {
                 copyState.productsArr = filterArr
                 copyState.showArr = showArr
                 copyState.remainShowingBatch = remainShowingBatch
+                this.props.updateProducts(res.data)
                 this.setState(copyState)
             }
 
 
-            const users = await Axios.get('https://localhost:8443/api/allProfile/')
+            const users = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProfile/')
             this.props.storeAllUsers(users.data)
 
         } catch (err) {
             console.log(err)
         }
+
     }
 
 
     componentWillReceiveProps(nextProps) {
-        console.log (nextProps)
         let filterArr = nextProps.searchArr
         let remainShowingBatch = Math.floor(filterArr.length / 50)
         let showArr = filterArr.slice(0, 50)
@@ -118,8 +119,8 @@ class ConnectedMainGrid extends React.Component {
         copyState.productsArr = filterArr
         copyState.showArr = showArr
         copyState.remainShowingBatch = remainShowingBatch
+        this.props.updateProducts(nextProps.searchArr)
         this.setState(copyState)
-        console.log (this.state)
     }
 
 
@@ -201,7 +202,9 @@ const mapStateToProps = state => {
         searchArr: rooot.searchArr, 
         productsArr: rooot.productsArr,
         currentOutProduct: search.currentOutProduct,
-        currentTrade: trade.currentTrade
+        currentTrade: trade.currentTrade,
+        refresh: search.refresh,
+        allProducts: search.allProducts
     };
 };
 
