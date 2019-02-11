@@ -10,7 +10,6 @@ import {updateFilterArr,updateFilterKey,handleLoginToggle,handleRegToggle} from 
 import { withRouter } from "react-router";
 
 import { Select, Icon } from 'antd';
-import actions_search from '../actions/search';
 const _ = require('lodash')
 const Option = Select.Option;
 
