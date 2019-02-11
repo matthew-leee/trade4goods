@@ -1,8 +1,11 @@
 import React from 'react';
+import Axios from 'axios';
 import RegistrationForm from './RegistrationForm'
 import LoginForm from './LoginForm'
 import { connect } from "react-redux";
 import { Link } from "react-router-dom"
+import actions_search from "../actions/search"
+import actions_userPage from "../actions/userPage"
 import {updateFilterArr,updateFilterKey,handleLoginToggle,handleRegToggle} from '../actions/hello'
 import { withRouter } from "react-router";
 
@@ -15,8 +18,17 @@ function mapDispatchToProps(dispatch) {
         updateFilterArr: arr => dispatch(updateFilterArr(arr)),
         updateFilterKey: arr=> dispatch(updateFilterKey(arr)),
         handleLoginToggle: a=> dispatch(handleLoginToggle(a)),
-        handleRegToggle: a=> dispatch(handleRegToggle(a))
-       
+        handleRegToggle: a=> dispatch(handleRegToggle(a)),
+        storeAllProducts: (products) => {
+            dispatch(actions_search.storeAllProducts(products))
+        },
+        storeAllUsers: (allUsers) => {
+            dispatch(actions_userPage.storeAllUsers(allUsers))
+        },
+        storeMyUser: (user) => {
+            dispatch(actions_userPage.storeMyUser(user))
+        },
+
     };
   }
 
@@ -43,7 +55,37 @@ class ConnectedNavvv extends React.Component {
         this.handleNavPressEnter = this.handleNavPressEnter.bind(this)
     }
 
+    componentWillMount = async () => {
+            let isLoggedIn = await Axios('https://localhost:8443/api/isLoggedIn', {
+                method: "get",
+                withCredentials: true
+            })
+            if (isLoggedIn.data) {
+            // put userinfo in redux
 
+            // fetch allProducts
+            const pres = await Axios.get('https://localhost:8443/api/allProducts/')
+            pres.data.forEach((u) => {
+                u.openOneModal = false
+                u.openOGModal = false
+                u.openMyGoodModal = false
+                u.openDELModal = false
+            })
+            this.props.storeAllProducts(pres.data)
+
+            // fetch allUsers
+            const users = await Axios.get('https://localhost:8443/api/allProfile/')
+            this.props.storeAllUsers(users.data)
+
+            // fetch myUser
+            const user = await Axios('https://localhost:8443/api/profile', {
+                method: "get",
+                withCredentials: true
+            })
+            this.props.storeMyUser(user.data)
+
+        }
+    }
     
     handleNavOnBlur = () =>{
 
