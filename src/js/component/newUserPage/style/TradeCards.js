@@ -10,6 +10,18 @@ const TradeStyle = {
         position: "absolute",
         fontFamily: "'Rajdhani', sans-serif",
     },
+    outFrame: {
+        width: "100vw",
+        height: "93vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0,0,0,0.8)",
+        zIndex: 999998,
+        // position: "absolute",
+        position: "fixed",
+        fontFamily: "'Rajdhani', sans-serif",
+    },
     content: {
         width: "80vw",
         height: "80vh",

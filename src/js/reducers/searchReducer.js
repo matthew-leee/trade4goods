@@ -5,7 +5,16 @@ const searchReducer = (state = {
     myProducts: [],
     fProducts: [],
     currentProduct: {},
+    currentOutProduct: {},
     reqError: false,
+    copyState: {
+        productsArr: [],
+        filterArr: [],
+        showArr: [],
+        remainShowingBatch: 0,
+        showingBatch: 0,
+        hasmore: true
+    }
 }, action) => {
     switch (action.type) {
         case "STORE_SEARCH":
@@ -157,10 +166,32 @@ const searchReducer = (state = {
                     which: action.which
                 }
             }
+        case "OPEN_OUTDETAILS":
+            const currentOutDetails = state.allProducts.filter((u) => {
+                return u.product_id == action.id
+            })
+            return {
+                ...state,
+                currentOutProduct: {
+                    details: currentOutDetails,
+                    whom: action.whom,
+                    which: action.which
+                }
+            }
         case "CLOSE_DETAILS":
             return {
                 ...state,
                 currentProduct: {}
+            }
+        case "CLOSE_OUTDETAILS":
+            return {
+                ...state,
+                currentOutProduct: {}
+            }
+        case "SET_COPYSTATE": 
+            return {
+                ...state,
+                copyState: action.copyState
             }
         default:
             return state

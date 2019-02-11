@@ -14,11 +14,11 @@ const initialState = {
 
 
 function rootReducer(state = initialState, action) {
-  if (action.type === HELLO_WORLD) {
-    let change = {...state}
-    change.hello = " FUCK YOU "
-    return change
-  }
+  // if (action.type === HELLO_WORLD) {
+  //   let change = {...state}
+  //   change.hello = " FUCK YOU "
+  //   return change
+  // }
   if (action.type === UPDATE_PRODUCTS) {
     let change = {...state}
     change.productsArr = action.payload

@@ -1,4 +1,15 @@
 const BigCardsStyle = {
+    out: {
+        width: "100vw",
+        height: "93vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0,0,0,0.8)",
+        zIndex: 99998,
+        // position: "absolute"
+        position: "fixed"
+    },
     frame: {
         width: "90vw",
         height: "93vh",

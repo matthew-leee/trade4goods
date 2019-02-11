@@ -435,6 +435,7 @@ class TradeCards extends Component {
     // END=================end of functions for status "withR"=====================
 
     render() {
+        const {out} = this.props
         const { status, details } = this.props.currentTrade
 
         // =========== RENDER for status "a" ===================
@@ -522,7 +523,7 @@ class TradeCards extends Component {
             case "requested":
                 // use mySentProduct
                 return (
-                    <div className="tradeCards" style={TradeStyle.frame} onClick={() => { this.closeTradeCards(this.props.myUser.user_id) }}>
+                    <div className="tradeCards" style={out ? TradeStyle.outFrame : TradeStyle.frame} onClick={() => { this.closeTradeCards(this.props.myUser.user_id) }}>
                         <div className="content" style={TradeStyle.content} onClick={this.stopPropagation}>
                             {!this.state.swapDone &&
                                 <div className="title" style={TradeStyle.inner.titleRequestedConfirm}>
@@ -684,7 +685,7 @@ class TradeCards extends Component {
                 // myRequestedProduct: the product of other ppl
                 // details: my own product
                 return (
-                    <div className="tradeCards" style={TradeStyle.frame} onClick={() => { this.closeTradeCards(this.props.myUser.user_id) }}>
+                    <div className="tradeCards" style={out ? TradeStyle.outFrame : TradeStyle.frame} onClick={() => { this.closeTradeCards(this.props.myUser.user_id) }}>
                         <div className="content" style={TradeStyle.content} onClick={this.stopPropagation}>
                             {!this.state.swapDone &&
                                 <div className="title" style={TradeStyle.inner.titleRequestedConfirm}>
@@ -859,13 +860,18 @@ class TradeCards extends Component {
                 )
             case "withR":
                 return (
-                    <div className="tradeCards" style={TradeStyle.frame} onClick={() => { this.closeTradeCards(this.props.myUser.user_id) }}>
+                    <div className="tradeCards" style={out ? TradeStyle.outFrame : TradeStyle.frame} onClick={() => { this.closeTradeCards(this.props.myUser.user_id) }}>
                         <div className="content" style={TradeStyle.content} onClick={this.stopPropagation}>
-                            <div className="title" style={TradeStyle.inner.titleWithRConfirm}>
+                            {!this.state.accepted && <div className="title" style={TradeStyle.inner.titleWithRConfirm}>
                                 <h3 style={{ paddingBottom: 0, paddingLeft: "1vw", margin: 0, textAlign: "center" }}>
                                     Received Requests
                                 </h3>
-                            </div>
+                            </div>}
+                            {this.state.accepted && <div className="title" style={TradeStyle.inner.titleWithRConfirm}>
+                                <h3 style={{ paddingBottom: 0, paddingLeft: "1vw", margin: 0, textAlign: "center" }}>
+                                    Exchange Completed
+                                </h3>
+                            </div>}
                             <div className="innerContent" style={TradeStyle.a.frame}>
 
                                 {/* <div className="arrow" style={TradeStyle.withR.arrow}>
@@ -977,7 +983,7 @@ class TradeCards extends Component {
             case "a":
                 if (!this.state.aConfirm) {
                     return (
-                        <div className="tradeCards" style={TradeStyle.frame} onClick={() => { this.closeTradeCards(this.props.myUser.user_id) }}>
+                        <div className="tradeCards" style={out ? TradeStyle.outFrame : TradeStyle.frame} onClick={() => { this.closeTradeCards(this.props.myUser.user_id) }}>
                             <div className="content" style={TradeStyle.content} onClick={this.stopPropagation}>
                                 <div className="title" style={TradeStyle.inner.title}>
                                     <h3 style={{ paddingBottom: 0, paddingLeft: "1vw", margin: 0, textAlign: "center" }}>
@@ -1022,7 +1028,7 @@ class TradeCards extends Component {
                     )
                 } else {
                     return (
-                        <div className="tradeCards" style={TradeStyle.frame} onClick={() => { this.closeTradeCards(this.props.myUser.user_id) }}>
+                        <div className="tradeCards" style={out ? TradeStyle.outFrame : TradeStyle.frame} onClick={() => { this.closeTradeCards(this.props.myUser.user_id) }}>
                             <div className="content" style={TradeStyle.content} onClick={this.stopPropagation}>
                                 <div className="title" style={TradeStyle.inner.titleAConfirm}>
                                     <h3 style={{ paddingBottom: 0, paddingLeft: "1vw", margin: 0, textAlign: "center" }}>
@@ -1078,7 +1084,7 @@ class TradeCards extends Component {
                 }
             default:
                 return (
-                    <div className="tradeCards" style={TradeStyle.frame} onClick={() => { this.closeTradeCards(this.props.myUser.user_id) }}>
+                    <div className="tradeCards" style={out ? TradeStyle.outFrame : TradeStyle.frame} onClick={() => { this.closeTradeCards(this.props.myUser.user_id) }}>
                         <div className="content" style={TradeStyle.content} onClick={this.stopPropagation}>
                             <div className="title" style={TradeStyle.inner.title}></div>
                             <div className="innerContent" style={TradeStyle.inner.content}>

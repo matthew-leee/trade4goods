@@ -1,30 +1,15 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { Row, Col, } from 'antd';
-import MainCard from './MainCard'
+// import MainCard from './MainCard'
+import MainCard from './MainCardClone'
 import Axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroller';
 import { updateProducts } from '../actions/hello'
 import actions_search from '../actions/search';
 import actions_userPage from '../actions/userPage';
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        updateProducts: arr => dispatch(updateProducts(arr)),
-        storeAllProducts: (products) => {
-            dispatch(actions_search.storeAllProducts(products))
-        },
-        storeAllUsers: (allUsers) => {
-            dispatch(actions_userPage.storeAllUsers(allUsers))
-        }
-    };
-}
-
-const mapStateToProps = state => {
-    const search = state.roootReducer
-    return { searchArr: search.searchArr, productsArr: search.productsArr };
-};
-
+import BigOutCards from "./newUserPage/cards/BigOutCards"
+import TradeCards from "./newUserPage/cards/TradeCards"
 
 class ConnectedMainGrid extends React.Component {
     constructor(props) {
@@ -35,7 +20,7 @@ class ConnectedMainGrid extends React.Component {
             showArr: [],
             remainShowingBatch: 0,
             showingBatch: 0,
-            hasmore: true
+            hasmore: true,
         }
     }
 
@@ -49,9 +34,6 @@ class ConnectedMainGrid extends React.Component {
         }
         return a;
     }
-
-
-
 
     showMoreItems = (page) => {
         let copyState = { ...this.state }
@@ -123,6 +105,7 @@ class ConnectedMainGrid extends React.Component {
 
 
     componentWillReceiveProps(nextProps) {
+        console.log (nextProps)
         let filterArr = nextProps.searchArr
         let remainShowingBatch = Math.floor(filterArr.length / 50)
         let showArr = filterArr.slice(0, 50)
@@ -136,6 +119,7 @@ class ConnectedMainGrid extends React.Component {
         copyState.showArr = showArr
         copyState.remainShowingBatch = remainShowingBatch
         this.setState(copyState)
+        console.log (this.state)
     }
 
 
@@ -165,14 +149,14 @@ class ConnectedMainGrid extends React.Component {
         let c6 = cards.filter((el, i) => { return ((i + 1) % 6 === 0) })
 
 
-
+        const {currentOutProduct, currentTrade} = this.props
 
         return (
             <div>
+                {currentOutProduct.details && <BigOutCards />}
+                {currentTrade.details && <TradeCards out={true} />}
 
                 <Row type="flex" gutter={10}>
-
-
 
                     <Col xs={24} sm={12} md={8} lg={6} xl={4}>
                         <InfiniteScroll
@@ -191,14 +175,35 @@ class ConnectedMainGrid extends React.Component {
                     <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c5}</Col>
                     <Col xs={24} sm={12} md={8} lg={6} xl={4} >{c6}</Col>
 
-
-
                 </Row>
             </div>
         )
     }
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateProducts: arr => dispatch(updateProducts(arr)),
+        storeAllProducts: (products) => {
+            dispatch(actions_search.storeAllProducts(products))
+        },
+        storeAllUsers: (allUsers) => {
+            dispatch(actions_userPage.storeAllUsers(allUsers))
+        }
+    };
+}
+
+const mapStateToProps = state => {
+    const rooot = state.roootReducer
+    const search = state.searchReducer
+    const trade = state.tradeReducer
+    return { 
+        searchArr: rooot.searchArr, 
+        productsArr: rooot.productsArr,
+        currentOutProduct: search.currentOutProduct,
+        currentTrade: trade.currentTrade
+    };
+};
 
 const MainGrid = connect(mapStateToProps, mapDispatchToProps)(ConnectedMainGrid);
 

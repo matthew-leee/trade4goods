@@ -57,6 +57,23 @@ const actions_search = {
             type: "CLOSE_DETAILS"
         }
     },
+    openOutDetails: (id, whom, which)=>{
+        return {
+            type: "OPEN_OUTDETAILS",
+            id, whom, which
+        }
+    },
+    closeOutDetails: ()=>{
+        return {
+            type: "CLOSE_OUTDETAILS"
+        }
+    },
+    setCopyState: (copyState) => {
+        return{
+            type: "SET_COPYSTATE",
+            copyState: copyState
+        }
+    }
 }
 
 export default actions_search

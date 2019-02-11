@@ -88,6 +88,7 @@ class ConnectedNavvv extends React.Component {
 
       
       componentWillReceiveProps(nextProps){
+        console.log (nextProps.productsArr)
         let children = []
         let prodctNameArr = _.chain(nextProps.productsArr)
         .map(el => [el.name,el.tags])
@@ -105,6 +106,7 @@ class ConnectedNavvv extends React.Component {
         
 
         this.setState({arr:children})
+        console.log ("set children")
 
     }
 

@@ -48,7 +48,7 @@ class NewMain extends Component {
                     {nav.FollowedG && <FollowedG />}
                     {nav.Upload && <Uploads />}
                     {currentProduct.details && <BigCards />}
-                    {currentTrade.details && <TradeCards />}
+                    {currentTrade.details && <TradeCards out={false} />}
                 </div>
             </div>
         )
