@@ -28,6 +28,9 @@ function mapDispatchToProps(dispatch) {
         storeMyUser: (user) => {
             dispatch(actions_userPage.storeMyUser(user))
         },
+        deleteMyUser: ()=>{
+            dispatch(actions_userPage.deleteMyUser())
+        }
 
     };
   }
@@ -96,6 +99,18 @@ class ConnectedNavvv extends React.Component {
     handleNavPressEnter = (event) =>{
         if(event.key == 'Enter'){
             this.props.history.push('/');
+        }
+    }
+
+    logout = async() =>{
+        try {
+            const user = await Axios('https://localhost:8443/api/logout', {
+                method: "post",
+                withCredentials: true
+            })
+            this.props.deleteMyUser()
+        }catch(err){
+            console.log (err)
         }
     }
 
@@ -178,8 +193,9 @@ class ConnectedNavvv extends React.Component {
                         </li>}
                         {this.props.myUser.displayed_name && 
                         <li className="nav-item" style={{display: "flex", flexDirection:"row"}}>
-                            <a className="nav-link" href="#">Welcome, {this.props.myUser.displayed_name}</a> 
+                            <a className="nav-link" href="">Welcome, {this.props.myUser.displayed_name}</a> 
                             <Link className="nav-link" to="/userPage">User Page</Link>
+                            <a className="nav-link" href="" onClick={this.logout}>Logout</a> 
                         </li>}
                     </ul>
                 </div>

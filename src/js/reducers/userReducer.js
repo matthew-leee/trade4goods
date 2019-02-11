@@ -115,6 +115,11 @@ const userReducer = (state = {
                     allComments: [...state.allComments, newComments]
                 }
             }
+        case "DEL_MYUSER":
+            return {
+                ...state,
+                myUser: {}
+            }
         default:
             return state
     }
