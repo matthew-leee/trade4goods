@@ -73,7 +73,6 @@ class MainCard extends React.Component {
           u.openOGModal = false
           u.openMyGoodModal = false
         })
-        console.log(products)
         this.props.storeAllProducts(products.data)
         this.props.updateProducts(products.data)
         // fetch allUsers
@@ -86,7 +85,6 @@ class MainCard extends React.Component {
           withCredentials: true
         })
         this.props.storeMyUser(user.data)
-        console.log(this.props.details.profile_picture)
 
       }
     } catch (err) {
