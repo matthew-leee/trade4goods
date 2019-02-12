@@ -106,10 +106,10 @@ class ProductDetails extends Component {
 
         const detail = BigCardsStyle.details
         return (
-            <div key={`details-${u.product_id}`} style={detail.outer}>
+            <div className="detailOuter" key={`details-${u.product_id}`} style={detail.outer}>
 
                 {/* image */}
-                <div style={detail.inner.img} className="imageCarosel">
+                <div style={detail.inner.img} className="imageCarousel">
                     <div className="header"
                         style={detail.inner.imgHeader}>
                         <h4 style={{ padding: 0, margin: 0 }}>{u.name}</h4>
@@ -166,7 +166,7 @@ class ProductDetails extends Component {
 
                     {/* comments */}
                     {(this.state.comments && this.props.myUser.user_id) &&
-                        <div stlye={{ display: "flex", flexDirection: "column", position: "relative" }} style={detail.inner.notButton}>
+                        <div className="detailsList" stlye={{ display: "flex", flexDirection: "column", position: "relative" }} style={detail.inner.notButton}>
                             <div className="comments" style={{ marginBottom: "16px", paddingTop: "15px" }}>
                                 <h5>Comments</h5>
                                 <List

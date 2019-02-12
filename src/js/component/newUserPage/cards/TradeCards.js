@@ -593,7 +593,7 @@ class TradeCards extends Component {
                             <div className="innerContent" style={TradeStyle.a.frame}>
 
                                 {(!this.state.swap && !this.state.swapDone) &&
-                                    <div className="aItems" style={TradeStyle.a.aItemsConfirm}>
+                                    <div className="first" style={TradeStyle.a.aItemsConfirm}>
                                         <div className="title" style={{ marginBottom: "3vw" }}>
                                             <h4>Your Own Product</h4>
                                         </div>
@@ -616,7 +616,7 @@ class TradeCards extends Component {
                                     </div>}
 
                                 {this.state.swapDone &&
-                                    <div className="aItems" style={TradeStyle.a.aItemsConfirm}>
+                                    <div className="first" style={TradeStyle.a.aItemsConfirm}>
                                         <div className="title" style={{ marginBottom: "3vw" }}>
                                             <h4>New Product for exchange</h4>
                                         </div>
@@ -634,7 +634,7 @@ class TradeCards extends Component {
                                     </div>}
 
                                 {this.state.swap &&
-                                    <div className="aItems" style={TradeStyle.swap.frame}>
+                                    <div className="firstSwap" style={TradeStyle.swap.frame}>
                                         <div className="swapZone1" style={TradeStyle.swap.swapzone1}>
                                             <div className="title" style={{ marginBottom: "1.5vw" }}>
                                                 <h5>Original Product</h5>
@@ -656,7 +656,8 @@ class TradeCards extends Component {
                                             <Icon type="swap" />
                                         </div>
 
-                                        {this.state.a != null && <div className="swapZone2" style={TradeStyle.swap.swapzone2}>
+                                        {this.state.a != null && 
+                                        <div className="swapZone2" style={TradeStyle.swap.swapzone2}>
                                             <div className="title" style={{ marginBottom: "1.5vw" }}>
                                                 <h5>New Product</h5>
                                             </div>
@@ -689,7 +690,7 @@ class TradeCards extends Component {
                                     <Icon type="arrow-right" />
                                 </div>
 
-                                {!this.state.delete && <div className="select" style={TradeStyle.a.drop}>
+                                {!this.state.delete && <div className="second" style={TradeStyle.a.drop}>
                                     <div className="title" style={{ marginBottom: "3vw" }}>
                                         <h4>Your Requested Product</h4>
                                     </div>
@@ -705,7 +706,7 @@ class TradeCards extends Component {
                                         </div>
                                     </div>
                                 </div>}
-                                {this.state.delete && <div className="select" style={TradeStyle.a.drop}>
+                                {this.state.delete && <div className="second" style={TradeStyle.a.drop}>
                                     <div className="title">
                                         <h4>Your Requested of exchange is deleted.</h4>
                                     </div>
@@ -755,7 +756,7 @@ class TradeCards extends Component {
                             <div className="innerContent" style={TradeStyle.a.frame}>
 
                                 {(!this.state.swap && !this.state.swapDone) &&
-                                    <div className="aItems" style={TradeStyle.a.aItemsConfirm}>
+                                    <div className="first" style={TradeStyle.a.aItemsConfirm}>
                                         <div className="title" style={{ marginBottom: "3vw" }}>
                                             <h4>Your Own Product</h4>
                                         </div>
@@ -778,7 +779,7 @@ class TradeCards extends Component {
                                     </div>}
 
                                 {this.state.swapDone &&
-                                    <div className="aItems" style={TradeStyle.a.aItemsConfirm}>
+                                    <div className="first" style={TradeStyle.a.aItemsConfirm}>
                                         <div className="title" style={{ marginBottom: "3vw" }}>
                                             <h4>New Product for exchange</h4>
                                         </div>
@@ -796,7 +797,7 @@ class TradeCards extends Component {
                                     </div>}
 
                                 {this.state.swap &&
-                                    <div className="aItems" style={TradeStyle.swap.frame}>
+                                    <div className="firstSwap" style={TradeStyle.swap.frame}>
                                         <div className="swapZone1" style={TradeStyle.swap.swapzone1}>
                                             <div className="title" style={{ marginBottom: "1.5vw" }}>
                                                 <h5>Original Product</h5>
@@ -851,7 +852,7 @@ class TradeCards extends Component {
                                     <Icon type="arrow-right" />
                                 </div>
 
-                                {(!this.state.delete && myRequestedProduct) && <div className="select" style={TradeStyle.a.drop}>
+                                {(!this.state.delete && myRequestedProduct) && <div className="second" style={TradeStyle.a.drop}>
                                     <div className="title" style={{ marginBottom: "3vw" }}>
                                         <h4>Your Requested Product</h4>
                                     </div>
@@ -867,7 +868,7 @@ class TradeCards extends Component {
                                         </div>
                                     </div>
                                 </div>}
-                                {((!this.state.delete && !myRequestedProduct) && this.state.myRequestedProduct) && <div className="select" style={TradeStyle.a.drop}>
+                                {((!this.state.delete && !myRequestedProduct) && this.state.myRequestedProduct) && <div className="second" style={TradeStyle.a.drop}>
                                     <div className="title" style={{ marginBottom: "3vw" }}>
                                         <h4>Your Requested Product</h4>
                                     </div>
@@ -883,7 +884,7 @@ class TradeCards extends Component {
                                         </div>
                                     </div>
                                 </div>}
-                                {this.state.delete && <div className="select" style={TradeStyle.a.drop}>
+                                {this.state.delete && <div className="second" style={TradeStyle.a.drop}>
                                     <div className="title">
                                         <h4>Your Requested of exchange is deleted.</h4>
                                     </div>
@@ -932,7 +933,7 @@ class TradeCards extends Component {
                                 </div> */}
 
                                 {!this.state.accepted &&
-                                    <div className="aItems" style={TradeStyle.withR.frame}>
+                                    <div className="firstWithR" style={TradeStyle.withR.frame}>
 
                                         <div className="items" style={TradeStyle.withR.items}>
                                             <div className="itemsTitle" style={TradeStyle.withR.itemsTitle}>
@@ -964,7 +965,7 @@ class TradeCards extends Component {
                                     </div>}
 
                                 {!this.state.accepted &&
-                                    <div className="select" style={TradeStyle.a.drop}>
+                                    <div className="second" style={TradeStyle.a.drop}>
                                         <div className="title" style={{ marginBottom: "3vw" }}>
                                             <h4>Your Own Product</h4>
                                         </div>
@@ -984,7 +985,7 @@ class TradeCards extends Component {
 
 
                                 {this.state.accepted &&
-                                    <div className="aItems" style={TradeStyle.withR.accepted}>
+                                    <div className="first" style={TradeStyle.withR.accepted}>
                                         <div className="title" style={{ marginBottom: "3vw" }}>
                                             <h4>Your Original Product</h4>
                                         </div>
@@ -1002,7 +1003,7 @@ class TradeCards extends Component {
                                     </div>}
 
                                 {this.state.accepted &&
-                                    <div className="select" style={TradeStyle.a.drop}>
+                                    <div className="second" style={TradeStyle.a.drop}>
                                         <div className="title" style={{ marginBottom: "3vw" }}>
                                             <h4>Received Product</h4>
                                         </div>
@@ -1044,15 +1045,15 @@ class TradeCards extends Component {
                                 </h3>
                                 </div>
                                 <div className="innerContent" style={TradeStyle.a.frame}>
-                                    <div className="aItems" style={TradeStyle.a.aItems}>
+                                    <div className="first" style={TradeStyle.a.aItems}>
                                         {aItems}
                                     </div>
                                     {this.state.a == null &&
-                                        <div className="select" style={TradeStyle.a.drop}>
+                                        <div className="second" style={TradeStyle.a.drop}>
                                             <h4>Select Your Product from Left Panel for exchange</h4>
                                         </div>}
                                     {this.state.a != null &&
-                                        <div className="select" style={TradeStyle.a.drop}>
+                                        <div className="second" style={TradeStyle.a.drop}>
                                             <div className="title" style={{ marginBottom: "3vw" }}>
                                                 <h4>Product to be Exchanged</h4>
                                             </div>
@@ -1091,7 +1092,7 @@ class TradeCards extends Component {
                                 </div>
                                 <div className="innerContent" style={TradeStyle.a.frame}>
 
-                                    <div className="aItems" style={TradeStyle.a.aItemsConfirm}>
+                                    <div className="first" style={TradeStyle.a.aItemsConfirm}>
                                         <div className="title" style={{ marginBottom: "3vw" }}>
                                             <h4>Your Product</h4>
                                         </div>
@@ -1112,7 +1113,7 @@ class TradeCards extends Component {
                                         <Icon type="arrow-right" />
                                     </div>
 
-                                    <div className="select" style={TradeStyle.a.drop}>
+                                    <div className="second" style={TradeStyle.a.drop}>
                                         <div className="title" style={{ marginBottom: "3vw" }}>
                                             <h4>Requested Product</h4>
                                         </div>

@@ -148,17 +148,17 @@ class MyG extends Component {
                         <div className="filter" style={{ display: "flex", flexDirection: "row", marginLeft: "1vw", marginRight: "1vw" }}>
                             <h6 style={{ paddingTop: "0.4vw", paddingBottom: 0, marginBottom: 0, marginRight: "0.4vw", color: "white" }}>Filter</h6>
                             <ButtonGroup>
-                                <Button onClick={() => { this.handleFilter("all") }}>All</Button>
-                                <Button style={{backgroundColor: "rgba(4, 90, 239,0.5)", color: "white"}} onClick={() => { this.handleFilter("withR") }}>With Requests</Button>
-                                <Button style={{backgroundColor: "rgba(239, 192, 4,0.5)", color: "white"}} onClick={() => { this.handleFilter("trading") }}>Trading</Button>
-                                <Button style={{backgroundColor: "rgba(17, 178, 44,0.5)", color: "white"}} onClick={() => { this.handleFilter("traded") }}>Traded</Button>
+                                <Button className="btngp" onClick={() => { this.handleFilter("all") }}>All</Button>
+                                <Button className="btngp" style={{backgroundColor: "rgba(4, 90, 239,0.5)", color: "white"}} onClick={() => { this.handleFilter("withR") }}>With Requests</Button>
+                                <Button className="btngp" style={{backgroundColor: "rgba(239, 192, 4,0.5)", color: "white"}} onClick={() => { this.handleFilter("trading") }}>Trading</Button>
+                                <Button className="btngp" style={{backgroundColor: "rgba(17, 178, 44,0.5)", color: "white"}} onClick={() => { this.handleFilter("traded") }}>Traded</Button>
                             </ButtonGroup>
                         </div>
                         <div className="Order" style={{ display: "flex", flexDirection: "row", marginLeft: "1vw", marginRight: "1vw" }}>
                             <h6 style={{ paddingTop: "0.4vw", paddingBottom: 0, marginBottom: 0, marginRight: "0.4vw", color: "white" }}>Order</h6>
                             <ButtonGroup>
-                                <Button onClick={() => { handleSortProducts("date") }}>Date of Upload</Button>
-                                <Button onClick={() => { handleSortProducts("pop") }}>Popularity</Button>
+                                <Button className="btngp" onClick={() => { handleSortProducts("date") }}>Date of Upload</Button>
+                                <Button className="btngp" onClick={() => { handleSortProducts("pop") }}>Popularity</Button>
                             </ButtonGroup>
                         </div>
                     </div>

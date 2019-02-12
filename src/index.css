@@ -22,3 +22,367 @@ ol, ul {
 	font: inherit;
 	vertical-align: baseline;
 }
+
+@media only screen and (max-width: 768px) {
+  /* userpage */
+  .newMain {
+    /* display: grid !important;
+    grid-template-rows: 10vh 83vh !important;
+    grid-template-columns: none !important;
+    grid-template-areas: 
+    "nav"
+    "notNav" !important;
+    background-color: black;
+    width: 100vw !important;
+    height: 93vh !important; */
+    display: flex !important;
+    flex-direction: column !important;
+    background-color: black;
+    width: 100vw !important;
+    height: 93vh !important;
+  }
+  .newNav { 
+    width: 100vw !important;
+    height: 10vh !important;
+    flex-wrap: wrap !important;
+    padding: 1vh 1vh 1vh 1vh !important;
+  }
+  .newNav .content {
+    display: flex !important;
+    flex-direction: row !important;
+    height: 10vh !important;
+    width: 100vw !important
+  }
+  .newNav .content ul{
+    display: flex !important;
+    flex-direction: row !important;
+    height: 10vh !important;
+    width: 100vw !important
+  }
+  .newNav .content ul li {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 25vw !important;
+    height: 10vh !important;
+  }
+  .controlPanel {
+    display: none !important;
+  }
+  .newMain .mainPanel {
+    /* grid-row: 2/3 !important; */
+    /* grid-area: notNav; */
+    overflow-Y: scroll !important;
+    height: 83vh !important;
+  }
+
+
+  /* MyProf ============================= */
+  .MyProf {
+    display: grid;
+    grid-template-rows: 19.25vw 1fr 1fr !important; 
+    grid-template-areas: 
+    "a"
+    "b"
+    "c" !important;
+    padding: 1vh 1vh 1vh 1vh !important;
+    flex-direction: column !important;
+    height: 83vh !important;
+    width: 100vw !important;
+    overflow-Y:scroll !important;
+    justify-content: stretch !important;
+    align-items: center !important;
+  }
+  .MyProf .profile{
+    display: grid !important;
+    grid-area: a !important;
+    height: 19.25vw !important;
+    grid-template-columns: 19.25vw repeat(2, 1fr) !important;
+    width: 94vw !important;
+    margin: 1vw !important;
+    position: relative !important;
+  }
+  .MyProf .profile .img{
+    grid-column: 1/2 !important;
+  }
+  .MyProf .profile .details{
+    grid-column: 2/4 !important;
+    overflow-X: scroll !important;
+    
+  }
+  .stat{
+    grid-area: b !important;
+    height: 33vh !important;
+    width: 94vw !important;
+    margin: 1vw !important;
+    position: relative !important;
+  }
+  .history{
+    grid-area: c !important;
+    height: 33vh !important;
+    width: 94vw !important;
+    margin: 1vw !important;
+    position: relative !important;
+  }
+
+
+  /* MyG===================================== */
+  .MyG, .FollowedG {
+    display: grid;
+    grid-template-rows: 19.25vw 1fr !important; 
+    flex-direction: column !important;
+    height: 83vh !important;
+    width: 100vw !important;
+    overflow-Y:scroll !important;
+  }
+  .MyG .buttons, .FollowedG .buttons  {
+    height: 19.25vw !important;
+    width: 100vw !important;
+    padding: 0 !important;
+  }
+  .MyG .buttons .content .filter h6, .FollowedG .buttons .content .filter h6{
+    display: none
+  }
+  .MyG .buttons .content .Order h6, .FollowedG .buttons .content .Order h6{
+    display: none
+  }
+  /* .btngp {
+    width: 16vw !important;
+    font-size: 1.8vw !important;
+  } */
+  .MyG .contents, .FollowedG .contents  {
+    grid-row: 2/3 !important
+  }
+  .MyGCard {
+    width: 30vw !important;
+    height: 40vw !important;
+    grid-template-columns: repeat(2, 15vw) !important;
+    grid-template-rows: 15vw 15vw 10vw !important;
+  }
+  .MyGCard .imgContainer {
+    width: 30vw !important;
+    height: 30vw !important;
+  }
+  .MyGCard .imgContainer .imgFrame {
+    width: 30vw !important;
+    height: 30vw !important;
+    border-width: 4px !important;
+  }
+  .MyGCard .status {
+    width: 30vw !important;
+    height: 10vw !important;
+  }
+  .ant-btn-group{
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+  }
+
+  /* upload ========================== */
+  .Upload {
+    padding: 1vw !important;
+    height: 83vh !important;
+    width: 100vw !important;
+    grid-template-columns: none !important;
+    grid-template-rows: 60vh auto !important; 
+    overflow-Y: scroll!important;
+  }
+  .imgUpload {
+    grid-column: none !important;
+    grid-row: 1/2 !important;
+    height: 60vh!important;
+    width: 100vw!important;
+  }
+  .previewBox {
+    width: 20vh!important;
+    height: 20vh!important;
+  }
+  .previewBox img, .previewBox .pContainer {
+    width: 20vh!important;
+    height: 20vh!important;
+  }
+  .imgBox {
+    grid-template-columns: repeat(2, 20vh)!important;
+    grid-template-rows: repeat(3, 20vh)!important
+  }
+  .imgBox p {
+    font-size: 4vw!important
+  }
+  .imgBox label {
+    width: 20vh!important;
+    height: 20vh!important;
+  }
+  .imgBox label i {
+    font-size: 4vw!important
+  }
+  .Upload .form {
+    grid-column: none!important;
+    grid-row: 2/3!important;
+    display: flex!important;
+    align-items: center!important;
+    justify-content: center!important;
+    width: 90vw!important;
+    margin-left: 5.5vw!important;
+  }
+
+  /* bigCards ============================ */
+  .bigCards, .tradeCards {
+    width: 100vw!important;
+  }
+  .bigCards .content, .tradeCards .content {
+    width: 90vw!important;
+    height: 85vh!important; 
+  }
+  .detailOuter {
+    width: 90vw!important;
+    height: 85vh!important;
+    /* grid-template-columns: none !important;
+    grid-template-rows: 55vh 30vh none !important; */
+    display: flex!important;
+    grid-template-columns: none!important;
+    flex-direction: column!important;
+  }
+  .detailOuter .notImg{
+    /* grid-row: 2/3 !important; */
+    grid-template-rows: 3vh 25vh 2vh !important;
+    margin-left: 4.5vw !important;
+  }
+  .detailOuter .notImg .buttons {
+    flex-direction: row !important;
+    height: 3vh !important;
+    width: 80vw !important
+  }
+  .detailOuter .notImg .buttons button{
+    width: 40vw !important;
+  }
+  .detailOuter .notImg .detailsList{
+    height: 25vh !important;
+  }
+  .imageCarousel{
+    /* grid-row: 1/2 !important; */
+    height: 55vh !important;
+    grid-column: none !important;
+    grid-template-rows: 10vh 45vh !important; 
+  }
+  .imageCarousel .header {
+    flex-direction: column !important;
+    width: 90vw !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  .imageCarousel .header .trade {
+    width: 80vw !important;
+    height: 4vh !important;
+  }
+  .imageCarousel .header .trade button {
+    width: 80vw !important;
+  }
+  .fkcarousel {
+    grid-template-rows: 39vh 6vh !important;
+    width :80vw  !important;
+  }
+  .currentImg {
+    width: 70vw !important;
+    height: 35vh  !important;
+    margin-left: 10vw !important;
+    box-shadow: 0.5vw 0.5vw 4vw rgb(50,50,50) !important
+  }
+  .currentImg img {
+    width: 70vw !important;
+    height: 35vh  !important;
+  }
+  .allImg {
+    grid-row: 2/3 !important;
+    width: 85vw !important;
+    height: 6vh !important;
+  }
+  .allImgContainer {
+    width: 5vh  !important;
+    height: 5vh !important;
+  }
+  .allImgContainer img {
+    width: 4.5vh  !important;
+    height: 4.5vh !important;
+  }
+
+  /* TradeCards =========================== */
+  .tradeCards {
+    width: 100vw !important;
+  }
+  .tradeCards .content {
+    width: 90vw!important;
+    height: 85vh!important; 
+    grid-template-rows: 5vh 75vh 5vh!important;
+  }
+  .tradeCards .innerContent {
+    width: 90vw!important;
+    height:75vh!important;
+    grid-template-rows: 35vh 5vh 35vh !important;
+    grid-template-columns: none!important;
+  }
+  .innerContent .first {
+    grid-column: none!important;
+    grid-row: 1/2!important;
+    width: 90vw!important;
+    height: 35vh!important;
+  }
+  .innerContent .second {
+    grid-column: none!important;
+    grid-row: 3/4!important;
+    width: 90vw!important;
+    height: 35vh!important;
+  }
+  .firstSwap {
+    grid-column: none!important;
+    grid-row: 1/2!important;
+    width: 90vw!important;
+    height: 35vh!important;
+    grid-template-columns: 40vw 10vw 40vw !important;
+    grid-template-rows: 25vh 10vh !important; 
+  }
+  .first .buttons {
+    width: 70vw!important;
+  }
+  .swapLogo, .arrow {
+    display: none!important;
+  }
+  .firstWithR{
+    grid-column: none!important;
+    grid-row: 1/2!important;
+    width: 90vw!important;
+    height: 35vh!important;
+    grid-template-columns: 35vw 55vw!important;
+  }
+  .firstWithR .items {
+    grid-template-rows: 5vh 30vh!important;
+    font-size: 1vh!important;
+    width: 35vw!important;
+  }
+  .firstWithR .items .itemsContent{
+    width: 35vw!important;
+    height: 30vh !important;
+  }
+  .choosed {
+    width: 55vw!important;
+  }
+  .middleCard {
+    width: 20vw!important;
+    height: 23vw!important;
+    grid-template-rows: 20vw 3vw!important;
+  }
+  .middleCard .img img{
+    width: 20vw!important;
+    height: 20vw!important;
+  }
+  .smallCard {
+    width: 15vw!important;
+    height: 18vw!important;
+    grid-template-rows: 15vw 3vw!important;
+  }
+  .smallCard .img img{
+    width: 15vw!important;
+    height: 15vw!important;
+  }
+}
