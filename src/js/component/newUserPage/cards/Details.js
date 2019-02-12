@@ -122,9 +122,9 @@ class ProductDetails extends Component {
                 {/* <Trade details={u} status={checkMyProduct()} /> */}
                 <div className="notImg" style={detail.inner.notImg}>
                     <div className="buttons" style={detail.inner.button}>
-                        <Button ghost type="primary" onClick={this.openDetails} style={{ marginLeft: "1vw", marginRight: "1vw" }}>Details</Button>
+                        <Button type="danger" onClick={this.openDetails} style={{ width: "15vw" }}>Details</Button>
                         {this.props.myUser.user_id &&
-                            <Button ghost type="primary" onClick={this.openComments} style={{ marginLeft: "1vw", marginRight: "1vw" }}>Comments</Button>}
+                            <Button type="danger" onClick={this.openComments} style={{ width: "15vw" }}>Comments</Button>}
                     </div>
                     {/* List of Details */}
                     {this.state.details &&
