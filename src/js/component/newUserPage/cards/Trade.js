@@ -154,7 +154,7 @@ class Trade extends Component {
         const id = myUser.user_id
         switch (status) {
             // now there are 6 status
-
+            
             // nth: my things but have no offer
             // withR: my things with offer(s)
             // trading: my things locked in trade
@@ -165,51 +165,51 @@ class Trade extends Component {
             case "nth":
                 return (
                     <div className="trade">
-                        <Button ghost type="primary">No Offers</Button>
+                        <Button ghost type="primary"style={{boxShadow: "0.3vw 0.3vw 1vw rgb(100,100,100)"}}>No Offers</Button>
                     </div>
                 )
             case "traded":
                 return (
                     <div className="trade">
-                        <Button ghost type="dashed">Traded</Button>
+                        <Button ghost type="dashed"style={{boxShadow: "0.3vw 0.3vw 1vw rgb(100,100,100)"}}>Traded</Button>
                     </div>
                 )
             case "requested":
             case "trading":
                 return (
                     <div className="trade">
-                        <Button ghost type="primary" onClick={() => { this.props.openTradeCards(details, status, id) }}>Rollback Offer</Button>
+                        <Button ghost type="primary"style={{boxShadow: "0.3vw 0.3vw 1vw rgb(100,100,100)"}} onClick={() => { this.props.openTradeCards(details, status, id) }}>Rollback Offer</Button>
                     </div>
                 )
             case "withR":
                 return (
                     <div className="trade">
-                        <Button ghost type="primary" onClick={() => { this.props.openTradeCards(details, status, id) }}>Check Received Offers</Button>
+                        <Button ghost type="primary"style={{boxShadow: "0.3vw 0.3vw 1vw rgb(100,100,100)"}} onClick={() => { this.props.openTradeCards(details, status, id) }}>Check Received Offers</Button>
 
                     </div>
                 )
             case "a":
                 return (
                     <div className="trade">
-                        <Button ghost type="primary" onClick={() => { this.props.openTradeCards(details, status, id) }}>Make An Offer</Button>
+                        <Button ghost type="primary"style={{boxShadow: "0.3vw 0.3vw 1vw rgb(100,100,100)"}} onClick={() => { this.props.openTradeCards(details, status, id) }}>Make An Offer</Button>
                     </div>
                 )
             case "na":
                 return (
                     <div className="trade">
-                        <Button ghost type="primary">Not available</Button>
+                        <Button ghost type="primary"style={{boxShadow: "0.3vw 0.3vw 1vw rgb(100,100,100)"}}>Not available</Button>
                     </div>
                 )
             case "login":
                 return (
                     <div className="trade">
-                        <Button type="danger">Login To Make a Deal!</Button>
+                        <Button type="danger"style={{boxShadow: "0.3vw 0.3vw 2vw rgb(100,100,100)"}}>Login To Make a Deal!</Button>
                     </div>
                 )
             default:
                 return (
                     <div className="trade">
-                        <Button type="danger">Login To Make a Deal!</Button>
+                        <Button type="danger"style={{boxShadow: "0.3vw 0.3vw 2vw rgb(100,100,100)"}}>Login To Make a Deal!</Button>
                     </div>
                 )
         }
