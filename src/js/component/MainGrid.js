@@ -25,16 +25,16 @@ class ConnectedMainGrid extends React.Component {
         }
     }
 
-    shuffleArray(a) {
-        var j, x, i;
-        for (i = a.length - 1; i > 0; i--) {
-            j = Math.floor(Math.random() * (i + 1));
-            x = a[i];
-            a[i] = a[j];
-            a[j] = x;
-        }
-        return a;
-    }
+    // shuffleArray(a) {
+    //     var j, x, i;
+    //     for (i = a.length - 1; i > 0; i--) {
+    //         j = Math.floor(Math.random() * (i + 1));
+    //         x = a[i];
+    //         a[i] = a[j];
+    //         a[j] = x;
+    //     }
+    //     return a;
+    // }
 
     showMoreItems = (page) => {
         let copyState = { ...this.state }
@@ -64,17 +64,18 @@ class ConnectedMainGrid extends React.Component {
             })
             this.props.storeAllProducts(res.data)
             if (this.props.searchArr.length === 0) {
-                let shuffleArr = this.shuffleArray(res.data)
-                this.props.updateProducts(shuffleArr)
-                let remainShowingBatch = Math.floor(shuffleArr.length / 50)
-                let showArr = shuffleArr.slice(0, 50)
+                // let shuffleArr = this.shuffleArray(res.data)
+                // this.props.updateProducts(shuffleArr)
+                this.props.updateProducts(res.data)
+                let remainShowingBatch = Math.floor(res.data.length / 50)
+                let showArr = res.data.slice(0, 50)
                 let copyState = { ...this.state }
                 if (remainShowingBatch <= 1) {
                     copyState.hasmore = false
                 } else {
                     copyState.hasmore = true
                 }
-                copyState.productsArr = shuffleArr
+                copyState.productsArr = res.data
                 copyState.showArr = showArr
                 copyState.remainShowingBatch = remainShowingBatch
                 this.setState(copyState)

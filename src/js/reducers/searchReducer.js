@@ -37,9 +37,12 @@ const searchReducer = (state = {
                 search: ""
             }
         case "STORE_ALL_PRODUCTS":
+            const sorted = [...action.allProducts].sort((a,b)=>{
+                return new Date(b.uploaded_at) - new Date(a.uploaded_at)
+            })
             return {
                 ...state,
-                allProducts: [...action.allProducts]
+                allProducts: sorted
             }
         case "OPEN_ONE_MODAL":
             const newProducts = state.allProducts.map((u) => {
