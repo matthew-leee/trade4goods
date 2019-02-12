@@ -14,14 +14,14 @@ import UserPage from "./js/component/UserPage/main"
 import NewMain from "./js/component/newUserPage/NewMain"
 import "./App.css"
 
-import {connect} from "react-redux"
-
+import { connect } from "react-redux"
 import {
     BrowserRouter,
     Route,
     Switch
 } from 'react-router-dom'
 
+const loading = require("./js/component/asset/gif/loadingpic.gif")
 
 class App extends Component {
     render() {
@@ -29,14 +29,19 @@ class App extends Component {
             <BrowserRouter>
                 <div>
                     <Navvv />
-                    <div style={{paddingTop: "7vh"}}>
-                    <Switch>
-                        <Route exact path={"/"} component={MainGrid} />
-                        {this.props.myUser.user_id && <Route path={"/userPage"} component={NewMain} />}
-                        <Route path={"/verifyEmail/:id"} component={VerifyEmail} />
-                        <Route path={"/redirect"} component={Rredirect} />
-                        <Route path="*" component={NoMatch}/>
-                    </Switch>
+                    <div style={{ paddingTop: "7vh" }}>
+                        {this.props.loading &&
+                            <div className="loading"
+                                style={{ width: "100vw", height: "93vh", position: "fixed", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 99999999999, backgroundColor: "rgba(200,200,200,0.5)" }}>
+                                <img src={loading} alt="loading" />
+                            </div>}
+                        <Switch>
+                            <Route exact path={"/"} component={MainGrid} />
+                            {this.props.myUser.user_id && <Route path={"/userPage"} component={NewMain} />}
+                            <Route path={"/verifyEmail/:id"} component={VerifyEmail} />
+                            <Route path={"/redirect"} component={Rredirect} />
+                            <Route path="*" component={NoMatch} />
+                        </Switch>
                     </div>
                 </div>
             </BrowserRouter>
@@ -47,7 +52,8 @@ class App extends Component {
 const mapStateToProps = (state) => {
     const user = state.userReducer
     return {
-        myUser: user.myUser
+        myUser: user.myUser,
+        loading: user.loading
     }
 }
 

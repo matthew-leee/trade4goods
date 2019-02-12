@@ -54,7 +54,7 @@ class MyGCards extends Component {
 
                 </div>
                 <div className="status" style={MyGStyle.status.container}>
-                    <Icon type="edit" />
+                    {/* <Icon type="edit" /> */}
                     <p style={{ padding: 0, margin: 0 }}>{name}</p>
                 </div>
             </div>
@@ -73,6 +73,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         openDetails: async (id, whom, which, allUsers)=>{
             try {
+                dispatch(actions_userPage.loading())
                 const products = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/', {
                     method: "get",
                     withCredentials: true
@@ -119,6 +120,7 @@ const mapDispatchToProps = (dispatch) => {
                         dispatch(actions_search.setFProducts(id))
                         dispatch(actions_userPage.storeAllComments(results, id))
                         dispatch(actions_search.openDetails(id,whom,"traded"))
+                        dispatch(actions_userPage.loading())
                     })
                 } else {
                     Promise.all(comments)
@@ -127,6 +129,7 @@ const mapDispatchToProps = (dispatch) => {
                         dispatch(actions_search.setFProducts(id))
                         dispatch(actions_userPage.storeAllComments(results, id))
                         dispatch(actions_search.openDetails(id,whom,which))
+                        dispatch(actions_userPage.loading())
                     })
                 }
             }catch(err){

@@ -70,6 +70,7 @@ class TradeCards extends Component {
         const receivedOffer = this.state.a.offered_by
 
         try {
+            this.props.loading()
             // decline all offers you received
             for (let fail of receivedOffer) {
                 const rollbackData = {
@@ -84,10 +85,15 @@ class TradeCards extends Component {
             }
 
             // follow the product you made offer
-            const like = await Axios(`${process.env.REACT_APP_BACKEND_URL}/api/like/${this.props.currentTrade.details.product_id}`, {
-                method: "put",
-                withCredentials: true
-              })
+            const liked = this.props.currentTrade.details.liked_by.some((u)=>{
+                return u == this.props.myUser.user_id
+            })
+            if (!liked){
+                const like = await Axios(`${process.env.REACT_APP_BACKEND_URL}/api/like/${this.props.currentTrade.details.product_id}`, {
+                    method: "put",
+                    withCredentials: true
+                })
+            }
 
             const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/offer_product", {
                 method: 'post',
@@ -120,12 +126,14 @@ class TradeCards extends Component {
             this.setState({
                 aConfirm: true
             })
+            this.props.loading()
         } catch (err) {
             console.log(err)
         }
     }
 
     handleAConfirm = async () => {
+        this.props.loading()
         // fetch allProducts
         const pres = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/')
         pres.data.forEach((u) => {
@@ -158,7 +166,7 @@ class TradeCards extends Component {
             accepted: false,
             original: null,
         })
-
+        this.props.loading()
         // close the window
         this.props.closeAllCards(this.props.myUser.user_id)
     }
@@ -193,6 +201,7 @@ class TradeCards extends Component {
                 product_offering: this.state.a.product_id
             }
             try {
+                this.props.loading()
                 const del = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/offer_product", {
                     method: 'delete',
                     data: data,
@@ -226,7 +235,7 @@ class TradeCards extends Component {
                     withCredentials: true
                 })
                 this.props.storeMyUser(user.data)
-
+                this.props.loading()
             } catch (err) {
                 console.log(err)
             }
@@ -246,6 +255,7 @@ class TradeCards extends Component {
                 product_offering: this.state.a.product_id,
             }
             try {
+                this.props.loading()
                 const del = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/offer_product", {
                     method: 'delete',
                     data: data,
@@ -276,11 +286,11 @@ class TradeCards extends Component {
                     withCredentials: true
                 })
                 this.props.storeMyUser(user.data)
+                this.props.loading()
                 this.setState({
                     swap: false,
                     swapDone: true
                 })
-
             } catch (err) {
                 console.log(err)
             }
@@ -294,6 +304,8 @@ class TradeCards extends Component {
             product_offering: id
         }
         try {
+            
+            this.props.loading()
             const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/offer_product", {
                 method: 'delete',
                 data: data,
@@ -326,6 +338,7 @@ class TradeCards extends Component {
                 delete: true
             })
 
+            this.props.loading()
         } catch (err) {
             console.log(err)
         }
@@ -337,6 +350,8 @@ class TradeCards extends Component {
             product_offering: this.props.currentTrade.details.product_id,
         }
         try {
+            
+            this.props.loading()
             const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/offer_product", {
                 method: 'delete',
                 data: data,
@@ -369,6 +384,7 @@ class TradeCards extends Component {
                 delete: true
             })
 
+            this.props.loading()
         } catch (err) {
             console.log(err)
         }
@@ -401,7 +417,8 @@ class TradeCards extends Component {
             original: this.props.currentTrade.details
         })
         try {
-            // rollback all offers that are not accepted
+
+            this.props.loading()
             for (let fail of notSelected) {
                 const rollbackData = {
                     product_offered: myID,
@@ -440,11 +457,25 @@ class TradeCards extends Component {
                 withCredentials: true
             })
             this.props.storeMyUser(user.data)
+            // console.log (user.data.trade_history)
+            // let arr = []
+            // for (let h of user.data.trade_history) {
+            //     console.log (h)
+            //     const raw = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/history', {
+            //         method: "get",
+            //         data: h,
+            //         withCredentials: true
+            //     })
+            //     console.log (raw.data)
+            //     arr.push(raw.data)
+            // }
+            // this.props.setTradeHistory(arr)
 
             this.props.setMyProducts(this.props.myUser.user_id)
 
             this.props.setFProducts(this.props.myUser.user_id)
 
+            this.props.loading()
             this.setState({
                 accepted: true
             })
@@ -457,7 +488,7 @@ class TradeCards extends Component {
     // END=================end of functions for status "withR"=====================
 
     render() {
-        const {out} = this.props
+        const { out } = this.props
         const { status, details } = this.props.currentTrade
 
         // =========== RENDER for status "a" ===================
@@ -992,7 +1023,7 @@ class TradeCards extends Component {
 
                             {!this.state.accepted &&
                                 <div className="buttons" style={TradeStyle.inner.buttons}>
-                                    <Button type="danger" onClick={this.handleWithR}>Confirm Trade</Button>
+                                    {this.state.a && <Button type="danger" onClick={this.handleWithR}>Confirm Trade</Button>}
                                     <Button type="primary" onClick={this.handleAConfirm}>Return</Button>
                                 </div>}
                             {this.state.accepted &&
@@ -1042,8 +1073,8 @@ class TradeCards extends Component {
 
                                 </div>
                                 <div className="buttons" style={TradeStyle.inner.buttons}>
-                                    {this.state.a != null && 
-                                    <Button type="danger" onClick={() => { this.handlePlaceOffer(this.state.a.product_id) }}>Confirm</Button>}
+                                    {this.state.a != null &&
+                                        <Button type="danger" onClick={() => { this.handlePlaceOffer(this.state.a.product_id) }}>Confirm</Button>}
                                     <Button type="primary" onClick={() => { this.closeTradeCards(this.props.myUser.user_id) }}>Return</Button>
                                 </div>
                             </div>
@@ -1138,13 +1169,17 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         closeTradeCards: (id) => {
+            dispatch(actions_search.setFProducts(id))
             dispatch(actions_search.setMyProducts(id))
             dispatch(actions_trade.closeTradeCards())
+            dispatch(actions_search.closeOutDetails())
+            dispatch(actions_search.closeDetails())
         },
         closeAllCards: (id) => {
             dispatch(actions_search.setMyProducts(id))
             dispatch(actions_search.setFProducts(id))
             dispatch(actions_trade.closeTradeCards())
+            dispatch(actions_search.closeOutDetails())
             dispatch(actions_search.closeDetails())
         },
         setMyProducts: (id) => {
@@ -1166,6 +1201,12 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actions_userPage.storeMyUser(user))
         },
         updateProducts: arr => dispatch(updateProducts(arr)),
+        setTradeHistory: (arr)=>{
+            dispatch(actions_userPage.setTradeHistory(arr))
+        },
+        loading: ()=>{
+            dispatch(actions_userPage.loading())
+        }
     }
 }
 

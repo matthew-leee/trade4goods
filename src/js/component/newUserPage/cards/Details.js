@@ -212,6 +212,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
+        loading: ()=>{
+            dispatch(actions_userPage.loading())
+        },
         handleOtherUser: (user) => {
             dispatch(actions_userPage.showOtherUser(user))
         },
@@ -224,6 +227,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         handleSubmitComment: async (id, comment, allUsers) => {
             try {
+                dispatch(actions_userPage.loading())
                 const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/comment", {
                     method: "post",
                     data: { product_id: id, comment: comment },
@@ -265,6 +269,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                         .then((results) => {
                             console.log(results)
                             dispatch(actions_userPage.storeAllComments(results, id))
+                            dispatch(actions_userPage.loading())
                         })
                 }
             } catch (err) {

@@ -42,6 +42,7 @@ class NormalLoginForm extends React.Component {
                 }
 
                 try {
+                    this.props.loading()
                     let res = await axios(process.env.REACT_APP_BACKEND_URL + '/api/login', {
                         method: "post",
                         data: passingDB,
@@ -55,7 +56,7 @@ class NormalLoginForm extends React.Component {
                     })
                     this.props.storeMyUser(user.data)
                     this.setState({ open: false })
-
+                    this.props.loading()
                 } catch (err) {
                     console.log(err.response.data)
                     if (err.response.data.message) {
@@ -99,13 +100,14 @@ class NormalLoginForm extends React.Component {
             )
                 .then(async () => {
                     try {
+                        this.props.loading()
                         const user = await axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                             method: "get",
                             withCredentials: true
                         })
                         this.props.storeMyUser(user.data)
                         this.setState({ open: false })
-
+                        this.props.loading()
                     } catch (err) {
                         if (err.response.data.message) {
                             this.setState({ errMsg: err.response.data.message })
@@ -150,7 +152,6 @@ class NormalLoginForm extends React.Component {
                         method: "get",
                         withCredentials: true
                     })
-
                     console.log(user.data)
                     this.props.storeMyUser(user.data)
                     this.setState({ open: false })
@@ -252,6 +253,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         storeMyUser: (user) => {
             dispatch(actions_userPage.storeMyUser(user))
+        },
+        loading: ()=>{
+            dispatch(actions_userPage.loading())
         }
     }
 }

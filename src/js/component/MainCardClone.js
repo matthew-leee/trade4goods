@@ -57,11 +57,13 @@ class MainCard extends React.Component {
 
   handleLike = async (id) => {
     try {
+      
       const res = await Axios(`${process.env.REACT_APP_BACKEND_URL}/api/like/${id}`, {
         method: "put",
         withCredentials: true
       })
       if (res.status == 200) {
+        this.props.loading()
         const products = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/', {
           method: "get",
           withCredentials: true
@@ -85,7 +87,7 @@ class MainCard extends React.Component {
           withCredentials: true
         })
         this.props.storeMyUser(user.data)
-
+        this.props.loading()
       }
     } catch (err) {
       console.log("like err")
@@ -117,8 +119,8 @@ class MainCard extends React.Component {
           return a == offer
         })
       })
-      const isLoggedIn = this.props.myUser.user_id? true: false
-      if (isLoggedIn){
+      const isLoggedIn = this.props.myUser.user_id ? true : false
+      if (isLoggedIn) {
         if (owner == "my") {
           if (u.status == 3) {
             return "traded"
@@ -132,16 +134,16 @@ class MainCard extends React.Component {
         } else {
           if (u.status > 1) {
             return "na"
-          } else if (u.status == 1) {
+          } else if (u.status == 1 && !offered) {
             return "a"
-          } else if (offered && u.status != 3) {
+          } else if (offered && u.status == 1) {
             return "requested"
           }
         }
       } else {
         return "login"
       }
-      
+
     }
 
     switch (status()) {
@@ -237,8 +239,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions_userPage.storeMyUser(user))
     },
     updateProducts: arr => dispatch(updateProducts(arr)),
+    loading: () => {
+      dispatch(actions_userPage.loading())
+    },
     openOutDetails: async (id, whom, which, allUsers) => {
       try {
+        dispatch(actions_userPage.loading())
         const products = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/', {
           method: "get",
           withCredentials: true
@@ -286,6 +292,7 @@ const mapDispatchToProps = (dispatch) => {
               dispatch(actions_userPage.storeAllComments(results, id))
               // open OUT details
               dispatch(actions_search.openOutDetails(id, whom, "traded"))
+              dispatch(actions_userPage.loading())
             })
         } else {
           Promise.all(comments)
@@ -295,6 +302,7 @@ const mapDispatchToProps = (dispatch) => {
               dispatch(actions_userPage.storeAllComments(results, id))
               // open OUT details
               dispatch(actions_search.openOutDetails(id, whom, which))
+              dispatch(actions_userPage.loading())
             })
         }
       } catch (err) {

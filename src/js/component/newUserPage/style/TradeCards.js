@@ -286,6 +286,15 @@ const TradeStyle = {
             backgroundColor: "rgba(230,230,230,0.8)",
             overflowY: "scroll"
         },
+        details: {
+            display:"flex",
+            width: "30vw",
+            height: "20vh",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: "1vw",
+            flexDirection: "row"
+        }
     },
     a: {
         frame: {

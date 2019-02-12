@@ -33,8 +33,10 @@ function mapDispatchToProps(dispatch) {
         },
         deleteMyUser: ()=>{
             dispatch(actions_userPage.deleteMyUser())
+        },
+        loading: ()=>{
+            dispatch(actions_userPage.loading())
         }
-
     };
   }
 
@@ -65,6 +67,7 @@ class ConnectedNavvv extends React.Component {
     }
 
     componentWillMount = async () => {
+            this.props.loading()
             let isLoggedIn = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/isLoggedIn', {
                 method: "get",
                 withCredentials: true
@@ -92,7 +95,7 @@ class ConnectedNavvv extends React.Component {
                 withCredentials: true
             })
             this.props.storeMyUser(user.data)
-
+            this.props.loading()
         }
     }
     

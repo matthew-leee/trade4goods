@@ -28,6 +28,7 @@ class Trade extends Component {
             product_offering: this.props.selected
         }
         try {
+            this.props.loading()
             const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/offer_product", {
                 method: 'post',
                 data: data,
@@ -57,7 +58,7 @@ class Trade extends Component {
 
             // finished trading
             this.props.clearSelect()
-
+            this.props.loading()
         } catch (err) {
             console.log(err)
         }
@@ -70,6 +71,7 @@ class Trade extends Component {
         }
         console.log(data)
         try {
+            this.props.loading()
             const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/acceptOffer/", {
                 method: 'post',
                 data: data,
@@ -101,7 +103,7 @@ class Trade extends Component {
 
             // finished trading
             this.props.clearSelect()
-
+            this.props.loading()
         } catch (err) {
             console.log(err)
         }
@@ -114,6 +116,7 @@ class Trade extends Component {
             product_offering: id
         }
         try {
+            this.props.loading()
             const res = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/offer_product", {
                 method: 'delete',
                 data: data,
@@ -140,7 +143,7 @@ class Trade extends Component {
                 withCredentials: true
             })
             this.props.storeMyUser(user.data)
-
+            this.props.loading()
         } catch (err) {
             console.log(err)
         }
@@ -262,6 +265,9 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actions_trade.openTradeCards(details, status))
         },
         updateProducts: arr => dispatch(updateProducts(arr)),
+        loading: ()=>{
+            dispatch(actions_userPage.loading())
+        }
     }
 }
 

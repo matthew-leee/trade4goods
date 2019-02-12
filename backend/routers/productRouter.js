@@ -52,6 +52,24 @@ module.exports = (router, authService, productService) => {
         }
     })
 
+    router.get('/api/history/', async (req, res) => {
+        try {
+
+            const user_id = await authService.isAuthenticated(req.session.jwt)
+            if (user_id) {
+                console.log (req.body)
+                const history = await productService.getHistory(req.body)
+                res.status(200).json(history)
+            } else {
+                res.sendStatus(401);
+            }
+        } catch (err) {
+            const statusCode = err.statusCode || 500
+            delete err.statusCode
+            res.status(statusCode).json(err)
+        }
+    })
+
     router.delete('/api/product/:id', async (req, res) => {
     //router.delete('/api/product/', async (req, res) => {
         try {

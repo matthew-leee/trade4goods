@@ -428,4 +428,13 @@ module.exports = class {
             throw err
         }
     }
+
+    async getHistory (id){
+        try {
+            const history = await this.knex('trade_history').where('trade_id', id)
+            return history
+        } catch(err) {
+            console.log (err)
+        }
+    }
 }

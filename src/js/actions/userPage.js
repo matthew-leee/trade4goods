@@ -90,6 +90,17 @@ const actions_userPage = {
         return {
             type: "CLOSE_OTHERUSER"
         }
+    },
+    setTradeHistory: (arr)=>{
+        return {
+            type: "SET_TRADE_HISTORY",
+            history: arr
+        }
+    },
+    loading: ()=>{
+        return {
+            type: "LOADING"
+        }
     }
 }
 

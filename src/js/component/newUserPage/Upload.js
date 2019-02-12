@@ -98,6 +98,7 @@ class AddPhotoForm extends Component {
                     image: values.photos
                 }
                 try {
+                    this.props.loading()
                     const addPhotosRes = await Axios(process.env.REACT_APP_BACKEND_URL + "/api/product", {
                         method: "post",
                         data: newValues,
@@ -134,7 +135,7 @@ class AddPhotoForm extends Component {
                         withCredentials: true
                     })
                     this.props.storeMyUser(user.data)
-
+                    this.props.loading()
                     this.props.handleSubmitForm()
 
                     document.querySelector("#clearImageField").setAttribute("value", "")
@@ -390,6 +391,10 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actions_addPhotos.imgDelete(key))
         },
         updateProducts: arr => dispatch(updateProducts(arr)),
+        
+        loading: ()=>{
+            dispatch(actions_userPage.loading())
+        }
     }
 }
 

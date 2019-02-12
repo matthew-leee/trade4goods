@@ -61,6 +61,7 @@ class Propic extends Component {
             files.forEach((file) => {
                 const id = String(uuidv1())
                 if (file.size < 5242880) {
+                    this.props.loading()
                     const ref = app.storage().ref();
                     const name = `${id}-${file.name}`
                     const metadata = { contentType: file.type };
@@ -71,6 +72,7 @@ class Propic extends Component {
                             this.setState({
                                 new: url
                             })
+                            this.props.loading()
                         })
                 } else {
                     alert("Your photos exceed 5MB limit")
@@ -88,6 +90,7 @@ class Propic extends Component {
             profile_picture: this.state.new,
         }
         try {
+            this.props.loading()
             const res = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                 method: "put",
                 data: data,
@@ -102,6 +105,7 @@ class Propic extends Component {
             this.setState({
                 updated: true
             })
+            this.props.loading()
         } catch (err) {
             console.log(err)
         }
@@ -196,6 +200,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         closePropic: () => {
             dispatch(actions_newUserPage.closePropic())
+        },
+        loading: ()=>{
+            dispatch(actions_userPage.loading())
         }
     }
 }

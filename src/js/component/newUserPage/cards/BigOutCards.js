@@ -14,6 +14,7 @@ class BigOutCards extends Component {
 
     closeOutDetails = async () => {
         try {
+            this.props.loading()
             const pres = await Axios.get(process.env.REACT_APP_BACKEND_URL + '/api/allProducts/')
             pres.data.forEach((u) => {
                 u.openOneModal = false
@@ -36,6 +37,7 @@ class BigOutCards extends Component {
                 this.props.storeMyUser(user.data)
             }
             this.props.closeOutDetails()
+            this.props.loading()
         } catch (err) {
             console.log(err)
         }
@@ -77,6 +79,9 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actions_userPage.storeMyUser(user))
         },
         updateProducts: arr => dispatch(updateProducts(arr)),
+        loading: ()=>{
+            dispatch(actions_userPage.loading())
+        }
     }
 }
 

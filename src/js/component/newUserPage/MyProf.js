@@ -22,6 +22,29 @@ class MyProf extends Component {
         }
     }
 
+    // get History
+
+    getHistory = async () => {
+        let arr = []
+        for (let h of this.props.myUser.trade_history){
+            try{
+                this.props.loading()    
+                const raw = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/history', {
+                    method: "get",
+                    data: h,
+                    withCredentials: true
+                })
+                arr.push(raw.data)
+                this.props.loading()
+            } catch(err){
+                console.log (err)
+            }
+        }
+        this.setState({
+            history: arr
+        })
+    }
+ 
     // name 
 
     editName = () => {
@@ -43,6 +66,7 @@ class MyProf extends Component {
             profile_picture: null,
         }
         try {
+            this.props.loading()
             const res = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                 method: "put",
                 data: data,
@@ -58,6 +82,7 @@ class MyProf extends Component {
                 editName: false,
                 name: ""
             })
+            this.props.loading()
         } catch (err) {
             console.log(err)
         }
@@ -89,6 +114,7 @@ class MyProf extends Component {
                 profile_picture: null,
             }
             try {
+                this.props.loading()
                 const res = await Axios(process.env.REACT_APP_BACKEND_URL + '/api/profile', {
                     method: "put",
                     data: data,
@@ -104,6 +130,7 @@ class MyProf extends Component {
                     editPhone: false,
                     phone: null
                 })
+                this.props.loading()
             } catch (err) {
                 console.log(err)
             }
@@ -182,6 +209,8 @@ class MyProf extends Component {
                     <div className="details" style={MyProfStyle.historyDetails}>
                         {this.props.myUser.trade_history.length == 0 &&
                             <h5 style={{ padding: 0, marginBottom: 0 }}>You have no Trade History. Start Bartering!</h5>}
+                        {this.props.myUser.trade_history.length > 0 &&
+                            <h5 style={{ padding: 0, marginBottom: 0 }}>You have some trade history.</h5>}
                     </div>
                 </div>
 
@@ -208,8 +237,11 @@ const mapDispatchToProps = (dispatch) => {
         storeMyUser: (user) => {
             dispatch(actions_userPage.storeMyUser(user))
         },
-        updatePropic: () =>{
+        updatePropic: () => {
             dispatch(actions_newUserPage.updatePropic())
+        },
+        loading: ()=>{
+            dispatch(actions_userPage.loading())
         }
     }
 }

@@ -9,9 +9,10 @@ import actions_newUserPage from "../../../actions/newUserPage"
 import actions_search from "../../../actions/search"
 import actions_trade from "../../../actions/trade"
 import { updateProducts } from '../../../actions/hello'
+import MyProfStyle from "../style/MyProf"
 
 import Axios from "axios"
-import { Button, Icon } from "antd"
+import { Button, Icon, Progress  } from "antd"
 
 const err = require('../../asset/gif/replaceNoImg.gif')
 
@@ -27,14 +28,14 @@ class OtherUser extends Component {
     }
 
     render() {
-        const {out} = this.props
+        const { out } = this.props
 
         const user = this.props.allUsers.filter((u) => {
             return u.user_id == this.props.otherUser
         })[0]
 
-        console.log (this.props.otherUser)
-        console.log (user)
+        console.log(this.props.otherUser)
+        console.log(user)
 
         const aItems = user.uploaded_products
             .map((u) => {
@@ -66,9 +67,9 @@ class OtherUser extends Component {
                 )
             })
 
-        
+
         return (
-            <div className="tradeCards" style={out? TradeStyle.otherUser.out:TradeStyle.otherUser.bigframe} onClick={this.props.closeOtherUser}>
+            <div className="tradeCards" style={out ? TradeStyle.otherUser.out : TradeStyle.otherUser.bigframe} onClick={this.props.closeOtherUser}>
                 <div className="content" style={TradeStyle.otherUser.content} onClick={this.stopPropagation}>
 
                     <div className="title" style={TradeStyle.inner.titleAConfirm}>
@@ -89,9 +90,17 @@ class OtherUser extends Component {
                                     boxShadow: "0.5vw 0.5vw 2vw rgb(100,100,100)"
                                 }}
                             />
-
-                            <p style={{ marginTop: "3vw" }}>Phone</p>
-                            <h5>{user.phone_number}</h5>
+                            <div className="details" style={TradeStyle.otherUser.details}>
+                                
+                                <div className="credProgress" style={{width: "15vw",display: "flex", justifyContent: "center", alignItems: "center",margin: 0, border: 0, padding: 0, flexDirection: "column"}}>
+                                    <Progress type="circle" percent={user.credibility * 10} />
+                                    <p style={{ marginBottom: 0, marginTop: "1vw" }}>Trader's Level</p>
+                                </div>
+                                <div className="phone"style={{width: "15vw",display: "flex", justifyContent: "center",alignItems: "center",margin: 0, border: 0, padding: 0, flexDirection: "column"}}>
+                                    <p>Phone</p>
+                                    <h5>{user.phone_number}</h5>
+                                </div>
+                            </div>
 
                         </div>
 

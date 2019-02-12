@@ -12,7 +12,8 @@ const userReducer = (state = {
     otherUser: null,
     myUser: {},
     allUsers: [],
-    allComments: []
+    allComments: [],
+    loading: false
 }, action) => {
     switch (action.type) {
         case "OPEN_MODAL":
@@ -124,6 +125,16 @@ const userReducer = (state = {
             return {
                 ...state,
                 otherUser: null
+            }
+        case "SET_TRADE_HISTORY":
+            return {
+                ...state,
+                history: action.history
+            }
+        case "LOADING":
+            return {
+                ...state,
+                loading: !state.loading
             }
         default:
             return state
