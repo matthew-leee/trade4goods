@@ -213,7 +213,7 @@ class AddPhotoForm extends Component {
                             overflow: "hidden",
                             position: "relative"
                         }}>
-                        <img src={photo.src} alt="" style={{ width: "14vw"}} style={{position: "relative"}} />
+                        <img src={photo.src} alt="" style={{ width: "14vw", height: "14vw", objectFit: "contain"}} style={{position: "relative"}} />
                         <div className="previewOverlay" 
                         style={this.state.imgOverlay} 
                         onMouseEnter={()=>{this.imgHover("enter")}}
