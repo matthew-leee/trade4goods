@@ -9,7 +9,7 @@ module.exports = (app, redisClient, expressSession, RedisStore) => {
     const cookieSetting = { 
         path: '/',
         httpOnly: true,
-        secure: true,
+        secure: (process.env.NODE_ENV !== 'production'),
         maxAge: null 
     }
 
